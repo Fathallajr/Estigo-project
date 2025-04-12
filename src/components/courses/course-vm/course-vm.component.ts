@@ -6,6 +6,7 @@ interface Course {
   courseId: number;
   courseTitle: string;
   imageBase64: string;
+  catName:string;
   price: number;
   teacherName: string;
 }
@@ -19,6 +20,8 @@ interface Course {
 })
 export class CourseVmComponent implements OnInit {
   courses: Course[] = [];
+  categoryName: string = '';
+
 
   constructor(private route: ActivatedRoute) {}
 
@@ -31,12 +34,15 @@ export class CourseVmComponent implements OnInit {
 
   async fetchCourseDetails(catID: number): Promise<void> {
     try {
-      const response = await fetch(`http://est.runasp.net/api/Course/category/${catID}`);
+      const response = await fetch(`https://est.runasp.net/api/Course/category/${catID}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       this.courses = data;
+      if (data.length > 0) {
+        this.categoryName = data[0].catName;
+      }
     } catch (error) {
       console.error('Error fetching courses:', error);
     }

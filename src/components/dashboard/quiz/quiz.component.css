@@ -6,9 +6,9 @@
     padding: 20px; /* Add padding around the quiz */
     background-color: #f5f5f5; /* Optional background for the page */
   }
-  
+
   /* --- Styles from previous steps --- */
-  
+
   .quiz-container {
       background-color: white;
       border-radius: 15px;
@@ -18,7 +18,7 @@
       max-width: 800px; /* Limit width for readability */
       margin-bottom: 30px;
   }
-  
+
   .quiz-header {
       display: flex;
       justify-content: space-between;
@@ -29,39 +29,39 @@
       flex-wrap: wrap; /* Allow wrapping on smaller screens */
       gap: 10px;
   }
-  
+
   .quiz-header h2 {
       font-size: 20px;
       font-weight: 600;
       color: #333;
       margin: 0; /* Remove default margin */
   }
-  
+
   .quiz-info {
       display: flex;
       gap: 20px;
       flex-wrap: wrap; /* Allow wrapping */
   }
-  
+
   .quiz-info-item {
       display: flex;
       align-items: center;
       font-size: 14px;
       color: #666;
   }
-  
+
   .quiz-info-item i {
       margin-right: 5px;
       color: #6aaa96;
       font-size: 1.1em; /* Slightly larger icon */
   }
-  
+
   .quiz-progress {
       display: flex;
       align-items: center;
       margin-bottom: 25px; /* Increased spacing */
   }
-  
+
   .quiz-progress-bar {
       flex: 1;
       height: 8px; /* Slightly thicker bar */
@@ -70,14 +70,14 @@
       overflow: hidden;
       margin-right: 15px;
   }
-  
+
   .quiz-progress-fill {
       height: 100%;
       background-color: #6aaa96;
       border-radius: 4px;
       transition: width 0.4s ease-out; /* Smoother transition */
   }
-  
+
   .quiz-progress-text {
       font-size: 14px;
       font-weight: 500; /* Slightly bolder */
@@ -85,25 +85,25 @@
       min-width: 60px;
       text-align: right;
   }
-  
+
   .quiz-question-container {
       /* display: none; Handled by *ngIf/template logic */
       margin-top: 30px;
   }
-  
+
   /* No need for .active class here as we render only one question container */
-  
+
   .quiz-question {
       margin-bottom: 25px;
   }
-  
+
   .question-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
   }
-  
+
   .question-number {
       font-size: 13px; /* Slightly smaller */
       font-weight: 600;
@@ -112,7 +112,7 @@
       padding: 6px 14px; /* Adjusted padding */
       border-radius: 20px;
   }
-  
+
   .question-text {
       font-size: 17px; /* Slightly larger */
       font-weight: 500; /* Less bold */
@@ -120,13 +120,13 @@
       margin-bottom: 20px; /* Increased spacing */
       line-height: 1.6;
   }
-  
+
   .question-options {
       display: flex;
       flex-direction: column;
       gap: 12px; /* Slightly more gap */
   }
-  
+
   .question-option {
       position: relative;
       padding: 14px 18px; /* Adjusted padding */
@@ -137,47 +137,65 @@
       align-items: center;
       background-color: #fff;
   }
-  
+
   /* Default cursor is pointer unless overridden */
   .question-option {
       cursor: pointer;
   }
-  
+
   /* Cursor override for submitted/reviewing state */
   .question-option[style*="cursor: default"] {
       cursor: default !important;
   }
-  
-  
+
+
   .question-option:hover:not([style*="cursor: default"]) {
       border-color: #8bc5b3; /* Softer hover border */
       background-color: #f8f9fa; /* Subtle hover background */
       transform: translateY(-2px); /* Slight lift effect */
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
-  
+
   /* Selected state *before* submission */
   .question-option.selected {
       border-color: #6aaa96;
       background-color: #e7f3ef;
       box-shadow: 0 0 0 1px #6aaa96; /* Outline effect */
   }
-  
-  /* Correct state *after* submission/review */
-  .question-option.correct {
-      border-color: #28a745 !important;
-      background-color: #e2f3e6 !important;
-      box-shadow: 0 0 0 1px #28a745 !important;
+
+  /* Style for correct option during review */
+  .question-option.review-correct {
+      border-color: #28a745 !important; /* Green border */
+      background-color: #e2f3e6 !important; /* Light green background */
   }
-  
-  /* Incorrect state *after* submission/review */
-  .question-option.incorrect {
-      border-color: #dc3545 !important;
-      background-color: #f8d7da !important;
-      box-shadow: 0 0 0 1px #dc3545 !important;
+
+  /* Style for user's incorrect selected option during review */
+  .question-option.review-user-incorrect {
+       border-color: #dc3545 !important; /* Red border */
+       background-color: #f8d7da !important; /* Light red background */
   }
-  
-  
+
+  /* Style for the text indicating correct/incorrect during review */
+  .review-indicator {
+      margin-left: auto; /* Push to the right */
+      font-size: 0.9em;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+  }
+
+  .review-indicator.correct {
+      color: #155724; /* Dark green */
+      background-color: #d4edda; /* Lighter green */
+  }
+
+  .review-indicator.incorrect {
+      color: #721c24; /* Dark red */
+      background-color: #f8d7da; /* Lighter red */
+  }
+
+
   .option-letter {
       width: 28px; /* Slightly smaller */
       height: 28px;
@@ -193,31 +211,31 @@
       transition: all 0.2s ease-in-out;
       flex-shrink: 0;
   }
-  
+
   /* Style letter for selected option */
   .question-option.selected .option-letter {
       background-color: #6aaa96;
       color: white;
   }
-  
-  /* Style letter for correct option */
-  .question-option.correct .option-letter {
+
+  /* Style letter for correct option during review*/
+  .question-option.review-correct .option-letter {
       background-color: #28a745 !important;
       color: white !important;
   }
-  
-  /* Style letter for incorrect option */
-  .question-option.incorrect .option-letter {
+
+  /* Style letter for user's incorrect selected option during review */
+  .question-option.review-user-incorrect .option-letter {
       background-color: #dc3545 !important;
       color: white !important;
   }
-  
+
   .option-text {
       font-size: 14px;
       color: #343a40; /* Slightly darker */
       flex-grow: 1; /* Allow text to take remaining space */
   }
-  
+
   .quiz-actions {
       display: flex;
       justify-content: space-between;
@@ -225,7 +243,7 @@
       padding-top: 20px;
       border-top: 1px solid #f0f0f0;
   }
-  
+
   .quiz-nav-btn {
       background-color: #ffffff;
       border: 1px solid #ced4da; /* Standard border */
@@ -241,48 +259,48 @@
       gap: 8px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
-  
+
   .quiz-nav-btn i {
     font-size: 0.9em; /* Slightly smaller icon */
   }
-  
+
   .quiz-nav-btn:hover:not(:disabled) {
       border-color: #adb5bd;
       background-color: #f8f9fa;
       color: #212529;
   }
-  
+
   .quiz-nav-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       box-shadow: none;
   }
-  
+
   .quiz-nav-btn.primary {
       background-color: #6aaa96;
       border-color: #6aaa96;
       color: white;
       box-shadow: 0 2px 4px rgba(106, 170, 150, 0.2);
   }
-  
+
   .quiz-nav-btn.primary:hover:not(:disabled) {
       background-color: #5a9886; /* Darker shade on hover */
       border-color: #5a9886;
       transform: translateY(-1px);
       box-shadow: 0 3px 6px rgba(106, 170, 150, 0.3);
   }
-  
+
   /* --- Result Styles --- */
   .result-container {
     /* Inherits quiz-container styles */
     /* Add specific overrides if needed */
   }
-  
+
   .quiz-result {
       text-align: center;
       /* display: block; Already handled */
   }
-  
+
   .result-icon {
       width: 70px; /* Slightly smaller */
       height: 70px;
@@ -293,37 +311,74 @@
       justify-content: center;
       margin: 0 auto 25px; /* Increased bottom margin */
   }
-  
+
   .result-icon i {
       color: #6aaa96;
       font-size: 36px;
   }
-  
+
   .result-title {
       font-size: 26px; /* Slightly larger */
       font-weight: 600;
       margin-bottom: 12px; /* Adjusted margin */
       color: #212529;
   }
-  
+
   .result-score {
       font-size: 52px; /* Larger score */
       font-weight: 700;
       color: #6aaa96;
       margin-bottom: 18px; /* Increased margin */
   }
-  
+
   .result-message {
       font-size: 16px;
       color: #495057;
       margin-bottom: 30px; /* Increased margin */
       line-height: 1.7;
   }
-  
+
   .result-actions {
       display: flex;
       justify-content: center;
       gap: 15px;
       flex-wrap: wrap; /* Allow buttons to wrap on small screens */
   }
-  
+/* Add this if you removed the specific correct/incorrect classes but still want review highlighting */
+.question-option.review-correct {
+    border-color: #28a745 !important; /* Green border */
+    background-color: #e2f3e6 !important; /* Light green background */
+}
+
+.question-option.review-user-incorrect {
+     border-color: #dc3545 !important; /* Red border */
+     background-color: #f8d7da !important; /* Light red background */
+}
+
+/* Styles for the optional review indicators (✔ Correct / ✘ Your Answer) */
+.review-indicator {
+    margin-left: auto; /* Push to the right */
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.review-indicator.correct {
+    color: #155724; /* Dark green */
+    background-color: #d4edda; /* Lighter green */
+}
+
+.review-indicator.incorrect {
+    color: #721c24; /* Dark red */
+    background-color: #f8d7da; /* Lighter red */
+}
+
+/* Styles for the 'No Questions' message */
+.no-questions-container p {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1em;
+  padding: 40px 20px;
+}

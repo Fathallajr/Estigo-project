@@ -1,125 +1,148 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Subject, throwError } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-interface LessonDetail {
+interface CourseDetail {
   lessonTitle: string;
-  lessonVideo: string;
+  lessonVideo: string | null;
   examTitle: string | null;
-}
-
-// New interface for items displayed in the right-hand list
-interface ContentListItem {
-  type: 'lesson' | 'exam';
-  title: string; // Display title (e.g., "Lesson 1: Intro" or "Exam: Intro")
-  lessonRef: LessonDetail; // Reference back to the original lesson object
-  index?: number; // Optional: lesson index for display
+  examId: number | null;
 }
 
 @Component({
   selector: 'app-mycourse-page',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule],
   templateUrl: './mycourse-page.component.html',
   styleUrls: ['./mycourse-page.component.css']
 })
-export class MycoursePageComponent implements OnInit {
+export class MycoursePageComponent implements OnInit, OnDestroy {
 
-  selectedCourseId: string | null = null;
-  // courseDetails: LessonDetail[] = []; // Keep original data if needed elsewhere, but not primary for list
-  contentList: ContentListItem[] = []; // This will populate the right-hand list
+  courseDetails: CourseDetail[] = [];
+  currentVideoUrl: string | null = null;
+  currentLessonTitle: string | null = null;
+  selectedLesson: CourseDetail | null = null; // Keep track of the selected lesson item
 
-  selectedContentItem: ContentListItem | null = null; // The currently selected item from the right list
-  isLoading: boolean = false;
-  fetchError: string | null = null;
-  videoUrl: SafeResourceUrl | null = null;
+  // State for exam prompt
+  isViewingExamPrompt: boolean = false;
+  selectedExamTitle: string | null = null;
+  selectedExamId: number | null = null;
+
+  isLoading: boolean = true;
+  error: string | null = null;
+  private courseId: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private sanitizer: DomSanitizer
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const idFromRoute = params['id'];
-      if (idFromRoute) {
-        this.selectedCourseId = idFromRoute;
-        this.getCourseDetails(idFromRoute);
-      }
-    });
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        this.courseId = params.get('id');
+        if (this.courseId) {
+          this.fetchCourseDetails(this.courseId);
+        } else {
+          this.error = 'Course ID not found in route.';
+          this.isLoading = false;
+        }
+      });
   }
 
-  getCourseDetails(courseId: string): void {
-    const apiUrl = `http://est.runasp.net/api/Lesson/GetCourseDetails/${courseId}`;
-    this.isLoading = true;
-    this.fetchError = null;
-    this.contentList = []; // Reset the display list
-    this.selectedContentItem = null;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-    this.http.get<LessonDetail[]>(apiUrl).subscribe({
-      next: (response) => {
-        this.buildContentList(response); // Process the response
-        if (this.contentList.length > 0) {
-          // Automatically select the first item (which should be the first lesson's video)
-          this.selectContentItem(this.contentList[0]);
+  fetchCourseDetails(id: string): void {
+    this.isLoading = true;
+    this.error = null;
+    this.resetViewState(); // Reset view when fetching new course
+    const apiUrl = `https://est.runasp.net/api/Lesson/GetCourseDetails/${id}`;
+
+    this.http.get<CourseDetail[]>(apiUrl)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(err => {
+          console.error('API Error:', err);
+          this.error = 'Failed to load course details. Please try again later.';
+          this.isLoading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe(data => {
+        this.courseDetails = data;
+        const firstLessonWithVideo = this.courseDetails.find(
+            lesson => this.isValidVideoUrl(lesson.lessonVideo)
+        );
+        if (firstLessonWithVideo) {
+             this.selectLesson(firstLessonWithVideo); // Select first lesson with video
+        } else if (this.courseDetails.length > 0) {
+            // If no video, select the first lesson anyway to show something
+            this.selectLesson(this.courseDetails[0]);
         } else {
-          this.fetchError = 'No lessons or exams found for this course.';
+            this.currentLessonTitle = 'No content available for this course';
         }
         this.isLoading = false;
-      },
-
-    });
-  }
-
-  // Transforms the API response into the structure needed for the right-hand list
-  buildContentList(lessons: LessonDetail[]): void {
-    this.contentList = [];
-    lessons.forEach((lesson, index) => {
-      // Add the Lesson item
-      this.contentList.push({
-        type: 'lesson',
-        title: `${index + 1}. ${lesson.lessonTitle}`, // Add index to lesson title
-        lessonRef: lesson,
-        index: index + 1
       });
-      // Add the Exam item *if* it exists
-      if (lesson.examTitle) {
-        this.contentList.push({
-          type: 'exam',
-          title: `Exam: ${lesson.examTitle}`, // Prefix exam title
-          lessonRef: lesson
-          // No separate index needed for exam, linked to lesson
-        });
-      }
-    });
   }
 
-  // Handles selecting ANY item from the right-hand list
-  selectContentItem(item: ContentListItem): void {
-    this.selectedContentItem = item;
-    this.videoUrl = null; // Reset video URL initially
+  selectLesson(lesson: CourseDetail): void {
+    this.selectedLesson = lesson; // Track the selected list item
+    this.currentLessonTitle = lesson.lessonTitle;
+    this.isViewingExamPrompt = false; // Switch back to video view
+    this.selectedExamId = null;
+    this.selectedExamTitle = null;
 
-    if (item.type === 'lesson' && item.lessonRef.lessonVideo) {
-      // Sanitize and set video URL only if it's a lesson with a video
-      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(item.lessonRef.lessonVideo);
+    if (this.isValidVideoUrl(lesson.lessonVideo)) {
+      this.currentVideoUrl = lesson.lessonVideo;
+    } else {
+      this.currentVideoUrl = null; // No valid video for this lesson
     }
-    console.log('Selected content:', this.selectedContentItem);
   }
 
-  // Helper to check if an item in the list is the currently selected one
-  isContentSelected(item: ContentListItem): boolean {
-    return this.selectedContentItem === item;
+  prepareExam(lesson: CourseDetail, event: Event): void {
+    event.stopPropagation(); // Prevent triggering selectLesson when clicking exam
+    if (lesson.examId) {
+      this.selectedLesson = lesson; // Keep the lesson highlighted
+      this.currentLessonTitle = lesson.lessonTitle; // Keep lesson title context
+      this.isViewingExamPrompt = true;
+      this.selectedExamTitle = lesson.examTitle;
+      this.selectedExamId = lesson.examId;
+      this.currentVideoUrl = null; // Hide video player
+    }
   }
 
-  // Get the main title to display in the left panel
-  get displayTitle(): string {
-    if (!this.selectedContentItem) return 'Select content';
-    // Use the original lesson title for context, even when showing the exam
-    return this.selectedContentItem.lessonRef.lessonTitle;
+  startExam(): void {
+    if (this.selectedExamId && this.courseId) {
+      console.log(`Navigating to exam with ID: ${this.selectedExamId}`);
+      // Navigate to the quiz route with courseId as query parameter
+      this.router.navigate(['/quiz', this.selectedExamId], {
+        queryParams: { courseId: this.courseId }
+      });
+    }
   }
 
+  isValidVideoUrl(url: string | null): boolean {
+    return !!url && url !== 'string' && (url.startsWith('http://') || url.startsWith('https://'));
+  }
+
+  resetViewState(): void {
+    this.courseDetails = [];
+    this.currentVideoUrl = null;
+    this.currentLessonTitle = null;
+    this.selectedLesson = null;
+    this.isViewingExamPrompt = false;
+    this.selectedExamTitle = null;
+    this.selectedExamId = null;
+    this.isLoading = true;
+    this.error = null;
+  }
 }

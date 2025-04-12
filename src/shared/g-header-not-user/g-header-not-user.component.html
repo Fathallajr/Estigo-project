@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg custom-bg p-3 sticky-top" id="navbar">
     <div class="container-fluid container">
         <a class="navbar-brand" href="#">
-            <img src="11.png" alt="Logo" width="100"> <!-- Assuming 11.png is in assets -->
+            <img src="11.png" alt="Logo" width="100"> 
         </a>
         <!-- Use ngSubmit on the form and ngModel on the input -->
         <div class="mx-auto" style="width: 30%;">
@@ -9,15 +9,15 @@
                 <input
                     class="form-control pe-5"
                     type="search"
-                    placeholder="Search Courses..."
+                    placeholder="Search Courses"
                     aria-label="Search"
                     style="background-color: rgba(255, 255, 255, 0.2); border: none; color: black;"
                     [(ngModel)]="searchTerm"
                     name="searchTerm" 
                  >
-                 <!-- Remove routerLink, button type="submit" triggers form submit -->
+                 
                 <button class="btn btn-outline-light position-absolute end-0" type="submit" id="search">
-                    <img src="search.ico" style="width: 20px; height: 20px;" alt="Search"> <!-- Assuming search.ico is in assets -->
+                    <img src="search.ico" style="width: 20px; height: 20px;" alt="Search"> 
                 </button>
             </form>
         </div>

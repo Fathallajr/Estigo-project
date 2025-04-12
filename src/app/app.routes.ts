@@ -31,6 +31,6 @@ export const routes: Routes = [
      {path:"course-vm/:id",component:CourseVmComponent},
      { path: 'course-s/:term', component: CourseSearchComponent },
      {path:"myCourse/:id",component:MycoursePageComponent},
-     {path:"quiz",component:QuizComponent}
+     {path:"quiz/:id",component:QuizComponent}
      
 ];

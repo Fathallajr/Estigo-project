@@ -21,6 +21,12 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     scroll-snap-align: start; /* Snap cards to the start */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for scaling and shadow */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 300px; /* Fixed height for consistent card shape */
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    width: 250px; /* Fixed width to ensure consistent card size */
 }
 
 .course-card:hover {
@@ -29,9 +35,11 @@
 
 .course-card img {
     width: 100%;
-    height: 150px;
+    height: 150px; /* Fixed height for images */
     object-fit: cover;
     transition: transform 0.3s ease; /* Smooth zoom transition */
+    flex-shrink: 0; /* Prevent image from shrinking */
+    display: block; /* Remove any potential inline spacing */
 }
 
 .course-card:hover img {
@@ -40,6 +48,11 @@
 
 .course-content {
     padding: 20px;
+    flex-grow: 1; /* Allow content to fill remaining space */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow content */
+    height: 150px; /* Fixed height to match the remaining space */
 }
 
 .course-title {
@@ -47,6 +60,12 @@
     margin-bottom: 10px;
     color: #2c3e50;
     transition: color 0.3s ease; /* Smooth color transition */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    max-height: 3em; /* Approximately 2 lines of text */
 }
 
 .course-card:hover .course-title {
@@ -79,10 +98,12 @@
         margin: 0;
         display: flex;
         flex-direction: column;
+        height: 300px; /* Keep the same height on mobile */
+        flex: none; /* Override the flex property for mobile */
     }
 
     .course-card img {
-        height: 200px;
+        height: 150px; /* Keep the same height on mobile as desktop */
     }
 
     .course-content {

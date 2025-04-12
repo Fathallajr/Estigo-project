@@ -81,3 +81,8 @@
         width: 90%;
     }
 }
+@media (max-width: 768px) {
+    p br {
+      display: none;
+    }
+  }

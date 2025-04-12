@@ -1,34 +1,13 @@
-<!-- Loading Indicator -->
-<div *ngIf="isLoading" class="quiz-container loading-container">
-  <p>Loading questions...</p>
-  <!-- Optional: Add a spinner icon here -->
-  <i class="fa-solid fa-spinner fa-spin"></i>
-</div>
-
-<!-- Error Message Display -->
-<div *ngIf="!isLoading && errorMessage" class="quiz-container error-container">
-  <h2>Error</h2>
-  <p>{{ errorMessage }}</p>
-  <button class="quiz-nav-btn primary" (click)="loadQuestions()">Retry</button>
-</div>
-
-<!-- Main Quiz Container - Visible when loaded, no error, and quiz active or reviewing -->
-<div class="quiz-container" *ngIf="!isLoading && !errorMessage && (!quizSubmitted || isReviewing)">
+<div class="quiz-container" *ngIf="totalQuestions > 0 && (!quizSubmitted || isReviewing)">
   <!-- Quiz Header -->
   <div class="quiz-header">
+    <!-- Use examId from component property if needed in title -->
     <h2>{{ quizTitle }}</h2>
-    <div class="quiz-info">
-      <div class="quiz-info-item">
-        <i class="fa-solid fa-clock"></i> Time Remaining: <span>{{ timerDisplay }}</span>
-      </div>
-      <div class="quiz-info-item">
-        <i class="fa-solid fa-question"></i> Questions: {{ totalQuestions }}
-      </div>
-    </div>
+    <!-- Info section removed -->
   </div>
 
   <!-- Quiz Progress -->
-  <div class="quiz-progress" *ngIf="totalQuestions > 0">
+  <div class="quiz-progress">
     <div class="quiz-progress-bar">
       <div class="quiz-progress-fill" [style.width.%]="progressPercentage"></div>
     </div>
@@ -42,7 +21,6 @@
     <div class="quiz-question-container active">
       <div class="quiz-question">
         <div class="question-header">
-          <!-- Use the generated ID or index+1 for display -->
           <div class="question-number">Question {{ currentQuestionIndex + 1 }}</div>
         </div>
         <div class="question-text">{{ currentQuestionData.text }}</div>
@@ -52,42 +30,59 @@
                *ngFor="let option of currentQuestionData.options"
                (click)="selectOption(currentQuestionData.id, option.letter)"
                [class.selected]="isSelected(currentQuestionData.id, option.letter)"
-               [style.cursor]="quizSubmitted || isReviewing ? 'default' : 'pointer'">
-               <!-- Removed [class.correct] and [class.incorrect] -->
+               [style.cursor]="quizSubmitted || isReviewing ? 'default' : 'pointer'"
+               [class.review-correct]="isReviewing && option.letter === currentQuestionData.correctAnswer"
+               [class.review-user-incorrect]="isReviewing && isSelected(currentQuestionData.id, option.letter) && option.letter !== currentQuestionData.correctAnswer">
+               <!-- Added classes for optional review styling (can be defined in CSS) -->
             <div class="option-letter">{{ option.letter }}</div>
             <div class="option-text">{{ option.text }}</div>
+             <!-- Optional visual indicators during review -->
+             <span *ngIf="isReviewing && option.letter === currentQuestionData.correctAnswer" class="review-indicator correct">✔ Correct</span>
+             <span *ngIf="isReviewing && isSelected(currentQuestionData.id, option.letter) && option.letter !== currentQuestionData.correctAnswer" class="review-indicator incorrect">✘ Your Answer</span>
           </div>
         </div>
       </div>
     </div>
   </ng-container>
 
-  <!-- Fallback for when no valid question is available (shouldn't happen often with current logic) -->
+  <!-- Fallback Content Area -->
   <ng-template #noQuestion>
-    <div class="quiz-question-container" *ngIf="!isLoading && totalQuestions > 0">
-        <!-- This might show briefly between navigations or if data is inconsistent -->
-      <div class="question-text">Loading question...</div>
-    </div>
-    <div class="quiz-question-container" *ngIf="!isLoading && totalQuestions === 0">
-        <!-- Shown if API returns empty array -->
-      <div class="question-text">No questions available for this quiz.</div>
-    </div>
+      <!-- This template is used when currentQuestionData is null -->
+      <!-- Check for totalQuestions to differentiate between loading next question and no questions -->
+      <div class="quiz-question-container" *ngIf="totalQuestions > 0">
+          <div class="question-text">Loading next question...</div> <!-- Or simplify this message -->
+      </div>
   </ng-template>
 
-  <!-- Quiz Actions (Navigation) - Show when quiz active or reviewing -->
+  <!-- Message if API returned empty array or invalid data -->
+  <div *ngIf="totalQuestions === 0 && !quizSubmitted" class="quiz-container no-questions-container">
+      <p>No questions are available for this quiz.</p>
+  </div>
+
+
+  <!-- Quiz Actions (Navigation) - Show only if questions exist -->
   <div class="quiz-actions" *ngIf="totalQuestions > 0">
     <button class="quiz-nav-btn" (click)="navigate('prev')" [disabled]="isFirstQuestion">
       <i class="fa-solid fa-arrow-left"></i> Previous
     </button>
+
+    <!-- Show Next button when not on the last question AND quiz is active or reviewing -->
     <button class="quiz-nav-btn primary" (click)="navigate('next')" *ngIf="!isLastQuestion">
       Next <i class="fa-solid fa-arrow-right"></i>
     </button>
+
     <!-- Show Submit button only on the last question and if quiz is active (not submitted/reviewing) -->
     <button class="quiz-nav-btn primary" (click)="submitQuiz()" *ngIf="isLastQuestion && !quizSubmitted && !isReviewing">
       Submit Quiz
     </button>
+
+    <!-- Show Finish Review button only if reviewing -->
+    <button class="quiz-nav-btn primary" (click)="finishQuizOrReview()" *ngIf="isReviewing">
+       Finish Review
+    </button>
   </div>
-</div>
+</div> <!-- End Main Quiz Container -->
+
 
 <!-- Quiz Result - Visible only after submission and not during review -->
 <div class="quiz-container result-container" *ngIf="quizSubmitted && !isReviewing">
@@ -96,11 +91,13 @@
       <i class="fa-solid fa-check-circle"></i> <!-- Changed icon -->
     </div>
     <div class="result-title">Quiz Completed!</div>
-    <!-- Removed score display -->
-    <div class="result-message">Your answers have been submitted.</div>
+    <!-- Display calculated score message from component -->
+    <div class="result-message">{{ resultMessage }}</div>
     <div class="result-actions">
-      <button class="quiz-nav-btn" (click)="reviewAnswers()">Review Answers</button>
-      <button class="quiz-nav-btn primary" (click)="finishQuiz()">Finish</button>
+      <!-- Disable Review button if there were no questions to review -->
+      <button class="quiz-nav-btn" (click)="reviewAnswers()" [disabled]="totalQuestions === 0">Review Answers</button>
+      <!-- Use the correct method name from the TS -->
+      <button class="quiz-nav-btn primary" (click)="finishQuizOrReview()">Finish</button>
     </div>
   </div>
 </div>

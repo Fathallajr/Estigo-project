@@ -18,7 +18,7 @@
                     <p class="hero-welcomeP">This is your learning dashboard will help you to finish your bootcamp smoothly.</p>
                 </div>
                 <div class="hero-image">
-                    <img src="dashboard-girl.svg" alt="Hero Image"> <!-- Assuming static hero image -->
+                    <img src="dashboard-girl.svg" alt="Hero Image"> 
                 </div>
             </div>
 
@@ -29,11 +29,11 @@
                         Enrolled Courses
                     </div>
                     <div class="enrolled-courses-grid" *ngIf="data.enrolledCourses && data.enrolledCourses.length > 0; else noCourses">
-                        <div class="course-card" *ngFor="let course of data.enrolledCourses">
+                        <div class="course-card" *ngFor="let course of data.enrolledCourses" >
                             
                             <img [src]="getImageSource(course.courseImageUrl, 'girl.png')" [alt]="course.courseName">
                             <h5 class="course-title">{{ course.courseName }}</h5>
-                            <button class="course-view-button">View</button>
+                            <button class="course-view-button" [routerLink]="['/myCourse', course.courseId]">View</button>
                         </div>
                     </div>
                     <ng-template #noCourses>
@@ -72,19 +72,19 @@
                     </ng-template>
                 </section>
 
-                <!-- Section 4: Notices / Info (mapped from PaymentInfo) -->
+                <!-- Section 4: Payment Information -->
                 <section class="dashboard-section" id="daily-notice-section">
                     <div class="section-title" style="border-left: 4px solid green; padding-left: 8px;">
                         Payment Info
                     </div>
                     <div class="daily-list" *ngIf="data.paymentInfo && data.paymentInfo.length > 0; else noNotices">
-                        <div class="daily-item" *ngFor="let item of data.paymentInfo">
-                            <h4 class="quiz-title">{{ item.paymentDescription }}</h4>
-                            <p class="quiz-grade">{{ item.paymentDetail }}</p>
+                        <div class="payment-item" *ngFor="let item of data.paymentInfo">
+                            <div class="payment-date">{{ item.purchaseDate | date:'MMM d, yyyy' }}</div>
+                            <div class="payment-course">{{ item.courseTitle }}</div>
                         </div>
                     </div>
-                     <ng-template #noNotices>
-                        <p>No notices available.</p>
+                    <ng-template #noNotices>
+                        <p>No payment information available.</p>
                     </ng-template>
                 </section>
             </div>

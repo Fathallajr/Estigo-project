@@ -5,8 +5,8 @@
         <div class="history-grid">
             <div *ngFor="let payment of payments" class="payment-record">
                 <div class="record-header">
-                    <span class="record-title">{{ payment.courseTitle }}</span>
                     <span class="record-date">{{ formatDate(payment.purchaseDate) }}</span>
+                    <span class="record-title">{{ payment.courseTitle }}</span>
                 </div>
                 <div class="record-details">
                     <div class="detail-item">

@@ -6,17 +6,19 @@ import { SidebarComponent } from '../sidebar/sidebar.component'; // Adjust path 
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
+import { RouterLink, RouterModule } from '@angular/router';
 
-// --- Interfaces (Keep these as defined before) ---
+
 export interface EnrolledCourse {
+  courseId:number;
   courseName: string;
   courseImageUrl: string; // Expecting Base64 string here now
-  // courseImageMimeType?: string; // Optional: Add if API provides MIME type
+ 
 }
 
 export interface CourseInstructor {
   instructorImageUrl: string; // Expecting Base64 string here now
-  // instructorImageMimeType?: string; // Optional: Add if API provides MIME type
+  
 }
 
 export interface Quiz {
@@ -25,8 +27,8 @@ export interface Quiz {
 }
 
 export interface PaymentInfo {
-  paymentDescription: string;
-  paymentDetail: string;
+  purchaseDate: string;
+  courseTitle: string;
 }
 
 export interface StudentDashboardData {
@@ -53,7 +55,9 @@ export interface UserInfo {
     CommonModule,
     HttpClientModule,
     GHeaderProfileComponent,
-    SidebarComponent
+    SidebarComponent,
+    RouterLink,
+    RouterModule
   ],
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.css']
@@ -94,7 +98,7 @@ export class MainContentComponent implements OnInit {
         }
 
         this.studentName = userInfo?.name || 'User';
-        const apiUrl = `http://est.runasp.net/api/Dashboard/student/${studentId}`;
+        const apiUrl = `https://est.runasp.net/api/Dashboard/student/${studentId}`;
 
         this.dashboardData$ = this.http.get<StudentDashboardData>(apiUrl).pipe(
             tap(data => {
@@ -117,6 +121,8 @@ export class MainContentComponent implements OnInit {
         console.error(e);
     }
   }
+
+  
 
   private handleError(message: string): void {
       this.errorMessage = message;

@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<LoginResponse>("http://est.runasp.net/api/Auth/login", { email, password })
+    return this.http.post<LoginResponse>("https://est.runasp.net/api/Auth/login", { email, password })
       .pipe(
         tap(response => {
           if (this.isBrowser) {
@@ -102,16 +102,16 @@ export class AuthService {
     formData.append('Subject', data.Subject);
     formData.append('Notes', data.notes);
 
-    return this.http.post<LoginResponse>("http://est.runasp.net/api/Auth/register/teacher", formData);
+    return this.http.post<LoginResponse>("https://est.runasp.net/api/Auth/register/teacher", formData);
   }
 
   registerStudent(data: RegisterResponseStudent) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<LoginResponse>("http://est.runasp.net/api/Auth/register/student", data, { headers });
+    return this.http.post<LoginResponse>("https://est.runasp.net/api/Auth/register/student", data, { headers });
   }
 
   registerParent(data: RegisterResponseParent) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<LoginResponse>("http://est.runasp.net/api/Auth/register/parent", data, { headers });
+    return this.http.post<LoginResponse>("https://est.runasp.net/api/Auth/register/parent", data, { headers });
   }
 } 

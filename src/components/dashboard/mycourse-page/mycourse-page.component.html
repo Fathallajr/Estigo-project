@@ -1,66 +1,61 @@
-<div class="course-page-container">
+<div *ngIf="isLoading" class="loading">
+  Loading course content...
+</div>
 
-    <div *ngIf="isLoading" class="loading-overlay"><p>Loading Course...</p></div>
-    <div *ngIf="fetchError && !isLoading" class="error-message"><p>Error: {{ fetchError }}</p></div>
-  
-    <!-- Main Content Area -->
-    <div *ngIf="!isLoading && !fetchError && contentList.length > 0" class="course-content-area">
-  
-      <!-- Left Column: Video Player OR Exam Area -->
-      <div class="content-display-area"> <!-- Renamed class -->
-        <ng-container *ngIf="selectedContentItem">
-          <!-- Display Title (based on the underlying lesson) -->
-          <h2 class="lesson-title">{{ displayTitle }}</h2>
-  
-          <!-- Show Video Player (only if selected item is 'lesson' type) -->
-          <div *ngIf="selectedContentItem.type === 'lesson'">
-            <div class="video-player-wrapper">
-              <video *ngIf="videoUrl" [src]="videoUrl" controls preload="metadata">
-                Your browser does not support the video tag.
-              </video>
-              <div *ngIf="!videoUrl" class="no-video">Video not available for this lesson.</div>
-            </div>
-             <!-- Optional: show exam title associated with the video -->
-             <p class="associated-exam" *ngIf="selectedContentItem.lessonRef.examTitle">
-               Related Exam: {{ selectedContentItem.lessonRef.examTitle }}
-              </p>
-          </div>
-  
-          <!-- Show Exam Area (only if selected item is 'exam' type) -->
-          <div *ngIf="selectedContentItem.type === 'exam'">
-            <div class="exam-display-area">
-              <h3>{{ selectedContentItem.title }}</h3> <!-- Use the title from the contentList item -->
-              <p>Exam content or instructions for '{{selectedContentItem.lessonRef.lessonTitle}}' would go here.</p>
-              <button class="start-exam-button" routerLink="/quiz">Start Exam</button>
-            </div>
-          </div>
-  
-        </ng-container>
-  
-        <div *ngIf="!selectedContentItem" class="no-lesson-selected">
-          <p>Select a lesson or exam from the list.</p>
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
+
+<div *ngIf="!isLoading && !error" class="course-container">
+
+  <div class="video-section">
+    <h2>{{ currentLessonTitle || 'Select a Lesson' }}</h2>
+
+    <!-- Video Player Area -->
+    <div *ngIf="!isViewingExamPrompt">
+      <div *ngIf="currentVideoUrl; else noVideoSelected" class="video-player-wrapper">
+        <video [src]="currentVideoUrl" controls width="100%"></video>
+      </div>
+      <ng-template #noVideoSelected>
+        <div class="no-video-placeholder">
+          <p>No video available for this lesson, or please select a lesson.</p>
         </div>
-      </div>
-  
-      <!-- Right Column: Unified Content List -->
-      <div class="lesson-list-area"> <!-- Keep class name for consistency -->
-        <h3>Course Content</h3>
-        <ul class="content-list"> <!-- Changed class name -->
-          <!-- Loop through the combined list -->
-          <li *ngFor="let item of contentList"
-              [class.active]="isContentSelected(item)"
-              [class.list-item-lesson]="item.type === 'lesson'"
-              [class.list-item-exam]="item.type === 'exam'"
-              (click)="selectContentItem(item)"
-              class="content-list-item">
-  
-              <!-- Display index only for lessons -->
-              <span *ngIf="item.index" class="content-index">{{ item.index }}.</span>
-              <!-- Display title (could be lesson or exam) -->
-              <span class="content-item-title">{{ item.title }}</span>
-          </li>
-        </ul>
-      </div>
-  
+      </ng-template>
     </div>
+
+    <!-- Exam Prompt Area -->
+    <div *ngIf="isViewingExamPrompt" class="exam-prompt-section">
+       <h3>{{ selectedExamTitle }}</h3>
+       <p>You are about to start the exam for this lesson.</p>
+       <button (click)="startExam()" class="start-exam-button">Start Exam</button>
+    </div>
+
   </div>
+
+  <div class="content-section">
+    <h3>Course Content</h3>
+    <ul *ngIf="courseDetails.length > 0; else noContent">
+      <li
+        *ngFor="let lesson of courseDetails"
+        (click)="selectLesson(lesson)"
+        [class.active]="lesson === selectedLesson"
+        [class.no-video]="!isValidVideoUrl(lesson.lessonVideo)"
+        class="content-item">
+
+        <span class="lesson-title">{{ lesson.lessonTitle }}</span>
+        <span *ngIf="!isValidVideoUrl(lesson.lessonVideo)" class="video-indicator">(No Video)</span>
+
+        <!-- Exam Link/Button -->
+        <div *ngIf="lesson.examTitle && lesson.examId" class="exam-link">
+           <button (click)="prepareExam(lesson, $event)" class="exam-button">
+             {{ lesson.examTitle }}
+           </button>
+        </div>
+      </li>
+    </ul>
+    <ng-template #noContent>
+      <p>No content found for this course.</p>
+    </ng-template>
+  </div>
+
+</div>

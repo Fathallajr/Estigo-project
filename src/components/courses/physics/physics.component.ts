@@ -24,7 +24,7 @@ export class PhysicsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const response = await fetch('http://est.runasp.net/api/Course/category/limited/2');
+      const response = await fetch('https://est.runasp.net/api/Course/category/limited/2');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

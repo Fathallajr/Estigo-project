@@ -5,7 +5,7 @@
             <div *ngIf="isLoading" class="loading">
                 Loading courses...
             </div>
-            <div *ngFor="let course of courses" class="course-card">
+            <div *ngFor="let course of courses" class="course-card" [routerLink]="['/course' , course.courseId]" >
                 <img [src]="course.imageBase64" [alt]="course.courseTitle">
                 <div class="course-content">
                     <h3 class="course-title">{{course.courseTitle}}</h3>

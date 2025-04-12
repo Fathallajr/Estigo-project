@@ -52,8 +52,8 @@ export class PaymentComponent implements OnInit {
 
   // --- API Endpoints ---
   // Use your actual API endpoints
-  private courseApiUrl = 'http://est.runasp.net/api/Course'; // Base URL for course
-  private enrollmentApiBaseUrl = 'http://est.runasp.net/api/Student'; // Enrollment API
+  private courseApiUrl = 'https://est.runasp.net/api/Course'; // Base URL for course
+  private enrollmentApiBaseUrl = 'https://est.runasp.net/api/Student'; // Enrollment API
 
   // --- Card Details (Optional) ---
   cardName: string = '';
@@ -164,9 +164,9 @@ export class PaymentComponent implements OnInit {
   private getIdFromLocalStorage(storageKey: string, propertyName: string): string | null {
     const userDataStr = localStorage.getItem(storageKey);
     if (!userDataStr) {
-      this.error = 'User not logged in (no userData found in localStorage).';
+      this.error = 'User not logged in';
       console.error(this.error);
-      // Optionally redirect to login: this.router.navigate(['/login']);
+     this.router.navigate(['/login']);
       return null;
     }
     try {

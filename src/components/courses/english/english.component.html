@@ -1,7 +1,7 @@
 <section class="courses-section section-padding">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">English</h2>
+            <h2 class="section-title"><i class="fas fa-book-open"></i> English</h2>
             <a class="view-more-btn"[routerLink]="['/course-vm', 5]">View More</a>
         </div>
 
@@ -9,7 +9,7 @@
 
         <div class="courses-container">
             <div class="course-card" [routerLink]="['/course', course.courseId]" *ngFor="let course of courses">
-                <img [src]="course.imageBase64" [alt]="course.courseTitle">
+                <img [src]="course.imageBase64" [alt]="course.courseTitle" >
                 <div>
                     <h3 class="course-title">{{course.courseTitle}}</h3>
                     <p class="course-instructor">{{course.teacherName}}</p>

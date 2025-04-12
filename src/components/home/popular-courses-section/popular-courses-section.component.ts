@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface Course {
   courseId: number;
@@ -12,7 +13,7 @@ interface Course {
 @Component({
   selector: 'app-popular-courses-section',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule,RouterLink],
   templateUrl: './popular-courses-section.component.html',
   styleUrl: './popular-courses-section.component.css'
 })
@@ -27,7 +28,7 @@ export class PopularCoursesSectionComponent implements OnInit {
   }
 
   fetchCourses() {
-    this.http.get<Course[]>('http://est.runasp.net/api/Course/HomepageCourses')
+    this.http.get<Course[]>('https://est.runasp.net/api/Course/HomepageCourses')
       .subscribe({
         next: (data) => {
           this.courses = data;

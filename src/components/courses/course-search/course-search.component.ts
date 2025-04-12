@@ -57,7 +57,7 @@ export class CourseSearchComponent implements OnInit { // Implement OnInit
     this.courses = []; // Clear previous results before fetching new ones
 
     try {
-      const response = await fetch(`http://est.runasp.net/api/Course/search?keyword=${encodeURIComponent(search)}`); // Encode the search term for the URL
+      const response = await fetch(`https://est.runasp.net/api/Course/search?keyword=${encodeURIComponent(search)}`); // Encode the search term for the URL
       if (!response.ok) {
         throw new Error(`Network response was not ok (Status: ${response.status})`);
       }

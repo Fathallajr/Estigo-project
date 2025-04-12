@@ -134,4 +134,9 @@
     border-radius: 18px; 
 }
 
+@media (max-width: 768px) {
+    p br {
+      display: none;
+    }
+  }
 

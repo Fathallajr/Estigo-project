@@ -26,7 +26,7 @@ export class InstructorsSectionComponent implements OnInit {
   }
 
   fetchTeachers() {
-    this.http.get<Teacher[]>('http://est.runasp.net/api/Teacher/HomepageTeachers')
+    this.http.get<Teacher[]>('https://est.runasp.net/api/Teacher/HomepageTeachers')
       .subscribe({
         next: (data) => {
           this.teachers = data;

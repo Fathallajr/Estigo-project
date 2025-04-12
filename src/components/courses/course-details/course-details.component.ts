@@ -33,7 +33,7 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   private async fetchCourseDetails(courseId: string): Promise<void> {
-    const response = await fetch(`http://est.runasp.net/api/Course/${courseId}/details`);
+    const response = await fetch(`https://est.runasp.net/api/Course/${courseId}/details`);
     if (!response.ok) {
       throw new Error('Failed to fetch course details');
     }

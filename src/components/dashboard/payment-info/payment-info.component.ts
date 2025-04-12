@@ -40,7 +40,7 @@ export class PaymentInfoComponent implements OnInit {
   }
 
   fetchPayments() {
-    this.http.get<Payment[]>(`http://est.runasp.net/api/Student/${this.studentId}/mypayment`)
+    this.http.get<Payment[]>(`https://est.runasp.net/api/Student/${this.studentId}/mypayment`)
       .subscribe({
         next: (data) => {
           this.payments = data;
