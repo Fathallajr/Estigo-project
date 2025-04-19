@@ -38,7 +38,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // --- Configuration ---
   readonly quizTitle = 'Quiz'; // Title can be dynamic later if needed
-  private baseApiUrl = 'https://est.runasp.net/api/Exam/GetQuestionsByExam/';
+  private baseApiUrl = 'https://estigo.tryasp.net/api/Exam/GetQuestionsByExam/';
 
   // --- Component State ---
   questions: QuizQuestion[] = [];

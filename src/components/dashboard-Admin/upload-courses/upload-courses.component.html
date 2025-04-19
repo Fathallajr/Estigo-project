@@ -1,5 +1,86 @@
-<div class="upload-courses-container">
-    <h2>Upload Courses</h2>
-    <p>This is the upload courses page for admin dashboard.</p>
-    <!-- Upload courses form will go here -->
+<!-- upload-courses.component.html -->
+<h1>Upload New Course</h1>
+
+<!-- Logo Upload Section -->
+<div class="logo-upload-container upload-row">
+  <h2>Course Logo <span style="color:red;">*</span></h2>
+  <div class="upload-box-small" id="logoUploadBox">
+    <label for="logoFileInput">
+      <div class="upload-icon-small"><i class="fa-solid fa-image"></i></div>
+      <p>Upload logo image</p>
+      <div class="file-preview">
+         <img *ngIf="logoPreviewUrl" [src]="logoPreviewUrl" alt="Logo Preview" style="max-width: 100%; max-height: 40px; margin-bottom: 5px; border-radius: 4px;">
+         <p class="file-name" *ngIf="logoFileName">{{ logoFileName }}</p>
+      </div>
+    </label>
+    <input type="file" class="file-input" id="logoFileInput" accept="image/*"
+           (change)="onLogoFileSelected($event)" #logoInput>
+  </div>
+</div>
+
+
+<!-- Course Information Section -->
+<div class="upload-info-section">
+  <h2>Course Information</h2>
+  <form #uploadForm="ngForm" (ngSubmit)="onSubmit(uploadForm)">
+    <div class="upload-form-container">
+      <!-- Title and Price Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="courseTitle">Course Title <span style="color:red;">*</span></label>
+          <input type="text" id="courseTitle" name="courseTitle" [(ngModel)]="courseData.courseTitle"
+                 placeholder="Enter course title" required #title="ngModel">
+        </div>
+        <div class="form-group short-input">
+          <label for="coursePrice">Price ($) <span style="color:red;">*</span></label>
+          <div class="price-input">
+            <span class="currency-symbol">$</span>
+            <input type="number" id="coursePrice" name="price" [(ngModel)]="courseData.price"
+                   placeholder="0.00" min="0" step="any" required #price="ngModel">
+          </div>
+        </div>
+      </div>
+      <!-- Description Row -->
+      <div class="form-group">
+        <label for="courseDescription">Description <span style="color:red;">*</span></label>
+        <textarea id="courseDescription" name="description" [(ngModel)]="courseData.description"
+                  placeholder="Enter detailed course description" required #description="ngModel"></textarea>
+      </div>
+      <!-- Category ID and Availability Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="catogryid">Category ID <span style="color:red;">*</span></label>
+          <input type="number" id="catogryid" name="catogryid" [(ngModel)]="courseData.catogryid"
+                 placeholder="Enter Category ID" required min="1" #category="ngModel">
+           <small style="font-size: 11px; color: #888;">(Temporary - Should be a dropdown)</small>
+        </div>
+        <div class="form-group" style="justify-content: center; align-items: flex-start; padding-top: 25px;">
+          <div class="terms-checkbox">
+             <input type="checkbox" id="available" name="available" [(ngModel)]="courseData.available">
+             <label for="available"> Is Course Available?</label>
+          </div>
+        </div>
+      </div>
+      <!-- **** NEW: Teacher ID Row **** -->
+      <div class="form-row">
+        <div class="form-group">
+            <label for="teacherId">Teacher ID <span style="color:red;">*</span></label>
+            <input type="text" id="teacherId" name="teacherId" [(ngModel)]="courseData.teacherId"
+                   placeholder="Enter Teacher ID" required #teacherIdRef="ngModel">
+             <small style="font-size: 11px; color: #888;">(Temporary - Will be secured/automated later)</small>
+        </div>
+      </div>
+      <!-- **** END NEW **** -->
+    </div>
+    <!-- Footer: Terms and Submit Button -->
+    <div class="upload-footer">
+      <div class="terms-checkbox">
+        <input type="checkbox" id="termsAgreement" name="termsAgreement" [(ngModel)]="termsAgreed" required>
+        <label for="termsAgreement">I agree to the terms and conditions <span style="color:red;">*</span></label>
+      </div>
+      <button type="submit" class="submit-btn" [disabled]="!uploadForm.form.valid || !termsAgreed || !logoFile">
+        Upload Course
+      </button>
+    </div>
+  </form>
 </div>

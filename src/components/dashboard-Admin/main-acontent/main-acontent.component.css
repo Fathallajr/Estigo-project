@@ -1,0 +1,169 @@
+.admin-operations {
+    padding: 20px; /* Add some padding */
+}
+
+/* Welcome Section Styling */
+.welcome-section {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.welcome-section h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #333;
+    position: relative;
+    padding-left: 10px;
+}
+
+.welcome-section h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px; /* Match other headings */
+    background-color: #6aaa96; /* Theme color */
+    border-radius: 2px;
+}
+
+.welcome-section p {
+    font-size: 14px;
+    color: #666;
+    padding-left: 10px; /* Align with heading */
+}
+
+/* Quick Actions Section */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Space between cards */
+    margin-bottom: 30px;
+}
+
+.action-card {
+    background-color: white;
+    border-radius: 15px; /* Match other components */
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* Indicate interactivity */
+    border-top: 3px solid transparent; /* Space for hover effect */
+}
+
+.action-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    border-top-color: #6aaa96; /* Theme color accent on hover */
+}
+
+.action-card i {
+    font-size: 36px; /* Large icon */
+    color: #6aaa96; /* Theme color for icons */
+    margin-bottom: 15px;
+    display: block; /* Ensure icon takes its own line */
+}
+
+.action-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.action-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Recent Activity Section */
+.recent-activity {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.recent-activity h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 10px;
+    color: #333;
+}
+
+.recent-activity h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background-color: #6aaa96;
+    border-radius: 2px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between activity items */
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0; /* Separator */
+}
+
+.activity-item:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+.activity-item i {
+    font-size: 18px;
+    color: #6aaa96; /* Theme color */
+    margin-right: 15px;
+    width: 25px; /* Fixed width for alignment */
+    text-align: center;
+}
+
+.activity-item p {
+    flex-grow: 1; /* Allow text to take remaining space */
+    font-size: 14px;
+    color: #555;
+    margin: 0; /* Reset default margin */
+}
+
+.activity-item .timestamp {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap; /* Prevent timestamp wrapping */
+    margin-left: 15px; /* Space between text and timestamp */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .welcome-section h1 {
+        font-size: 22px;
+    }
+    .quick-actions {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
+    .recent-activity h2 {
+        font-size: 18px;
+    }
+    .activity-item {
+        flex-wrap: wrap; /* Allow wrapping if needed */
+    }
+    .activity-item p {
+       flex-basis: 100%; /* Allow text to take full width initially */
+       margin-bottom: 5px; /* Add space if timestamp wraps below */
+    }
+}

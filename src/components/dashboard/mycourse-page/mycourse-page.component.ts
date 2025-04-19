@@ -65,7 +65,7 @@ export class MycoursePageComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
     this.resetViewState(); // Reset view when fetching new course
-    const apiUrl = `https://est.runasp.net/api/Lesson/GetCourseDetails/${id}`;
+    const apiUrl = `https://estigo.tryasp.net/api/Lesson/GetCourseDetails/${id}`;
 
     this.http.get<CourseDetail[]>(apiUrl)
       .pipe(

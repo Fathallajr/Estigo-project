@@ -1,17 +1,91 @@
-.users-list-container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-}
+/* users-list.component.css */
 
-h2 {
+/* Style the h1 within the component */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
     color: #333;
-    margin-bottom: 15px;
+    /* Add the heading line style */
+    position: relative;
+    padding-left: 10px;
+    border-bottom: 1px solid #eee; /* Optional: Add a separator line */
+    padding-bottom: 10px; /* Optional: Spacing for the separator */
+}
+h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px; /* Adjusted height for h1 */
+    background-color: #6aaa96; /* Match theme color */
+    border-radius: 2px;
 }
 
-p {
-    color: #666;
-    line-height: 1.5;
+/* Container similar to .upload-info-section */
+.list-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px; /* Add some space below title */
+    overflow-x: auto; /* Allow horizontal scrolling on small screens */
+}
+
+/* Table Styling */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.users-table th,
+.users-table td {
+    border: 1px solid #e0e0e0; /* Match input borders */
+    padding: 12px 15px; /* Match input padding */
+    text-align: left;
+    font-size: 14px;
+    color: #333; /* Default text color */
+    vertical-align: middle; /* Align content vertically */
+}
+
+.users-table thead th {
+    background-color: #f8f9fa; /* Light grey header background */
+    color: #495057; /* Darker grey text for header */
+    font-weight: 600; /* Bolder header text */
+    white-space: nowrap; /* Prevent header text wrapping */
+}
+
+.users-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Subtle alternating row color */
+}
+
+.users-table tbody tr:hover {
+    background-color: #f1f1f1; /* Hover effect for rows */
+}
+
+/* Styling for the 'No Data' message */
+.no-data-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #888;
+}
+
+/* Responsive Table Handling (optional but good practice) */
+@media screen and (max-width: 768px) {
+    .list-container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 10px 8px; /* Reduce padding */
+        font-size: 13px; /* Slightly smaller font */
+    }
+
+    h1 {
+        font-size: 20px; /* Smaller title */
+    }
 }

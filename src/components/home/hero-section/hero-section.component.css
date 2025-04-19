@@ -1,5 +1,5 @@
 .hero-section {
-    background-color: #6A9C89;
+    background-color: var(--estigo-green);
     padding: 80px 5%;
     color: white;
     position: relative;

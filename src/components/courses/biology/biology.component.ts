@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { CourseService, Course } from '../../../services/course.service';
 
-interface Course {
-  courseId: number;
-  courseTitle: string;
-  imageBase64: string;
-  price: number;  
-  teacherName: string;
-}
 
 @Component({
   selector: 'app-biology',
@@ -20,18 +14,17 @@ interface Course {
 export class BiologyComponent implements OnInit {
   courses: Course[] = [];
 
-  constructor() {}
+  constructor(private courseService: CourseService) {}
 
-  async ngOnInit(): Promise<void> {
-    try {
-      const response = await fetch('https://est.runasp.net/api/Course/category/limited/3');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      this.courses = data;
-    } catch (error) {
-      console.error('Error fetching courses:', error);
-    }
+  ngOnInit(): void {
+    this.courseService.getCoursesByCategory(3)
+      .subscribe({
+        next: (data) => {
+          this.courses = data;
+        },
+        error: (error) => {
+          console.error('Error fetching courses:', error);
+        }
+      });
   }
 }

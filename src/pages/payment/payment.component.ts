@@ -52,8 +52,8 @@ export class PaymentComponent implements OnInit {
 
   // --- API Endpoints ---
   // Use your actual API endpoints
-  private courseApiUrl = 'https://est.runasp.net/api/Course'; // Base URL for course
-  private enrollmentApiBaseUrl = 'https://est.runasp.net/api/Student'; // Enrollment API
+  private courseApiUrl = 'https://estigo.tryasp.net/api/Course'; // Base URL for course
+  private enrollmentApiBaseUrl = 'https://estigo.tryasp.net/api/Student'; // Enrollment API
 
   // --- Card Details (Optional) ---
   cardName: string = '';

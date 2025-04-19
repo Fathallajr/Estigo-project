@@ -1,5 +1,30 @@
-<div class="users-list-container">
-    <h2>Users List</h2>
-    <p>This is the users list page for admin dashboard.</p>
-    <!-- User list content will go here -->
+<!-- users-list.component.html -->
+<h1>Teacher List</h1>
+
+<div class="list-container">
+  <table class="users-table" *ngIf="teachers.length > 0; else noData">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Subject</th>
+        <!-- Add other columns if needed, e.g., Actions -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teacher of teachers">
+        <td>{{ teacher.id }}</td>
+        <td>{{ teacher.name }}</td>
+        <td>{{ teacher.subject }}</td>
+        <!-- Add corresponding <td> for Actions if header added -->
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Template shown when there's no data -->
+  <ng-template #noData>
+    <div class="no-data-message">
+      No teachers found.
+    </div>
+  </ng-template>
 </div>

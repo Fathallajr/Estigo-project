@@ -1,5 +1,6 @@
 <div class="dashboard-main">
-    <app-main-acontent *ngIf="selectedComponent === 'Page1'"></app-main-acontent>
+    <app-main-acontent *ngIf="selectedComponent === 'Page1' && !isSystemSettingsVisible" (navigateToSettings)="onNavigateToSettings()"></app-main-acontent>
     <app-users-list *ngIf="selectedComponent === 'Page2'"></app-users-list>
     <app-upload-courses *ngIf="selectedComponent === 'Page3'"></app-upload-courses>
+    <app-system-settings *ngIf="isSystemSettingsVisible" (backClicked)="returnToMainContent()"></app-system-settings>
 </div>

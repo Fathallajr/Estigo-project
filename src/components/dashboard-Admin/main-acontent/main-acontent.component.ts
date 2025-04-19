@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-main-acontent',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './main-acontent.component.css'
 })
 export class MainAcontentComponent {
+  @Output() navigateToSettings = new EventEmitter<void>();
 
+  onSystemSettingsClick() {
+    this.navigateToSettings.emit();
+  }
 }
