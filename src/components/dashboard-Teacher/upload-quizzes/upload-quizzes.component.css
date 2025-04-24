@@ -1,0 +1,273 @@
+/* Base Container and Form Styles */
+.simple-form-container {
+    max-width: 750px; /* Adjusted width */
+    margin: 30px auto;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .simple-form-container h2,
+  .simple-form-container h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 600;
+  }
+  .simple-form-container h3 {
+    font-size: 1.3em;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .simple-course-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Space between form groups */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 6px;
+    font-weight: 500; /* Slightly less bold */
+    color: #555;
+    font-size: 0.95em;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group input[type="url"],
+  .form-group textarea,
+  .form-group select {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    outline: none;
+  }
+  
+  
+  .form-group textarea {
+      resize: vertical;
+      min-height: 70px;
+  }
+  
+  /* Basic Alert Styles (if needed) */
+  .alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+  }
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+  
+  /* Validation Feedback */
+  .invalid-feedback {
+    color: #dc3545; /* Bootstrap's danger color */
+    font-size: 0.8em;
+    margin-top: 4px;
+  }
+  input.is-invalid, select.is-invalid, textarea.is-invalid {
+    border-color: #dc3545;
+  }
+  input.is-invalid:focus, select.is-invalid:focus, textarea.is-invalid:focus {
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  }
+  
+  
+  /* --- Multi-Question & Collapse Styles --- */
+  
+  .question-block {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background-color: #fdfdfd;
+    transition: all 0.3s ease-out;
+    overflow: hidden; /* Helps with smooth collapse */
+  }
+  
+  /* Collapsed state styling */
+  .question-block.collapsed {
+    background-color: #f8f9fa;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: #eee;
+  }
+  .question-block.collapsed .question-header {
+    border-bottom: none; /* Remove border in collapsed header */
+  }
+  
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .question-header h4 {
+    margin: 0;
+    color: #444;
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+  
+  .question-actions {
+    display: flex;
+    gap: 8px; /* Space between action buttons */
+  }
+  
+  .question-actions button {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85em;
+    border: 1px solid transparent;
+    line-height: 1.2; /* Better vertical alignment */
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Specific styles for action buttons */
+  .btn-toggle {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+    color: #495057;
+  }
+  .btn-toggle:hover { background-color: #d6dade; }
+  
+  .btn-remove {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f1c0c7;
+    font-weight: bold;
+    padding: 5px 8px; /* Adjust padding for 'x' */
+  }
+  .btn-remove:hover { background-color: #f1c6ca; }
+  
+  
+  /* Collapsed view content */
+  .question-summary {
+    padding: 12px 15px;
+    font-size: 0.95em;
+    color: #555;
+    cursor: pointer; /* Indicate it's clickable */
+    transition: background-color 0.2s ease;
+  }
+  .question-summary:hover {
+      background-color: #f0f0f0;
+  }
+  
+  .question-summary p {
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .question-summary p strong {
+      color: #333;
+      margin-right: 5px;
+  }
+  
+  /* Expanded view content container */
+  .question-form-content {
+     padding: 20px 15px 15px 15px; /* More padding inside */
+  }
+  
+  
+  /* 'Add Question' button area */
+  .add-question-action {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed #ccc;
+  }
+  .add-question-action small {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85em;
+      color: #6c757d;
+  }
+  
+  .btn-add-question {
+      background-color: #d1ecf1; /* Light blue */
+      color: #0c5460; /* Darker blue */
+      border: 1px solid #bee5eb;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+  }
+  .btn-add-question:hover { background-color: #bee5eb; }
+  
+  
+  /* --- Submit Button Styles --- */
+  .form-actions {
+    margin-top: 25px;
+    text-align: center;
+  }
+  
+  .btn-submit { /* Style the main submit button */
+    padding: 12px 30px;
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .btn-submit:hover:not(:disabled) {
+    background-color: #218838; /* Darker green */
+  }
+  
+  .btn-submit:disabled {
+    background-color: #a3d9b1;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* --- General --- */
+  hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 30px 0;
+  }
+  
+  select:disabled {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+      opacity: 0.7;
+  }

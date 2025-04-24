@@ -382,3 +382,57 @@
   font-size: 1.1em;
   padding: 40px 20px;
 }
+/* --- Review Styles --- */
+.question-option.review-correct {
+    border-left: 5px solid #4CAF50; /* Green border for correct answer */
+    background-color: #e8f5e9; /* Light green background */
+  }
+  
+  .question-option.review-user-incorrect {
+    border-left: 5px solid #f44336; /* Red border for user's incorrect selection */
+    background-color: #ffebee; /* Light red background */
+    opacity: 0.8; /* Slightly fade incorrect user choice */
+  }
+  
+  .review-indicator {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: auto; /* Push indicator to the right */
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  
+  .review-indicator.correct {
+    color: #388e3c; /* Darker green text */
+    background-color: #c8e6c9; /* Lighter green background */
+  }
+  
+  .review-indicator.incorrect {
+    color: #d32f2f; /* Darker red text */
+    background-color: #ffcdd2; /* Lighter red background */
+  }
+  
+  /* --- Loading/Error Styles --- */
+  .loading-indicator,
+  .no-questions-container,
+  .error-message {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 1.1em;
+      color: #555;
+  }
+  
+  .error-message {
+      color: #a94442; /* Bootstrap danger text color */
+      background-color: #f2dede; /* Bootstrap danger background color */
+      border: 1px solid #ebccd1; /* Bootstrap danger border color */
+      border-radius: 4px;
+      margin: 15px;
+      padding: 15px;
+  }
+  
+  /* Optional: Style for submitting state */
+  .quiz-nav-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+  }

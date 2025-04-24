@@ -1,0 +1,37 @@
+.container {
+    padding: 20px;
+}
+
+.card {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.alert {
+    margin: 20px 0;
+    padding: 15px;
+}
+
+.spinner-border {
+    margin: 20px 0;
+}
+
+.course-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.course-instructor {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.course-price {
+    font-size: 1.1em;
+    color: #2e7d32;
+}

@@ -1,0 +1,66 @@
+<div class="upload-course-container">
+    <div class="upload-header">
+      <button class="back-btn" (click)="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+      <h2>Upload New Course</h2>
+    </div>
+    
+    <div class="upload-card">
+      <div class="form-section">
+        <h3>Course Information</h3>
+        <div class="form-item">
+          <label>Course Title</label>
+          <input type="text" name="title" required>
+        </div>
+        <div class="form-item">
+          <label>Course Description</label>
+          <textarea name="description" rows="3" required></textarea>
+        </div>
+        <div class="form-item">
+          <label>Course Category</label>
+          <select name="category" required>
+            <option value="programming">Programming</option>
+            <option value="design">Design</option>
+            <option value="business">Business</option>
+            <option value="language">Language</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3>Course Media</h3>
+        <div class="form-item">
+          <label>Thumbnail Image</label>
+          <input type="file" accept="image/*">
+        </div>
+        <div class="form-item">
+          <label>Introductory Video URL</label>
+          <input type="url" name="videoUrl">
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3>Course Settings</h3>
+        <div class="form-item">
+          <label>Course Visibility</label>
+          <select name="visibility">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label>Course Difficulty</label>
+          <select name="difficulty">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="upload-btn">Upload Course</button>
+        <button type="reset" class="reset-btn">Clear Form</button>
+      </div>
+    </div>
+  </div>
+  

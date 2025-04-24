@@ -18,5 +18,6 @@ import { ChemistryComponent } from "../../components/courses/chemistry/chemistry
   styleUrl: './courses-page.component.css'
 })
 export class CoursesPageComponent {
+  
 
 }

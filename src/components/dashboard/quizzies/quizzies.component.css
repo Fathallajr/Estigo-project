@@ -1,142 +1,183 @@
 /* Assume Poppins font is available globally */
 :host {
-    display: block;
-    background-color: #f8f9fa; /* Consistent page background */
-    font-family: 'Poppins', sans-serif;
-    padding: 30px 40px; /* Consistent page padding */
+  display: block;
+  background-color: #f8f9fa; /* Consistent page background */
+  font-family: 'Poppins', sans-serif;
+  padding: 30px 40px; /* Consistent page padding */
+  min-height: calc(100vh - 60px); /* Example: Ensure it takes reasonable height */
+}
+
+.page-container {
+  max-width: 1100px; /* Slightly narrower for better readability */
+  margin: 0 auto;
+}
+
+.quizzes-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 35px 0; /* Increased bottom margin */
+  padding-bottom: 10px; /* Add some space below text */
+  border-bottom: 2px solid #e9ecef; /* Subtle separator */
+}
+
+/* --- List and Item Styling --- */
+.my-quizzes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Slightly increased gap */
+}
+
+.my-quiz-item {
+  display: flex; /* Keep flex for vertical alignment */
+  /* justify-content: space-between; No longer needed */
+  align-items: center;
+  padding: 20px 25px; /* Increased padding slightly */
+  border-radius: 12px; /* Slightly less rounded */
+  background-color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06); /* Slightly softer shadow */
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  border-left: 5px solid transparent; /* Add space for potential status border */
+}
+
+/* Optional: Add a subtle border color based on grade */
+.my-quiz-item:has(.low-grade) { /* Use :has() if browser support is sufficient */
+  border-left-color: #fdd8db; /* Light red */
+}
+.my-quiz-item:not(:has(.low-grade)) {
+   border-left-color: #d1e7dd; /* Light green */
+}
+
+
+.my-quiz-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.my-quiz-item-info {
+  flex-grow: 1;
+  /* margin-right: 15px; No longer needed */
+}
+
+.my-quiz-item h4 {
+  font-size: 1.15em; /* Increased title size */
+  font-weight: 600;
+  margin: 0 0 8px 0; /* Increased margin bottom */
+  color: #212529; /* Darker title */
+}
+
+/* Style for Lesson Name and Date */
+.my-quiz-item p.quiz-meta {
+  margin: 0 0 6px 0; /* Margin below meta block */
+  font-size: 0.85em; /* Slightly smaller */
+  color: #6c757d; /* Muted text color */
+  line-height: 1.5;
+}
+
+/* Style for Grade */
+.my-quiz-item p.quiz-grade {
+  margin: 0; /* Remove default margin */
+  font-size: 0.95em; /* Slightly larger grade label */
+  color: #495057;
+  line-height: 1.4;
+}
+
+.my-quiz-item p.quiz-grade .grade-value {
+  font-weight: 700; /* Bolder grade */
+  font-size: 1.1em; /* Larger grade value */
+  color: #198754; /* Default Green for good grades */
+  margin-left: 5px;
+}
+
+/* Style for lower grades */
+.my-quiz-item p.quiz-grade .grade-value.low-grade {
+  color: #dc3545; /* Red color for emphasis */
+}
+
+
+/* --- Status Messages Styling --- */
+.loading-message,
+.error-message,
+.no-items-message {
+padding: 25px; /* More padding */
+text-align: center;
+font-size: 1.05rem; /* Slightly larger text */
+border-radius: 8px;
+margin: 30px auto; /* Center message block */
+max-width: 600px;
+display: flex; /* For aligning icon/spinner */
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+
+.loading-message {
+color: #495057;
+background-color: #e9ecef;
+}
+
+.error-message {
+color: #842029; /* Darker red */
+background-color: #f8d7da;
+border: 1px solid #f5c2c7;
+}
+
+.no-items-message {
+  color: #055160; /* Darker cyan */
+  background-color: #cff4fc; /* Lighter cyan */
+  border: 1px solid #b6effb;
+}
+
+/* Optional Spinner */
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+.spinner {
+display: inline-block;
+width: 20px;
+height: 20px;
+border: 3px solid rgba(0, 0, 0, 0.1);
+border-left-color: #495057; /* Match loading text color */
+border-radius: 50%;
+animation: spin 1s linear infinite;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+   :host {
+    padding: 20px;
   }
-  
-  .page-container {
-    max-width: 1300px; /* Consistent max-width */
-    margin: 0 auto;
-  }
-  
   .quizzes-section h2 {
-    font-size: 2rem; /* Consistent heading size */
-    font-weight: 600;
-    color: #333; /* Consistent heading color */
-    margin: 0 0 30px 0; /* Consistent heading margin */
-    /* Removed border-bottom and specific color */
+      font-size: 1.8rem;
   }
-  
-  /* --- List and Item Styling --- */
-  .my-quizzes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Consistent gap between items */
-  }
-  
   .my-quiz-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 25px; /* Adjust padding */
-    border-radius: 15px; /* Consistent card radius */
-    background-color: #ffffff; /* Consistent card background */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Consistent card shadow */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    /* Removed internal border and specific background */
-  }
-  
-  .my-quiz-item:hover {
-    transform: translateY(-3px); /* Consistent hover lift */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Consistent hover shadow */
-  }
-  
-  .my-quiz-item-info {
-    flex-grow: 1;
-    margin-right: 15px; /* Space between info and action/status */
-  }
-  
-  .my-quiz-item h4 {
-    font-size: 1.05em; /* Consistent title size within card */
-    font-weight: 600;
-    margin: 0 0 5px 0; /* Adjust margin */
-    color: #343a40; /* Consistent dark text */
-  }
-  
-  .my-quiz-item p.quiz-grade {
-    margin: 0;
-    font-size: 0.9em;
-    color: #6c757d; /* Consistent muted text color */
-    line-height: 1.4;
-  }
-  
-  .my-quiz-item p.quiz-grade .grade-value {
-      font-weight: 600; /* Make the grade value stand out */
-      color: #495057; /* Slightly darker than label */
-  }
-  
-  /* Optional: Style for lower grades */
-  .my-quiz-item p.quiz-grade .grade-value.low-grade {
-    color: #dc3545; /* Red color for emphasis */
-  }
-  
-  
-  /* --- Action Link Styling --- */
-  .view-quiz-link {
-    display: inline-block;
-    padding: 7px 16px; /* Slightly smaller padding */
-    background-color: #e9ecef; /* Use light grey bg, less prominent */
-    color: #495057; /* Dark grey text */
-    text-decoration: none;
-    border-radius: 8px; /* Consistent radius */
-    font-size: 0.85em;
-    font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    white-space: nowrap; /* Prevent wrapping */
-    border: 1px solid #ced4da; /* Subtle border */
-  }
-  
-  .view-quiz-link:hover {
-    background-color: #dee2e6; /* Slightly darker grey on hover */
-    color: #212529;
-    border-color: #adb5bd;
-  }
-  
-  /* --- Status Text Styling --- */
-  /* Style like Payment status badges */
-  .quiz-status {
-    font-weight: 600;
-    padding: 5px 12px; /* Match status badges */
-    border-radius: 8px; /* Match status badges */
-    display: inline-block;
-    font-size: 0.8em; /* Match status badges */
-    text-align: center;
-    letter-spacing: 0.3px;
-    border: 1px solid transparent;
-  }
-  
-  .quiz-status.status-not-graded {
-    color: #6c757d; /* Muted text */
-    background-color: #e9ecef; /* Muted background */
-    border-color: #dee2e6; /* Matching border */
-  }
-  
-  /* --- Responsive Adjustments --- */
-  @media (max-width: 600px) { /* Adjusted breakpoint */
-    :host {
-      padding: 20px; /* Consistent mobile padding */
-    }
-    .quizzes-section h2 {
-      font-size: 1.6rem;
-      text-align: center;
-    }
-  
-    .my-quiz-item {
       padding: 15px 20px;
-      flex-direction: column; /* Stack info and link vertically */
-      align-items: flex-start; /* Align items to the start */
-      gap: 12px; /* Add gap when stacked */
-    }
-  
-    .my-quiz-item-info {
-       margin-right: 0; /* Remove right margin when stacked */
-       margin-bottom: 5px; /* Add small bottom margin */
-    }
-  
-    .view-quiz-link, .quiz-status {
-      /* align-self: flex-start;  Keep default alignment or adjust as needed */
-      width: auto; /* Allow button/status to size naturally */
-    }
+      border-left-width: 4px;
   }
+  .my-quiz-item h4 {
+      font-size: 1.1em;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .quizzes-section h2 {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .my-quiz-item {
+    /* Items already stack well with flex, no need for flex-direction change */
+    align-items: flex-start; /* Align content to top */
+  }
+
+  .loading-message,
+  .error-message,
+  .no-items-message {
+      padding: 20px;
+      font-size: 1rem;
+  }
+}

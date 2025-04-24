@@ -1,48 +1,43 @@
 <div class="page-container"> <!-- Consistent page wrapper -->
-    <section class="quizzes-section">
-      <h2>Quizzes and Grades</h2>
-  
-      <div class="my-quizzes-list">
-        <!-- Quiz Item 1 -->
-        <div class="my-quiz-item">
-          <div class="my-quiz-item-info">
-            <h4>Midterm Exam - OOP</h4>
-            <p class="quiz-grade">Grade: <span class="grade-value">88%</span></p>
-          </div>
-          <!-- Use a more descriptive class -->
-          <a href="#" class="view-quiz-link">View Details</a>
-        </div>
-  
-        <!-- Quiz Item 2 -->
-        <div class="my-quiz-item">
-          <div class="my-quiz-item-info">
-            <h4>Quiz 2 - Database Fundamentals</h4>
-            <p class="quiz-grade">Grade: <span class="grade-value">92%</span></p>
-          </div>
-          <a href="#" class="view-quiz-link">View Details</a>
-        </div>
-  
-        <!-- Quiz Item 3 -->
-        <div class="my-quiz-item">
-          <div class="my-quiz-item-info">
-            <h4>Final Exam - Web Development</h4>
-            <p class="quiz-grade">Grade: <span class="grade-value low-grade">75%</span></p> <!-- Optional class for low grade -->
-          </div>
-          <a href="#" class="view-quiz-link">View Details</a>
-        </div>
-  
-        <!-- Quiz Item 4 (Not Graded) -->
-        <div class="my-quiz-item item-not-graded"> <!-- Add class to item -->
-          <div class="my-quiz-item-info">
-            <h4>Assignment 1 - Data Structures</h4>
-            <!-- Removed grade P tag here, status span is enough -->
-          </div>
-          <!-- Status indicator instead of link -->
-          <span class="quiz-status status-not-graded">Not Graded Yet</span>
-        </div>
-  
-        <!-- Add more quiz items as needed -->
-  
+  <section class="quizzes-section">
+    <h2>Quizzes</h2>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-message">
+      <span class="spinner"></span> Loading quizzes... <!-- Optional: Add a spinner -->
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="error-message">
+      ⚠️ {{ error }} <!-- Optional: Add an icon -->
+    </div>
+
+    <!-- Data Display State -->
+    <div *ngIf="!isLoading && !error" class="my-quizzes-list">
+
+      <!-- Message if no exams are found -->
+      <div *ngIf="exams.length === 0 && !isLoading" class="no-items-message">
+          No quizzes found for this student.
       </div>
-    </section>
-  </div>
+
+      <!-- Loop through fetched exams -->
+      <div *ngFor="let exam of exams" class="my-quiz-item">
+        <div class="my-quiz-item-info">
+          <h4>{{ exam.examTitle }}</h4>
+          <p class="quiz-meta"> <!-- Changed class for meta info -->
+              Lesson: {{ exam.lessonName }} <br>
+              Date: {{ formatExamDate(exam.examDate) }} <!-- Display formatted date -->
+          </p>
+          <p class="quiz-grade"> <!-- Kept separate for grade focus -->
+              Grade:
+              <span class="grade-value" [class.low-grade]="isLowGrade(exam.score)">
+                  {{ exam.score }}%
+              </span>
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>

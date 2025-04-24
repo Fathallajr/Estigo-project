@@ -1,6 +1,14 @@
 <div class="dashboard-main">
-    <app-main-acontent *ngIf="selectedComponent === 'Page1' && !isSystemSettingsVisible" (navigateToSettings)="onNavigateToSettings()"></app-main-acontent>
+    <app-main-acontent *ngIf="selectedComponent === 'Page1' && !isUploadCoursesVisible && !isUploadLessonsVisible && !isUploadQuizzesVisible" 
+        (navigateToCourses)="onNavigateToCourses()"
+        (navigateToLessons)="onNavigateToLessons()"
+        (navigateToQuizzes)="onNavigateToQuizzes()">
+    </app-main-acontent>
+    
     <app-users-list *ngIf="selectedComponent === 'Page2'"></app-users-list>
-    <app-upload-courses *ngIf="selectedComponent === 'Page3'"></app-upload-courses>
-    <app-system-settings *ngIf="isSystemSettingsVisible" (backClicked)="returnToMainContent()"></app-system-settings>
+    <app-courses-list *ngIf="selectedComponent === 'Page3'"></app-courses-list>
+
+    <app-upload-acourses *ngIf="isUploadCoursesVisible" (backClicked)="returnToMainContent()"></app-upload-acourses>
+    <app-upload-alessons *ngIf="isUploadLessonsVisible" (backClicked)="returnToMainContent()"></app-upload-alessons>
+    <app-upload-aquizzes *ngIf="isUploadQuizzesVisible" (backClicked)="returnToMainContent()"></app-upload-aquizzes>
 </div>

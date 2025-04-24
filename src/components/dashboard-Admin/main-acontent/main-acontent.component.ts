@@ -7,9 +7,19 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrl: './main-acontent.component.css'
 })
 export class MainAcontentComponent {
-  @Output() navigateToSettings = new EventEmitter<void>();
+  @Output() navigateToCourses = new EventEmitter<void>();
+  @Output() navigateToLessons = new EventEmitter<void>();
+  @Output() navigateToQuizzes = new EventEmitter<void>();
 
-  onSystemSettingsClick() {
-    this.navigateToSettings.emit();
+  onUploadCoursesClick() {
+    this.navigateToCourses.emit();
+  }
+
+  onUploadLessonsClick() {
+    this.navigateToLessons.emit();
+  }
+
+  onUploadQuizzesClick() {
+    this.navigateToQuizzes.emit();
   }
 }

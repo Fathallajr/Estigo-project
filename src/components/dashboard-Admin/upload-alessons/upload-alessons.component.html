@@ -1,0 +1,51 @@
+<div class="upload-lessons-container">
+    <div class="header">
+        <h1>Upload Lessons</h1>
+        <button class="back-button" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="upload-section">
+        <div class="upload-card">
+            <h2>Upload New Lesson</h2>
+            <div class="upload-form">
+                <div class="form-group">
+                    <label for="lessonTitle">Lesson Title</label>
+                    <input type="text" id="lessonTitle" placeholder="Enter lesson title">
+                </div>
+                <div class="form-group">
+                    <label for="lessonDescription">Description</label>
+                    <textarea id="lessonDescription" placeholder="Enter lesson description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lessonFile">Upload File</label>
+                    <input type="file" id="lessonFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
+                </div>
+                <button class="upload-button">
+                    <i class="fas fa-upload"></i> Upload Lesson
+                </button>
+            </div>
+        </div>
+
+        <div class="recent-uploads">
+            <h2>Recently Uploaded Lessons</h2>
+            <div class="upload-list">
+                <div class="upload-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div class="upload-details">
+                        <h3>Introduction to Angular</h3>
+                        <p>Uploaded 2 hours ago</p>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div class="upload-details">
+                        <h3>Advanced TypeScript</h3>
+                        <p>Uploaded 1 day ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -39,6 +39,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   // --- Configuration ---
   readonly quizTitle = 'Quiz'; // Title can be dynamic later if needed
   private baseApiUrl = 'https://estigo.tryasp.net/api/Exam/GetQuestionsByExam/';
+  private submitScoreApiUrl = 'https://estigo.tryasp.net/api/Exam/SubmitQuizScore';
 
   // --- Component State ---
   questions: QuizQuestion[] = [];
@@ -220,11 +221,46 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.isReviewing = false;
     this.calculateScore(); // Calculate score first
 
-    // TODO: Optional: Send answers to backend if needed
-    // if (this.examId) {
-    //    const submissionData = { examId: this.examId, answers: this.userAnswers };
-    //    this.http.post('/api/Exam/SubmitAnswers', submissionData).subscribe(...)
-    // }
+    // Get student ID from localStorage
+    const userDataStr = localStorage.getItem('userData');
+    if (userDataStr && this.examId) {
+      try {
+        const userData = JSON.parse(userDataStr);
+        const studentId = userData.id;
+        
+        if (!studentId) {
+          console.error('Student ID not found in user data');
+          return;
+        }
+
+        // Calculate score percentage
+        const scorePercentage = this.totalQuestions > 0 ? Math.round((this.score / this.totalQuestions) * 100) : 0;
+        
+        // Create submission payload
+        const submission = {
+          studentId: studentId,
+          examId: parseInt(this.examId),
+          score: scorePercentage
+        };
+
+        // Submit score to API
+        this.http.post<{message: string, score: number}>(this.submitScoreApiUrl, submission)
+          .subscribe({
+            next: (response) => {
+              console.log('Quiz score submitted successfully:', response);
+              // The score and result message are already set by calculateScore()
+            },
+            error: (err) => {
+              console.error('Failed to submit quiz score:', err);
+              // Score calculation already done locally, so UI will still show results
+            }
+          });
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    } else {
+      console.warn('Missing user data or exam ID for score submission');
+    }
 
     this.cdRef.detectChanges(); // Ensure results view is shown
   }
