@@ -9,9 +9,232 @@
     background-color: #f5f5f5;
 }
 
-.welcome-section {
-    background-color: #6A9C89;
+/* New Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+    width: 100%;
+    height: 80vh; /* Set a fixed height to ensure the grid works properly */
+}
+
+/* Grid Sections */
+#enrolled-courses-section {
+    grid-column: span 3 / span 3;
+    grid-row: span 3 / span 3;
+    
     border-radius: 15px;
+    padding: 20px;
+  
+}
+
+#quizzes-default-section {
+    grid-column: span 3 / span 3;
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 4;
+    
+    border-radius: 15px;
+    padding: 20px;
+    
+}
+
+#instructors-section {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 1;
+    
+    border-radius: 15px;
+    padding: 20px;
+   
+}
+
+#daily-notice-section {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-column-start: 4;
+    grid-row-start: 3;
+    
+    border-radius: 15px;
+    padding: 20px;
+    
+}
+
+/* Dashboard section */
+.dashboard-section {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.section-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title a {
+    text-decoration: none;
+    color: #2a7f62;
+    font-size: 0.9em;
+}
+
+/* Enrolled Courses section */
+.enrolled-courses-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.course-card {
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding: 15px;
+    width: calc(33.33% - 10px);
+    min-width: 200px;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, border-color 0.3s ease; 
+    border: 2px solid transparent;
+}
+
+.course-card:hover {
+    border: 2px solid #2a7f62; /* Green border on hover */
+}
+
+.course-card img {
+    width: 80px;
+    height: 60px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+    object-fit: contain;
+}
+
+.course-title {
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.course-view-button {
+    background-color: #2a7f62;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.course-view-button:hover {
+    background-color: #5e9179;
+}
+
+/* Course Instructors section */
+.instructors-list {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.instructor-profile {
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #5e9179;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.instructor-profile:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.instructor-profile img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Quizzes section */
+.quiz-list {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.quiz-item {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    width: calc(50% - 5px);
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.daily-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.daily-item {
+    padding: 25px;
+    background-color: #FFFFFF;
+    text-align: center;
+    font-size: 1.2em;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.quiz-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+.quiz-grade {
+    color: #555;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.quiz-more {
+    display: block;
+    margin-top: 10px;
+    color: #2a7f62;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+/* Hero Section Image Styling */
+.hero-section {
+    background-color: #5d927e;
+    border-radius: 20px;
     padding: 30px;
     margin-bottom: 30px;
     color: white;

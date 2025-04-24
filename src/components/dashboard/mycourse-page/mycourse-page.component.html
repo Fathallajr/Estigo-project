@@ -11,7 +11,6 @@
   <div class="video-section">
     <h2>{{ currentLessonTitle || 'Select a Lesson' }}</h2>
 
-    <!-- Video Player Area -->
     <div *ngIf="!isViewingExamPrompt">
       <div *ngIf="currentVideoUrl; else noVideoSelected" class="video-player-wrapper">
         <video [src]="currentVideoUrl" controls width="100%"></video>
@@ -23,13 +22,11 @@
       </ng-template>
     </div>
 
-    <!-- Exam Prompt Area -->
     <div *ngIf="isViewingExamPrompt" class="exam-prompt-section">
        <h3>{{ selectedExamTitle }}</h3>
        <p>You are about to start the exam for this lesson.</p>
        <button (click)="startExam()" class="start-exam-button">Start Exam</button>
     </div>
-
   </div>
 
   <div class="content-section">
@@ -45,7 +42,6 @@
         <span class="lesson-title">{{ lesson.lessonTitle }}</span>
         <span *ngIf="!isValidVideoUrl(lesson.lessonVideo)" class="video-indicator">(No Video)</span>
 
-        <!-- Exam Link/Button -->
         <div *ngIf="lesson.examTitle && lesson.examId" class="exam-link">
            <button (click)="prepareExam(lesson, $event)" class="exam-button">
              {{ lesson.examTitle }}

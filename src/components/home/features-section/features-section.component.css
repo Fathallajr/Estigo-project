@@ -62,6 +62,11 @@
     text-align: center;
     position: relative; 
     overflow: hidden; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: subtleGridShift 10s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered animation */
+    font-optical-sizing: auto;
+    font-size: 1rem; /* Default font size */
 }
 .feature-card i {
     font-size: 3rem;
@@ -69,6 +74,8 @@
     margin-bottom: 20px;
     display: inline-block; 
     animation: iconFloat 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered animation */
+    transform: translateY(0); /* Initial position */    
 }
 
 /* floating icons */

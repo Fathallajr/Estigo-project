@@ -12,7 +12,7 @@
 span {
     --c: #fff;
    /* text color */
-    background: #6A9C89;
+    background: #2a7f62;
    /* background color */
     color: #0000;
     border: none;
@@ -154,10 +154,10 @@ label {
     width: 16px;
     height: 16px;
     margin: 0;
-    border: 1px solid #6A9C89;
+    border: 1px solid #2a7f62;
     border-radius: 4px;
     cursor: pointer;
-    accent-color: #6A9C89;
+    accent-color: #2a7f62;
 }
 
 .remember-me label {

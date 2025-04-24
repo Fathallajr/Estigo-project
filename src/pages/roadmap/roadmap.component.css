@@ -6,7 +6,7 @@
 
 .roadmap-container h2 {
     text-align: center;
-    color: #2F327D;
+    color: #2a7f62;
     font-size: 2rem;
     margin-bottom: 40px;
 }
@@ -34,7 +34,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #6A9C89;
+    background-color: #FE7743;
     color: white;
     padding: 5px 15px;
     border-radius: 0 0 15px 0;
@@ -44,16 +44,18 @@
 
 .step:hover {
     transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    
 }
 
 .step h3 {
-    color: #2F327D;
+    color: #2a7f62;
     font-size: 1.3rem;
     margin-top: 30px;
     margin-bottom: 15px;
 }
 
 .step p {
-    color: #5A6473;
+    color: #000000;
     line-height: 1.7;
 }

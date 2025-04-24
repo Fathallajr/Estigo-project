@@ -161,7 +161,7 @@
 
 .section-title a {
     text-decoration: none;
-    color: #6A9C89;
+    color: #2a7f62;
     font-size: 0.9em;
 }
 
@@ -193,8 +193,7 @@
 }
 
 .course-card:hover {
-    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-    border-color: #6A9C89;
+    border: 2px solid #2a7f62; /* Green border on hover */
 }
 
 .course-card img {
@@ -216,7 +215,7 @@
 }
 
 .course-view-button {
-    background-color: #6A9C89;
+    background-color: #2a7f62;
     color: white;
     border: none;
     padding: 8px 18px;
@@ -371,10 +370,10 @@
 
 .payment-date {
     font-weight: 500;
-    color: #5e9179;
-    font-size: 0.85em;
-    padding: 4px 10px;
-    background-color: #eaf3ef;
+    color: #2a7f62;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    background-color: #f0f7f4;
     border-radius: 15px;
     min-width: 100px;
     text-align: center;
@@ -393,6 +392,70 @@
     text-overflow: ellipsis;
 }
 
+.quiz-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+.quiz-grade {
+    color: #555;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.quiz-more {
+    display: block;
+    margin-top: 10px;
+    color: #2a7f62;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+/* Hero Section Image Styling */
+.hero-section {
+    background-color: #5d927e;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.hero-text {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.hero-welcome {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.hero-image {
+    max-width: 250px;
+    width: 30%;
+    height: auto;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-welcomeP {
+    color: white;
+    opacity: 0.8;
+}
+
+/* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
     .dashboard-grid {
         min-height: auto;

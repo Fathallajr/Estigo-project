@@ -233,11 +233,11 @@ body { /* Note: body styles might not apply directly inside component scope, app
 
 
 .payment-btn {
-    background-color: #6aaa96;
+    background-color: #ff9f00;
     color: white;
 }
 .payment-btn:hover:not(:disabled) {
-    background-color: #589485;
+    background-color: #2a7f62;
     transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(106, 170, 150, 0.2);
 }
