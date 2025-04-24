@@ -60,7 +60,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #2a7f62;
+  color: #6A9C89;
   border: 1px dashed #a8d5c0;
   border-radius: 5px;
   min-height: 200px;
@@ -74,7 +74,7 @@
   justify-content: center;
   text-align: center;
   background-color: #f5faf8;
-  border: 1px solid #2a7f62;
+  border: 1px solid #6A9C89;
   border-radius: 5px;
   padding: 3rem 2rem;
   min-height: 300px;
@@ -101,7 +101,7 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #2a7f62;
+  background-color: #6A9C89;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -151,7 +151,7 @@
 
 .content-item.active {
   background-color: #e8f5f1;
-  border-color: #2a7f62;
+  border-color: #6A9C89;
 }
 
 .content-item.active .lesson-title {
@@ -187,16 +187,16 @@
     font-size: 0.9em;
     font-weight: normal;
     cursor: pointer;
-    border: 1px solid #2a7f62;
+    border: 1px solid #6A9C89;
     background-color: #e8f5f1;
-    color: #2a7f62;
+    color: #6A9C89;
     border-radius: 3px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .exam-button:hover {
-    background-color: #2a7f62;
-    border-color: #2a7f62;
+    background-color: #6A9C89;
+    border-color: #6A9C89;
     color: #fff;
 }
 

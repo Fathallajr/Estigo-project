@@ -154,14 +154,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 4px solid #2a7f62;
+    border-left: 4px solid #6A9C89;
     padding-left: 10px;
     flex-shrink: 0;
 }
 
 .section-title a {
     text-decoration: none;
-    color: #2a7f62;
+    color: #6A9C89;
     font-size: 0.9em;
 }
 
@@ -194,7 +194,7 @@
 
 .course-card:hover {
     box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-    border-color: #2a7f62;
+    border-color: #6A9C89;
 }
 
 .course-card img {
@@ -216,7 +216,7 @@
 }
 
 .course-view-button {
-    background-color: #2a7f62;
+    background-color: #6A9C89;
     color: white;
     border: none;
     padding: 8px 18px;
@@ -315,7 +315,7 @@
 
 .quiz-item:hover {
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    border-left-color: #2a7f62;
+    border-left-color: #6A9C89;
 }
 
 .quiz-title {
@@ -328,7 +328,7 @@
 
 .quiz-score {
     font-weight: bold;
-    color: #2a7f62;
+    color: #6A9C89;
     font-size: 0.9em;
     margin-bottom: 3px;
 }
