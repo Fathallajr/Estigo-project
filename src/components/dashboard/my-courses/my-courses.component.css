@@ -8,6 +8,7 @@
 .my-courses-container {
   max-width: 1300px;
   margin: 0 auto;
+  
 }
 
 .courses-header {
@@ -47,6 +48,11 @@
   flex-direction: column;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   cursor: pointer;
+  animation: iconFloat 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.1s); /* Staggered animation */
+  transform: translateY(0); /* Initial position */  
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+
 }
 
 .course-card:hover {

@@ -80,7 +80,7 @@
 
 .section-title a {
     text-decoration: none;
-    color: #6A9C89;
+    color: #2a7f62;
     font-size: 0.9em;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .course-card:hover {
-    border: 2px solid #6A9C89; /* Green border on hover */
+    border: 2px solid #2a7f62; /* Green border on hover */
 }
 
 .course-card img {
@@ -130,7 +130,7 @@
 }
 
 .course-view-button {
-    background-color: #6A9C89;
+    background-color: #2a7f62;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -240,7 +240,7 @@
 
 .payment-date {
     font-weight: 500;
-    color: #6A9C89;
+    color: #2a7f62;
     font-size: 0.9em;
     padding: 5px 10px;
     background-color: #f0f7f4;
@@ -277,7 +277,7 @@
 .quiz-more {
     display: block;
     margin-top: 10px;
-    color: #6A9C89;
+    color: #2a7f62;
     text-decoration: none;
     font-size: 0.85em;
 }

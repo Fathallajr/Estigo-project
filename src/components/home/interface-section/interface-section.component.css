@@ -3,6 +3,8 @@
     padding: 40px 20px;
     width: 100%;
     box-sizing: border-box;
+    
+
 }
 
 .interface-grid {
@@ -12,6 +14,7 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    
 }
 
 .interface-text {
@@ -85,6 +88,8 @@
     height: auto;
     display: block;
     margin: 0 auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    
 }
 
 .loader {

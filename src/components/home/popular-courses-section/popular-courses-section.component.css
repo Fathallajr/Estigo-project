@@ -27,6 +27,7 @@
     height: 300px; /* Fixed height for consistent card shape */
     flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
     width: 250px; /* Fixed width to ensure consistent card size */
+    
 }
 
 .course-card:hover {
@@ -53,7 +54,11 @@
     flex-direction: column;
     overflow: hidden; /* Hide overflow content */
     height: 150px; /* Fixed height to match the remaining space */
+    animation: iconFloat 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered animation */
+    transform: translateY(0); /* Initial position */    
 }
+
 
 .course-title {
     font-size: 1.2rem;

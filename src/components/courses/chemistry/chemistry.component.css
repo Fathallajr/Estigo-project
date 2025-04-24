@@ -79,7 +79,7 @@
 }
 
 .course-card:hover .course-title {
-  color: #6A9C89;
+  color: #2a7f62;
 }
 
 .course-instructor {
@@ -89,7 +89,7 @@
 }
 
 .course-price {
-  color: #6A9C89;
+  color: #2a7f62;
   font-size: 1.1rem;
   font-weight: bold;
   margin-top: auto;
@@ -97,7 +97,7 @@
 }
 
 .view-more-btn {
-  color: #6A9C89;
+  color: #2a7f62;
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;

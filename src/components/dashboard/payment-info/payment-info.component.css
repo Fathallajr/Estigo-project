@@ -31,6 +31,10 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    animation: iconFloat 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered animation */
+    transform: translateY(0); /* Initial position */  
+    
 }
   
 .payment-record:hover {
@@ -76,6 +80,7 @@
     gap: 18px;
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     flex-grow: 1;
+    
 }
   
 .detail-item {
