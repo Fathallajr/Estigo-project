@@ -1,0 +1,48 @@
+:host { 
+    display: block; 
+    width: 80%;
+  }
+  
+  .dashboard-main {
+    padding: 20px; 
+    width: 100%; 
+    box-sizing: border-box; 
+  }
+  
+  /* iPad styles */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    :host {
+      width: 80%;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .dashboard-main {
+      padding: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    :host {
+      width: 100%;
+    }
+    
+    .dashboard-main {
+      padding: 5px; 
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    :host {
+      width: 100%;
+    }
+    
+    .dashboard-main {
+      padding: 0;
+      width: 100%;
+    }
+  }

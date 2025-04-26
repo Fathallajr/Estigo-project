@@ -8,14 +8,14 @@
                 <img src="teacher.svg" alt="For Instructors">
                 <div class="card-content">
                     <h3>FOR INSTRUCTORS</h3>
-                    <button>Start Class</button>
+                    <button (click)="navigateBasedOnAuth()" *ngIf="role === 'Teacher'|| role === 'user'">Start Class</button>
                 </div>
             </div>
             <div class="estigo-card">
                 <img src="Learning-bro.svg" alt="For Students">
                 <div class="card-content">
                     <h3>FOR STUDENTS</h3>
-                    <button>Start your Journey</button>
+                    <button (click)="navigateBasedOnAuth()" *ngIf="role === 'Student' || role === 'user'">Start your Journey</button>
                 </div>
             </div>
         </div>

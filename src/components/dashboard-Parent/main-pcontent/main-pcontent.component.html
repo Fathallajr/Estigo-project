@@ -2,18 +2,22 @@
   <div class="dashboard-header">
     <h2>Parent Dashboard</h2>
   </div>
+
   <div class="dashboard-content">
-    <div class="content-section">
-      <h3>Your Child's Progress</h3>
-      <p>View and track your child's learning progress and achievements.</p>
-    </div>
-    <div class="content-section">
-      <h3>Upcoming Events</h3>
-      <p>Stay informed about important school events and activities.</p>
-    </div>
-    <div class="content-section">
-      <h3>Messages</h3>
-      <p>Communicate with teachers and school staff.</p>
+    <div class="code-input-section">
+      <h3>Enter Student Code</h3>
+      <input [(ngModel)]="studentCodeInput" type="text" placeholder="Input code here..." class="code-input" />
+      <button class="submit-button" (click)="fetchStudentData()">Submit</button>
+
+      <div class="student-data" *ngIf="studentName">
+        <h3>{{ studentName }}'s Exams</h3>
+        <div *ngFor="let exam of examHistory" class="exam-card">
+          <h4>{{ exam.examTitle }}</h4>
+          <p><strong>Score:</strong> {{ exam.score }} out of 100</p>
+          <p><strong>Date:</strong> {{ exam.examDate | date:'mediumDate' }}</p>
+          <p><strong>Lesson:</strong> {{ exam.lessonName }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

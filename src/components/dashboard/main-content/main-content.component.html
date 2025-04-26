@@ -16,6 +16,7 @@
                 <div class="hero-text">
                     <div class="hero-welcome">Welcome back, {{ studentName }}!</div>
                     <p class="hero-welcomeP">This is your learning dashboard will help you to finish your bootcamp smoothly.</p>
+                    <p class="student-code">Student Code : {{ data.studentCode }}</p>
                 </div>
                 <div class="hero-image">
                     <img src="dashboard-girl.svg" alt="Hero Image"> 
@@ -48,7 +49,10 @@
                     </div>
                     <div class="quiz-list" *ngIf="data.quizzes && data.quizzes.length > 0; else noQuizzes">
                         <div class="quiz-item" *ngFor="let quiz of data.quizzes">
-                            <h4 class="quiz-title">{{ quiz.quizName }}</h4>
+                            <h4 class="quiz-title">{{ quiz.examTitle }}</h4>
+                            <div class="quiz-score">Score: {{ quiz.score }}</div>
+                            <div class="quiz-date">Date: {{ quiz.examDate | date:'MMM d, yyyy' }}</div>
+                            <div class="quiz-lesson">Lesson: {{ quiz.lessonName }}</div>
                         </div>
                     </div>
                      <ng-template #noQuizzes>

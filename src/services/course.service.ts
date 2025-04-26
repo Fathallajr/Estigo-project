@@ -8,6 +8,7 @@ export interface Course {
   courseId: number;
   courseTitle: string;
   imageBase64: string;
+  status:number;
   price: number;
   teacherName: string;
 }

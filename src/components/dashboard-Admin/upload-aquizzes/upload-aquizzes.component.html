@@ -1,0 +1,49 @@
+<div class="header">
+    <h1>Upload Quizzes</h1>
+    <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </button>
+</div>
+
+<div class="upload-section">
+    <div class="upload-card">
+        <h2>Upload New Quiz</h2>
+        <div class="upload-form">
+            <div class="form-group">
+                <label for="quizTitle">Quiz Title</label>
+                <input type="text" id="quizTitle" placeholder="Enter quiz title">
+            </div>
+            <div class="form-group">
+                <label for="quizDescription">Description</label>
+                <textarea id="quizDescription" placeholder="Enter quiz description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="quizFile">Upload File</label>
+                <input type="file" id="quizFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
+            </div>
+            <button class="upload-button">
+                <i class="fas fa-upload"></i> Upload Quiz
+            </button>
+        </div>
+    </div>
+
+    <div class="recent-uploads">
+        <h2>Recently Uploaded Quizzes</h2>
+        <div class="upload-list">
+            <div class="upload-item">
+                <i class="fas fa-file-alt"></i>
+                <div class="upload-details">
+                    <h3>Angular Basics Quiz</h3>
+                    <p>Uploaded 3 hours ago</p>
+                </div>
+            </div>
+            <div class="upload-item">
+                <i class="fas fa-file-alt"></i>
+                <div class="upload-details">
+                    <h3>TypeScript Advanced Quiz</h3>
+                    <p>Uploaded 1 day ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,8 +22,11 @@ export interface CourseInstructor {
 }
 
 export interface Quiz {
-  quizId: number;
-  quizName: string;
+  examId: number;
+  examTitle: string;
+  score : number;
+  examDate: string;
+  lessonName: string;
 }
 
 export interface PaymentInfo {
@@ -34,6 +37,7 @@ export interface PaymentInfo {
 export interface StudentDashboardData {
   studentId: string;
   studentName: string;
+  studentCode : number;
   enrolledCourses: EnrolledCourse[];
   courseInstructors: CourseInstructor[];
   quizzes: Quiz[];
@@ -45,6 +49,7 @@ export interface UserInfo {
     name: string;
     email: string;
     role: string;
+
 }
 // --- End Interfaces ---
 
