@@ -34,7 +34,11 @@
     position: absolute;
     top: 0;
     left: 0;
+<<<<<<< HEAD
     background-color: var(--estigo-green);
+=======
+    background-color: #2d635e;
+>>>>>>> 1d66171260fa3dd786ab4926cb6290a20c8d32d4
     color: white;
     padding: 5px 15px;
     border-radius: 0 0 15px 0;
