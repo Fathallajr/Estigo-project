@@ -1,40 +1,67 @@
 <nav class="navbar navbar-expand-lg custom-bg p-3 sticky-top" id="navbar">
-    <div class="container-fluid container">
-        <a class="navbar-brand" href="#">
-            <img src="11.png" alt="Logo" width="100"> 
-        </a>
-        <!-- Use ngSubmit on the form and ngModel on the input -->
-        <div class="mx-auto" style="width: 30%;">
-            <form class="d-flex position-relative" role="search" (ngSubmit)="onSearch()">
-                <input
-                    class="form-control pe-5"
-                    type="search"
-                    placeholder="Search Courses"
-                    aria-label="Search"
-                    style="background-color: rgba(255, 255, 255, 0.2); border: none; color: black;"
-                    [(ngModel)]="searchTerm"
-                    name="searchTerm" 
-                 >
-                 
-                <button class="btn btn-outline-light position-absolute end-0" type="submit" id="search">
-                    <img src="search.ico" style="width: 20px; height: 20px;" alt="Search"> 
-                </button>
-            </form>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-           <span class="navbar-toggler-icon"></span>
+  <div class="container-fluid container">
+    <!-- Logo -->
+    <a class="navbar-brand" href="#">
+      <img src="11.png" alt="Logo" width="100">
+    </a>
+
+    <!-- Search -->
+    <div class="mx-auto" style="width: 30%;">
+      <form class="d-flex position-relative" role="search" (ngSubmit)="onSearch()">
+        <input
+          class="form-control pe-5"
+          type="search"
+          placeholder="Search Courses"
+          aria-label="Search"
+          style="background-color: rgba(255, 255, 255, 0.2); border: none; color: black;"
+          [(ngModel)]="searchTerm"
+          name="searchTerm">
+        <button class="btn btn-outline-light position-absolute end-0" type="submit" id="search">
+          <img src="search.ico" style="width: 20px; height: 20px;" alt="Search">
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto d-flex align-items-center" style="min-width: 50%; justify-content: space-between; gap: 3rem;">
-                <li class="nav-item"><a class="nav-link text-white" routerLink="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white" routerLink="/courses">Courses</a></li>
-                <li class="nav-item"><a class="nav-link text-white" routerLink="/dashboard">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link text-white" routerLink="/roadmap">Roadmap</a></li>
-                <li class="nav-item"><a class="nav-link text-white" routerLink="/aboutus">About us</a></li>
-                <li class="nav-item">
-                    <a routerLink="/login"><img src="login.png" style="width: 30px; height: 30px;" alt="Login"></a> <!-- Assuming login.png is in assets -->
-                </li>
-            </ul>
-        </div>
+      </form>
     </div>
+
+    <!-- Burger -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto d-flex align-items-center"
+          style="min-width: 50%; justify-content: space-between; gap: 3rem;">
+
+        <li class="nav-item"><a class="nav-link text-white" routerLink="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-white" routerLink="/courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link text-white" routerLink="/dashboard">Dashboard</a></li>
+
+        <!-- ✅ Roadmap dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white"
+             href="#"
+             id="roadmapDropdown"
+             role="button"
+             data-bs-toggle="dropdown"
+             aria-expanded="false">
+             Roadmap <i class="fa fa-caret-down ms-1"></i>
+          </a>
+
+          <ul class="dropdown-menu shadow" aria-labelledby="roadmapDropdown">
+            <li><a class="dropdown-item" routerLink="/roadmap">IGCSE</a></li>
+            <li><a class="dropdown-item" routerLink="/roadmap/est">EST</a></li>
+            <li><a class="dropdown-item" routerLink="/roadmap/act">ACT</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link text-white" routerLink="/aboutus">About_us</a></li>
+
+        <li class="nav-item">
+          <a routerLink="/login">
+            <img src="login.png" style="width: 30px; height: 30px;" alt="Login">
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

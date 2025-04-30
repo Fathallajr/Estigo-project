@@ -32,7 +32,7 @@
 }
 
 .hero-section {
-    background-color: #5d927e;
+    background-color: #2A7F62 !important; 
     border-radius: 20px;
     padding: 30px;
     display: flex;
@@ -42,7 +42,7 @@
     box-sizing: border-box;
     margin-bottom: 25px;
     color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    
 }
 
 .hero-text {
@@ -154,7 +154,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 4px solid #6A9C89;
+    border-left: 4px solid #2a7f62;
     padding-left: 10px;
     flex-shrink: 0;
 }
@@ -232,7 +232,7 @@
 }
 
 .course-view-button:hover {
-    background-color: #5e9179;
+    background-color: #2a7f62;
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
