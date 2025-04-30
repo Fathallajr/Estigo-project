@@ -7,10 +7,11 @@ import { UploadAcoursesComponent } from "../upload-acourses/upload-acourses.comp
 import { CoursesListComponent } from "../courses-list/courses-list.component";
 import { UploadAlessonsComponent } from "../upload-alessons/upload-alessons.component";
 import { UploadAQuizzesComponent } from "../upload-aquizzes/upload-aquizzes.component";
+import { PendingCoursesComponent } from "../pending-courses/pending-courses.component";
 
 @Component({
   selector: 'app-dashboard-amain',
-  imports: [MainAcontentComponent, CommonModule, UsersListComponent, UploadCoursesComponent, UploadAcoursesComponent, CoursesListComponent, UploadAlessonsComponent, UploadAQuizzesComponent],
+  imports: [MainAcontentComponent, CommonModule, UsersListComponent, UploadCoursesComponent, UploadAcoursesComponent, CoursesListComponent, UploadAlessonsComponent, UploadAQuizzesComponent, PendingCoursesComponent],
   templateUrl: './dashboard-amain.component.html',
   styleUrl: './dashboard-amain.component.css'
 })

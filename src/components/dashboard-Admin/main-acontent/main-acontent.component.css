@@ -25,7 +25,7 @@
     transform: translateY(-50%);
     width: 4px;
     height: 24px; /* Match other headings */
-    background-color: #6aaa96; /* Theme color */
+    background-color: var(--estigo-green); 
     border-radius: 2px;
 }
 
@@ -57,12 +57,12 @@
 .action-card:hover {
     transform: translateY(-5px); /* Lift effect on hover */
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
-    border-top-color: #6aaa96; /* Theme color accent on hover */
+    border-top-color: var(--estigo-green); /* Theme color accent on hover */
 }
 
 .action-card i {
     font-size: 36px; /* Large icon */
-    color: #6aaa96; /* Theme color for icons */
+    color: var(--estigo-green); /* Theme color for icons */
     margin-bottom: 15px;
     display: block; /* Ensure icon takes its own line */
 }
@@ -105,7 +105,7 @@
     transform: translateY(-50%);
     width: 4px;
     height: 20px;
-    background-color: #6aaa96;
+    background-color: var(--estigo-green);
     border-radius: 2px;
 }
 
@@ -128,7 +128,7 @@
 
 .activity-item i {
     font-size: 18px;
-    color: #6aaa96; /* Theme color */
+    color: var(--estigo-green); /* Theme color */
     margin-right: 15px;
     width: 25px; /* Fixed width for alignment */
     text-align: center;

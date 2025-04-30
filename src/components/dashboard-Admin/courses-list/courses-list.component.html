@@ -1,1 +1,45 @@
-<p>courses-list works!</p>
+<div class="list-outer-container">
+    <h2 class="component-title">Admin Courses</h2>
+  
+    <div class="list-container">
+  
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading && courses.length === 0" class="loading-message">
+        Loading courses... <span class="spinner"></span>
+      </div>
+ 
+      <div *ngIf="error && !isLoading" class="error-message">
+        <span>{{ error }}</span>
+
+        <button *ngIf="!deletingIds.size" class="btn btn-secondary btn-retry" (click)="fetchCourses()">Retry</button>
+      </div>
+  
+      <!-- Course List -->
+      <!-- Use the local 'courses' array -->
+      <div *ngIf="!isLoading || courses.length > 0"> 
+        <ul *ngIf="courses.length > 0; else noCourses" class="courses-list">
+          <li *ngFor="let course of courses" class="course-item" [routerLink]="['/myCourse', course.courseId]">
+            <span class="course-id">ID: {{ course.courseId }}</span>
+            <span class="course-title">{{ course.courseTitle }}</span>
+            <!-- Actions Container -->
+            <div class="course-actions">
+              <button
+                class="btn btn-danger btn-delete"
+                (click)="triggerDeleteCourse(course.courseId)"
+                [disabled]="isDeleting(course.courseId) || isLoading"
+                title="Delete Course {{ course.courseId }}">
+                <span *ngIf="!isDeleting(course.courseId)">Delete</span>
+                <span *ngIf="isDeleting(course.courseId)">Deleting...</span>
+
+              </button>
+            </div>
+          </li>
+        </ul>
+        <!-- Message when no courses are found (and not loading/no error) -->
+        <ng-template #noCourses>
+          <p *ngIf="!isLoading && !error" class="no-data-message">No courses found.</p>
+        </ng-template>
+      </div>
+  
+    </div> 
+  </div> 

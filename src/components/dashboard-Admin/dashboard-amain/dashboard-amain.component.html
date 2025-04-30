@@ -1,14 +1,19 @@
 <div class="dashboard-main">
+
+    <!-- Page 1-->
     <app-main-acontent *ngIf="selectedComponent === 'Page1' && !isUploadCoursesVisible && !isUploadLessonsVisible && !isUploadQuizzesVisible" 
         (navigateToCourses)="onNavigateToCourses()"
         (navigateToLessons)="onNavigateToLessons()"
         (navigateToQuizzes)="onNavigateToQuizzes()">
     </app-main-acontent>
     
+    <!-- Page 2-->
     <app-users-list *ngIf="selectedComponent === 'Page2'"></app-users-list>
     <app-courses-list *ngIf="selectedComponent === 'Page3'"></app-courses-list>
-
-    <app-upload-acourses *ngIf="isUploadCoursesVisible" (backClicked)="returnToMainContent()"></app-upload-acourses>
-    <app-upload-alessons *ngIf="isUploadLessonsVisible" (backClicked)="returnToMainContent()"></app-upload-alessons>
-    <app-upload-aquizzes *ngIf="isUploadQuizzesVisible" (backClicked)="returnToMainContent()"></app-upload-aquizzes>
+    <!-- Page 3-->
+    <app-upload-acourses *ngIf="selectedComponent === 'Page1' && isUploadCoursesVisible" (backClicked)="returnToMainContent()" ></app-upload-acourses>
+    <app-upload-alessons *ngIf="selectedComponent === 'Page1' && isUploadLessonsVisible" (backClicked)="returnToMainContent()"></app-upload-alessons>
+    <app-upload-aquizzes *ngIf="selectedComponent === 'Page1' && isUploadQuizzesVisible" (backClicked)="returnToMainContent()"></app-upload-aquizzes>
+     <!-- Page 4-->
+    <app-pending-courses *ngIf="selectedComponent === 'Page4'"></app-pending-courses>
 </div>

@@ -1,131 +1,771 @@
-.header {
+/* src/app/upload-aquizzes/upload-aquizzes.component.css */
+
+/* Define the theme color variable if not globally defined */
+:host {
+    --estigo-green: #6aaa96; /* Example color from your reference */
+    --estigo-green-dark: #5a9a86;
+    --border-color-light: #e9ecef;
+    --border-color-standard: #ced4da;
+    --text-color-muted: #6c757d;
+    --text-color-dark: #333;
+    --text-color-label: #495057;
+    --danger-color: #dc3545;
+    --danger-bg-light: #f8d7da;
+    --danger-border: #f5c6cb;
+    --danger-text-dark: #721c24;
+    --success-color: #155724;
+    --success-bg-light: #d4edda;
+    --success-border: #c3e6cb;
+    --focus-shadow-color-theme: rgba(106, 170, 150, 0.25); /* Theme focus */
+    --focus-shadow-color-danger: rgba(220, 53, 69, 0.25); /* Danger focus */
+    --outline-success-color: #198754; /* Bootstrap success */
+  
+    display: block;
+    padding-bottom: 30px;
+  }
+  
+  /* Main Container for the Upload Form */
+  .upload-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    margin: 20px auto; /* Add some margin */
+    max-width: 800px; /* Limit width */
+  }
+  
+  /* Header Section (Title + Back Button) */
+  .upload-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #ddd;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
-}
-
-.back-button {
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color-light);
+    padding-bottom: 15px;
+  }
+  
+  .upload-header h2 {
+    font-size: 22px; /* Adjusted size */
+    color: var(--text-color-dark);
+    position: relative;
+    padding-left: 15px;
+    margin: 0; /* Remove default margin */
+    font-weight: 600;
+  }
+  .upload-header h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 24px; /* Adjusted height */
+    background-color: var(--estigo-green);
+    border-radius: 3px;
+  }
+  
+  /* Back Button in Header */
+  .btn-back {
+    padding: 6px 12px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-back i {
+    font-size: 0.9em;
+  }
+  
+  
+  /* --- Loading/Error/Success Messages --- */
+  .loading-message {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 15px;
+    color: #777;
+  }
+  
+  .form-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+    position: relative; /* For potential close button */
+  }
+  
+  .form-message.error {
+    color: var(--danger-text-dark);
+    background-color: var(--danger-bg-light);
+    border-color: var(--danger-border);
+  }
+  
+  .form-message.success {
+    color: var(--success-color);
+    background-color: var(--success-bg-light);
+    border-color: var(--success-border);
+  }
+  
+  /* Optional: Close button for messages */
+  .close-message {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
+  .close-message:hover {
+    opacity: 1;
+  }
+  
+  
+  /* --- Form Styling --- */
+  form {
+    margin-top: 10px; /* Space below messages/header */
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-color-label);
+  }
+  
+  .form-label .text-danger {
+    font-weight: bold;
+    margin-left: 2px;
+    color: var(--danger-color);
+  }
+  
+  .form-control {
+    display: block; /* Ensure file input takes block display */
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color-standard);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box; /* Added for consistency */
+  }
+  .form-control::placeholder {
+    color: #adb5bd;
+  }
+  
+  .form-control:focus {
+    border-color: var(--estigo-green); /* Use theme color for focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem var(--focus-shadow-color-theme);
+  }
+  
+  /* Specific styling for select */
+  select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      padding-right: 2.5rem;
+  }
+  select.form-control:disabled {
+    background-color: #e9ecef;
+    opacity: 0.7; /* Indicate disabled state */
+  }
+  
+  textarea.form-control {
+    resize: vertical;
+    min-height: 80px; /* Slightly smaller default height for textareas */
+  }
+  /* Specific height for description */
+  textarea#examDescription {
+    min-height: 80px;
+  }
+  /* Specific height for question text */
+  textarea[formControlName="questionText"] {
+    min-height: 60px; /* Even smaller for question text */
+  }
+  
+  
+  /* Style the file input somewhat like other controls (copied, not used in quiz) */
+  input[type="file"].form-control {
+    line-height: 1.3;
+    padding: 9px 14px;
+  }
+  input[type="file"].form-control::file-selector-button {
+      padding: 0.375rem 0.75rem;
+      margin: -0.375rem -0.75rem;
+      margin-inline-end: 0.75rem;
+      color: #212529;
+      background-color: #e9ecef;
+      border: 0;
+      border-radius: 0;
+      border-inline-end: 1px solid var(--border-color-standard);
+      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  input[type="file"].form-control:hover::file-selector-button {
+      background-color: #dde0e3;
+  }
+  
+  
+  /* Style for the selected filename display (copied, not used in quiz) */
+  .selected-file-info {
+    margin-top: 0.5rem;
+    font-size: 0.875em;
+    color: var(--text-color-label);
+    background-color: #e9ecef;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    display: inline-block;
+    word-break: break-all;
+  }
+  
+  
+  /* --- Validation Error Styling --- */
+  .validation-error {
+    color: var(--danger-color);
+    font-size: 0.875em;
+    margin-top: 0.3rem;
+    display: block;
+  }
+  
+  /* Highlight invalid fields (using is-invalid class added by ngClass) */
+  .form-control.is-invalid {
+    border-color: var(--danger-color);
+  }
+  .form-control.is-invalid:focus {
+     border-color: var(--danger-color);
+     box-shadow: 0 0 0 0.2rem var(--focus-shadow-color-danger);
+  }
+  
+  
+  /* Helper text styling */
+  .form-text {
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: var(--text-color-muted);
+  }
+  .form-text.text-warning { /* Style for warnings like 'no lessons' */
+      color: #ffc107;
+  }
+  
+  
+  /* --- Form Action Buttons --- */
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color-light);
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid transparent; /* Add border for consistency */
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-flex; /* Needed for spinner alignment */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btn-primary {
+    background-color: var(--estigo-green);
+    color: white;
+    border-color: var(--estigo-green);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--estigo-green-dark);
+    border-color: var(--estigo-green-dark);
+  }
+  .btn-primary:disabled {
+    background-color: #a4ccc1; /* Lighter green for disabled */
+    border-color: #a4ccc1;
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+  
+  .btn-secondary {
     background-color: #6c757d;
     color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.back-button:hover {
+    border-color: #6c757d;
+  }
+  .btn-secondary:hover {
     background-color: #5a6268;
+    border-color: #545b62;
+  }
+  /* Specific styling for back button if different from secondary */
+  .btn-back {
+      background-color: #f8f9fa;
+      color: #495057;
+      border-color: #ccc;
+  }
+  .btn-back:hover {
+      background-color: #e9ecef;
+      border-color: #bbb;
+      color: #495057;
+  }
+  
+  
+  /* Spinner inside buttons */
+  .btn .spinner-border {
+    width: 1em; /* Adjust size relative to font */
+    height: 1em;
+    border-width: 0.15em;
+    vertical-align: text-bottom; /* Better alignment */
+    margin-right: 0.5em; /* Space between spinner and text */
+  }
+  .btn .spinner-border-sm { /* Ensure this class applies */
+      width: 1em;
+      height: 1em;
+      border-width: .15em;
+  }
+  
+  /* --- Responsive Adjustments --- */
+  @media screen and (max-width: 768px) {
+    .upload-container {
+      padding: 20px;
+    }
+    .upload-header h2 {
+      font-size: 20px;
+      padding-left: 12px;
+    }
+    .upload-header h2::before {
+       height: 22px;
+       width: 4px;
+    }
+  
+    .form-actions {
+      flex-direction: column-reverse; /* Stack buttons */
+      gap: 12px;
+      align-items: stretch; /* Full width buttons */
+    }
+    .btn {
+        width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+      .form-group label {
+          font-size: 13px;
+      }
+      .form-control {
+          font-size: 13px;
+          padding: 8px 10px;
+      }
+      input[type="file"].form-control {
+         line-height: 1.2; /* Adjust for smaller font */
+         padding: 7px 10px;
+      }
+      input[type="file"].form-control::file-selector-button {
+          padding: 0.3rem 0.6rem;
+          margin: -0.3rem -0.6rem;
+          margin-inline-end: 0.6rem;
+      }
+      select.form-control {
+          padding-right: 2rem; /* Adjust padding for arrow */
+      }
+      .btn {
+          font-size: 13px;
+          padding: 9px 15px;
+      }
+      .form-message {
+          font-size: 13px;
+          padding: 0.8rem;
+      }
+      .upload-header {
+          flex-direction: column; /* Stack title and button */
+          align-items: flex-start;
+          gap: 10px;
+      }
+       .btn-back {
+          align-self: flex-end; /* Move back button to right */
+      }
+      .selected-file-info {
+          font-size: 0.8em;
+          padding: 0.25rem 0.5rem;
+      }
+  }
+  
+  /* --- QUIZ SPECIFIC STYLES ADDED/MODIFIED BELOW --- */
+  
+  /* Inline loader for lessons */
+  .loading-inline {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 0.9em;
+      color: var(--text-color-muted);
+  }
+  /* Animation for the inline loader */
+  .loading-inline::before {
+      content: '';
+      display: inline-block;
+      width: 0.8em;
+      height: 0.8em;
+      margin-right: 5px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spinner-border .75s linear infinite;
+      vertical-align: text-bottom;
+  }
+  @keyframes spinner-border {
+    to { transform: rotate(360deg); }
+  }
+  
+  
+  /* Style the block containing each question */
+  .question-block {
+      border: 1px solid var(--border-color-light);
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fdfdfd; /* Slightly off-white background */
+      position: relative;
+      margin-bottom: 1.5rem; /* Space between question blocks */
+  }
+  
+  /* Style the question number label */
+  .question-label {
+      font-weight: 600;
+      color: var(--estigo-green); /* Use theme color */
+      font-size: 1.1em;
+      margin-bottom: 0 !important; /* Override default label margin */
+  }
+  
+  /* Styling for labels inside the question block */
+  .nested-label {
+      font-size: 0.9em; /* Slightly smaller labels for options etc. */
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--text-color-label); /* Consistent label color */
+  }
+  
+  /* Reduce margin for form groups inside the question block */
+  .nested-form-group {
+      margin-bottom: 15px;
+  }
+  
+  /* Style the remove question button */
+  .btn-remove-question {
+      /* Uses align-items: start on the parent flex container now */
+      padding: 3px 8px;
+      font-size: 0.8em;
+      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-color: var(--danger-color);
+      color: var(--danger-color);
+  }
+  .btn-remove-question:hover {
+      background-color: var(--danger-color);
+      color: white;
+  }
+  .btn-remove-question:disabled {
+      border-color: #e0e0e0;
+      color: #adb5bd;
+      background-color: transparent;
+      cursor: not-allowed;
+      opacity: 0.6;
+  }
+  .btn-remove-question i {
+      font-size: 0.9em;
+  }
+  
+  /* Add question button styling */
+  .btn-add-question {
+      font-size: 0.9em;
+      padding: 8px 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-color: var(--outline-success-color);
+      color: var(--outline-success-color);
+  }
+  .btn-add-question:hover {
+      background-color: var(--outline-success-color);
+      color: white;
+  }
+  .btn-add-question i {
+      font-size: 0.9em;
+  }
+  
+  /* Ensure validation errors inside question block are aligned */
+  .question-block .validation-error {
+      font-size: 0.85em;
+      margin-top: 0.25rem; /* Slightly less margin */
+  }
+  
+  /* Add horizontal rules for separation */
+  hr.my-4 {
+      margin-top: 1.5rem !important;
+      margin-bottom: 1.5rem !important;
+      border-top: 1px solid var(--border-color-light);
+      color: inherit; /* Reset color */
+      background-color: currentColor; /* Use theme color */
+      opacity: 0.15; /* Make it subtle */
+  }
+  
+  /* Use Bootstrap's row/col classes for options layout */
+  /* Ensure row has negative margins if needed (like Bootstrap) */
+  .row {
+      --bs-gutter-x: 1.5rem; /* Example gutter */
+      --bs-gutter-y: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: calc(-1 * var(--bs-gutter-y));
+      margin-right: calc(-.5 * var(--bs-gutter-x));
+      margin-left: calc(-.5 * var(--bs-gutter-x));
+  }
+  .row > * {
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 100%;
+      padding-right: calc(var(--bs-gutter-x) * .5);
+      padding-left: calc(var(--bs-gutter-x) * .5);
+      margin-top: var(--bs-gutter-y);
+  }
+  .col-md-6 {
+      flex: 0 0 auto;
+  }
+  @media (min-width: 768px) { /* md breakpoint */
+    .col-md-6 {
+      width: 50%;
+    }
+  }
+  
+  /* Responsive adjustments for question block */
+  @media screen and (max-width: 576px) {
+      .question-block {
+          padding: 15px;
+      }
+      .nested-label {
+          font-size: 0.85em;
+      }
+      .btn-remove-question {
+          /* Adjust position or style if needed */
+      }
+       /* Stack option columns */
+      .col-md-6 {
+         width: 100%;
+      }
+  }
+
+.loading-inline {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.9em;
+    color: var(--text-color-muted);
+}
+/* Animation for the inline loader */
+.loading-inline::before {
+    content: '';
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-right: 5px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+    vertical-align: text-bottom;
+}
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
 }
 
-.upload-section {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-}
 
-.upload-card {
-    flex: 1;
-    background-color: white;
-    padding: 20px;
+/* Style the block containing each question */
+.question-block {
+    border: 1px solid var(--border-color-light);
+    padding: 0; /* Remove padding here, add to header/content */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #fdfdfd; /* Slightly off-white background */
+    /* position: relative; <-- Removed, not needed */
+    margin-bottom: 1rem; /* Reduced margin */
+    overflow: hidden; /* Prevent content overflow on collapse */
 }
 
-.upload-card h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-.upload-form {
+/* *** NEW: Style for the clickable header *** */
+.question-header {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.form-group label {
-    font-weight: 500;
-    color: #555;
-}
-
-.form-group input,
-.form-group textarea {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.upload-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.upload-button:hover {
-    background-color: #218838;
-}
-
-.recent-uploads {
-    flex: 1;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.recent-uploads h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-.upload-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.upload-item {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 10px 15px; /* Padding for header */
+    background-color: #f8f9fa; /* Header background */
+    border-bottom: 1px solid var(--border-color-light);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.question-header:hover {
+    background-color: #e9ecef;
 }
 
-.upload-item i {
-    font-size: 20px;
-    color: #666;
+/* *** NEW: Style for the collapsible content area *** */
+.question-content {
+    padding: 20px 15px 5px 15px; 
+ 
 }
 
-.upload-details h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
+
+
+/* Style the question number label */
+.question-label {
+    font-weight: 600;
+    color: var(--estigo-green); 
+    font-size: 1.1em;
+    margin-bottom: 0 !important; 
+    user-select: none; 
+}
+/* Style the chevron icon */
+.question-label i {
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+}
+.question-label i.fa-chevron-up {
+    /* transform: rotate(180deg); */ /* Not needed if using separate icons */
 }
 
-.upload-details p {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
+
+/* Styling for labels inside the question block */
+.nested-label {
+    font-size: 0.9em; 
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--text-color-label); 
+}
+
+
+.nested-form-group {
+    margin-bottom: 15px;
+}
+
+/* Style the remove question button */
+.btn-remove-question {
+    padding: 3px 8px;
+    font-size: 0.8em;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    margin-left: 10px; /* Space from label */
+}
+.btn-remove-question:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+.btn-remove-question:disabled {
+    border-color: #e0e0e0;
+    color: #adb5bd;
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.btn-remove-question i {
+    font-size: 0.9em;
+}
+
+/* Add question button styling */
+.btn-add-question {
+    font-size: 0.9em;
+    padding: 8px 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-color: var(--outline-success-color);
+    color: var(--outline-success-color);
+}
+.btn-add-question:hover {
+    background-color: var(--outline-success-color);
+    color: white;
+}
+.btn-add-question i {
+    font-size: 0.9em;
+}
+
+/* Ensure validation errors inside question block are aligned */
+.question-block .validation-error {
+    font-size: 0.85em;
+    margin-top: 0.25rem; /* Slightly less margin */
+}
+
+/* Add horizontal rules for separation */
+hr.my-4 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    border-top: 1px solid var(--border-color-light);
+    color: inherit; /* Reset color */
+    background-color: currentColor; /* Use theme color */
+    opacity: 0.15; /* Make it subtle */
+}
+
+
+.row {
+    --bs-gutter-x: 1.5rem; 
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+.col-md-6 {
+    flex: 0 0 auto;
+}
+@media (min-width: 768px) { /* md breakpoint */
+  .col-md-6 {
+    width: 50%;
+  }
+}
+
+/* Responsive adjustments for question block */
+@media screen and (max-width: 576px) {
+    .question-header {
+        padding: 8px 10px;
+    }
+     .question-content {
+        padding: 15px 10px 5px 10px;
+    }
+    .nested-label {
+        font-size: 0.85em;
+    }
+    .btn-remove-question {
+        /* Adjust position or style if needed */
+    }
+     /* Stack option columns */
+    .col-md-6 {
+       width: 100%;
+    }
 }

@@ -73,7 +73,7 @@
 
   .quiz-progress-fill {
       height: 100%;
-      background-color: #2a7f62;
+      background-color: var(--estigo-green);
       border-radius: 4px;
       transition: width 0.4s ease-out; /* Smoother transition */
   }
@@ -107,7 +107,7 @@
   .question-number {
       font-size: 13px; /* Slightly smaller */
       font-weight: 600;
-      color: #2a7f62;
+      color: var(--estigo-green);
       background-color: #e7f3ef; /* Lighter background */
       padding: 6px 14px; /* Adjusted padding */
       border-radius: 20px;
@@ -150,7 +150,7 @@
 
 
   .question-option:hover:not([style*="cursor: default"]) {
-      border-color: #2a7f62; /* Softer hover border */
+      border-color: var(--estigo-green); /* Softer hover border */
       background-color: #f8f9fa; /* Subtle hover background */
       transform: translateY(-2px); /* Slight lift effect */
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -277,7 +277,7 @@
   }
 
   .quiz-nav-btn.primary {
-      background-color: #2a7f62;
+      background-color: var(--estigo-green);
       border-color: #6aaa96;
       color: white;
       box-shadow: 0 2px 4px rgba(106, 170, 150, 0.2);

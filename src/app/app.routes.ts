@@ -14,6 +14,7 @@ import { CourseSearchComponent } from '../components/courses/course-search/cours
 import { MycoursePageComponent } from '../components/dashboard/mycourse-page/mycourse-page.component';
 import { QuizComponent } from '../components/dashboard/quiz/quiz.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { PredictionComponent } from '../components/dashboard/prediction/prediction.component';
 
 
 
@@ -31,6 +32,7 @@ export const routes: Routes = [
      {path:"course-vm/:id",component:CourseVmComponent},
      { path: 'course-s/:term', component: CourseSearchComponent },
      {path:"myCourse/:id",component:MycoursePageComponent},
-     {path:"quiz/:id",component:QuizComponent}
+     {path:"quiz/:id",component:QuizComponent},
+     {path:"predict",component:PredictionComponent}
      
 ];

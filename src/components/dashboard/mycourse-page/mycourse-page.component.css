@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #2a7f62;
+  color: var(--estigo-green);
   border: 1px dashed #a8d5c0;
   border-radius: 5px;
   min-height: 200px;
@@ -62,7 +62,7 @@
   justify-content: center;
   text-align: center;
   background-color: #f5faf8;
-  border: 1px solid #2a7f62;
+  border: 1px solid var(--estigo-green);
   border-radius: 5px;
   padding: 3rem 2rem;
   min-height: 300px;
@@ -143,13 +143,13 @@
 }
 
 .content-item.active {
-  background-color: #2a7f62;
+  background-color: var(--estigo-green);
   border-color: #0a3b28;
 }
 
 .content-item.active .lesson-title {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 .content-item.no-video {
@@ -182,14 +182,14 @@
   cursor: pointer;
   border: 1px solid #11412e;
   background-color: #e8f5f1;
-  color: #2a7f62;
+  color: var(--estigo-green);
   border-radius: 3px;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .exam-button:hover {
   background-color: #11412e;
-  border-color: #2a7f62;
+  border-color: var(--estigo-green);
   color: #fff;
 }
 

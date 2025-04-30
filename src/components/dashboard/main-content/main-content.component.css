@@ -32,7 +32,7 @@
 }
 
 .hero-section {
-    background-color: #5d927e;
+    background-color: var(--estigo-green);
     border-radius: 20px;
     padding: 30px;
     display: flex;
@@ -154,14 +154,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 4px solid #6A9C89;
+    border-left: 4px solid var(--estigo-green);
     padding-left: 10px;
     flex-shrink: 0;
 }
 
 .section-title a {
     text-decoration: none;
-    color: #2a7f62;
+    color: var(--estigo-green);
     font-size: 0.9em;
 }
 
@@ -193,7 +193,7 @@
 }
 
 .course-card:hover {
-    border: 2px solid #2a7f62; /* Green border on hover */
+    border: 2px solid var(--estigo-green); /* Green border on hover */
 }
 
 .course-card img {
@@ -215,7 +215,7 @@
 }
 
 .course-view-button {
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
     color: white;
     border: none;
     padding: 8px 18px;
@@ -235,6 +235,25 @@
     background-color: #5e9179;
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.pred-button{
+    background-color: var(--estigo-green);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.8em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pred-button:hover {
+    background-color: #5e9179;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
 .no-courses-placeholder,
@@ -314,7 +333,7 @@
 
 .quiz-item:hover {
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    border-left-color: #6A9C89;
+    border-left-color: var(--estigo-green);
 }
 
 .quiz-title {
@@ -327,7 +346,7 @@
 
 .quiz-score {
     font-weight: bold;
-    color: #6A9C89;
+    color: var(--estigo-green);
     font-size: 0.9em;
     margin-bottom: 3px;
 }
@@ -370,7 +389,7 @@
 
 .payment-date {
     font-weight: 500;
-    color: #2a7f62;
+    color: var(--estigo-green);
     font-size: 0.9em;
     padding: 5px 10px;
     background-color: #f0f7f4;
@@ -408,52 +427,11 @@
 .quiz-more {
     display: block;
     margin-top: 10px;
-    color: #2a7f62;
+    color: var(--estigo-green);
     text-decoration: none;
     font-size: 0.85em;
 }
 
-/* Hero Section Image Styling */
-.hero-section {
-    background-color: #5d927e;
-    border-radius: 20px;
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-.hero-text {
-    flex: 1;
-    margin-right: 20px;
-}
-
-.hero-welcome {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 5px;
-}
-
-.hero-image {
-    max-width: 250px;
-    width: 30%;
-    height: auto;
-}
-
-.hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.hero-welcomeP {
-    color: white;
-    opacity: 0.8;
-}
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {

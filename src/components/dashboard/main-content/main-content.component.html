@@ -20,6 +20,7 @@
                 </div>
                 <div class="hero-image">
                     <img src="dashboard-girl.svg" alt="Hero Image"> 
+                   
                 </div>
             </div>
 
@@ -28,18 +29,25 @@
                 <section class="dashboard-section" id="enrolled-courses-section">
                     <div class="section-title" style="border-left: 4px solid green; padding-left: 8px;">
                         Enrolled Courses
+
+                        <button routerLink="/predict" class="pred-button">predict</button>
                     </div>
+                    
                     <div class="enrolled-courses-grid" *ngIf="data.enrolledCourses && data.enrolledCourses.length > 0; else noCourses">
+
                         <div class="course-card" *ngFor="let course of data.enrolledCourses" >
-                            
+
                             <img [src]="getImageSource(course.courseImageUrl, 'girl.png')" [alt]="course.courseName">
                             <h5 class="course-title">{{ course.courseName }}</h5>
                             <button class="course-view-button" [routerLink]="['/myCourse', course.courseId]">View</button>
                         </div>
+
+                 
                     </div>
                     <ng-template #noCourses>
                         <p>No courses enrolled yet.</p>
                     </ng-template>
+                    
                 </section>
 
                 <!-- Section 2: Quizzes -->

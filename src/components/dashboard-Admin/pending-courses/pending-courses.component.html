@@ -1,0 +1,65 @@
+<h1>Pending Courses</h1>
+
+<div class="container">
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    Loading pending courses...
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error && !isLoading" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- No Courses Message -->
+  <div *ngIf="!isLoading && !error && courses.length === 0" class="no-data-message">
+    There are no pending courses to review at this time.
+  </div>
+
+  <!-- Courses Grid -->
+  <div *ngIf="!isLoading && !error && courses.length > 0" class="courses-grid">
+
+    <!-- Course Card Loop -->
+    <div *ngFor="let course of courses" class="course-card" [routerLink]="['/myCourse', course.courseId]" >
+      <div class="card-image-container">
+        <img [src]="course.logo"
+             [alt]="course.courseTitle + ' Logo'"
+             class="card-image"
+             onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+      </div>
+
+      <div class="card-content">
+        <h3 class="card-title">{{ course.courseTitle }}</h3>
+
+        <p class="card-detail price">
+          Price: <strong>{{ course.price | currency:'USD':'symbol' }}</strong>
+        </p>
+        <p class="card-detail">
+          Course ID: {{ course.courseId }}
+        </p>
+        <p class="card-detail">
+          Teacher ID: {{ course.teacherId }}
+        </p>
+      </div>
+
+      <div class="card-actions">
+        <!-- Add disabled binding and conditional text -->
+        <button class="btn btn-reject"
+                (click)="rejectCourse(course.courseId, $event)"
+                [disabled]="isProcessing(course.courseId)">
+                {{ isProcessing(course.courseId) ? 'Processing...' : 'Reject' }}
+        </button>
+        <button class="btn btn-approve"
+                (click)="approveCourse(course.courseId)"
+                [disabled]="isProcessing(course.courseId)">
+                {{ isProcessing(course.courseId) ? 'Processing...' : 'Approve' }}
+        </button>
+      </div>
+    </div>
+    <!-- End Course Card -->
+
+  </div>
+  <!-- End Courses Grid -->
+
+</div>

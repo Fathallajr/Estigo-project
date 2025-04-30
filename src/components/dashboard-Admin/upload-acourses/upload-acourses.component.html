@@ -1,66 +1,115 @@
-<div class="upload-course-container">
-    <div class="upload-header">
-      <button class="back-btn" (click)="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
-      <h2>Upload New Course</h2>
-    </div>
-    
-    <div class="upload-card">
-      <div class="form-section">
-        <h3>Course Information</h3>
-        <div class="form-item">
-          <label>Course Title</label>
-          <input type="text" name="title" required>
-        </div>
-        <div class="form-item">
-          <label>Course Description</label>
-          <textarea name="description" rows="3" required></textarea>
-        </div>
-        <div class="form-item">
-          <label>Course Category</label>
-          <select name="category" required>
-            <option value="programming">Programming</option>
-            <option value="design">Design</option>
-            <option value="business">Business</option>
-            <option value="language">Language</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-section">
-        <h3>Course Media</h3>
-        <div class="form-item">
-          <label>Thumbnail Image</label>
-          <input type="file" accept="image/*">
-        </div>
-        <div class="form-item">
-          <label>Introductory Video URL</label>
-          <input type="url" name="videoUrl">
-        </div>
-      </div>
-      
-      <div class="form-section">
-        <h3>Course Settings</h3>
-        <div class="form-item">
-          <label>Course Visibility</label>
-          <select name="visibility">
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
-        </div>
-        <div class="form-item">
-          <label>Course Difficulty</label>
-          <select name="difficulty">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-actions">
-        <button type="button" class="upload-btn">Upload Course</button>
-        <button type="reset" class="reset-btn">Clear Form</button>
-      </div>
-    </div>
+<div class="upload-container">
+  <div class="upload-header">
+    <h2>Upload New Course</h2>
+    <button class="btn btn-secondary btn-back" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
   </div>
-  
+
+  <div *ngIf="isLoadingTeachers" class="loading-message">
+    Loading teachers...
+  </div>
+
+  <div *ngIf="successMessage" class="form-message success">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="form-message error">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingTeachers">
+
+    <div class="form-group">
+      <label for="courseTitle" class="form-label">
+        Course Title 
+        <span class="text-danger">*</span>
+
+      </label>
+
+      <input type="text" id="courseTitle" class="form-control" formControlName="courseTitle"
+             [ngClass]="{ 'is-invalid': f['courseTitle'].touched && f['courseTitle'].invalid }">
+
+      <div *ngIf="f['courseTitle'].touched && f['courseTitle'].invalid" class="validation-error">
+        <div *ngIf="f['courseTitle'].errors?.['required']">Course title is required.</div>
+        <div *ngIf="f['courseTitle'].errors?.['minlength']">Course title must be at least 3 characters long.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="form-label">
+        Description 
+
+        <span class="text-danger">*</span>
+
+      </label>
+      
+      <textarea id="description" class="form-control" formControlName="description" rows="4"
+                [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].invalid }"></textarea>
+      <div *ngIf="f['description'].touched && f['description'].invalid" class="validation-error">
+        <div *ngIf="f['description'].errors?.['required']">Description is required.</div>
+         <div *ngIf="f['description'].errors?.['minlength']">Description must be at least 10 characters long.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="logo" class="form-label">Logo Filename <span class="text-danger">*</span></label>
+      <input type="text" id="logo" class="form-control" formControlName="logo"
+             placeholder="e.g., biology-course.png"
+             [ngClass]="{ 'is-invalid': f['logo'].touched && f['logo'].invalid }">
+      <div *ngIf="f['logo'].touched && f['logo'].invalid" class="validation-error">
+        <div *ngIf="f['logo'].errors?.['required']">Logo filename is required.</div>
+      </div>
+      <small class="form-text text-muted">Enter only the image filename (like 'my-image.jpg'). The base URL will be added automatically.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+      <input type="number" id="price" class="form-control" formControlName="price" min="0" step="any"
+             [ngClass]="{ 'is-invalid': f['price'].touched && f['price'].invalid }">
+      <div *ngIf="f['price'].touched && f['price'].invalid" class="validation-error">
+        <div *ngIf="f['price'].errors?.['required']">Price is required.</div>
+        <div *ngIf="f['price'].errors?.['min']">Price cannot be negative.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="teacherId" class="form-label">Teacher <span class="text-danger">*</span></label>
+      <select id="teacherId" class="form-control" formControlName="teacherId" [ngClass]="{ 'is-invalid': f['teacherId'].touched && f['teacherId'].invalid }">
+        <option value="" disabled selected>-- Select Teacher --</option>
+        <option *ngFor="let teacher of teachers" [value]="teacher.id">
+          {{ teacher.name }} ({{ teacher.subject }})
+        </option>
+      </select>
+       <div *ngIf="f['teacherId'].touched && f['teacherId'].invalid" class="validation-error">
+        <div *ngIf="f['teacherId'].errors?.['required']">Please select a teacher.</div>
+      </div>
+       <div *ngIf="!isLoadingTeachers && teachers.length === 0" class="form-text text-warning mt-1">
+         No teachers found or failed to load.
+       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="catogryid" class="form-label">Category <span class="text-danger">*</span></label>
+      <select id="catogryid" class="form-control" formControlName="catogryid"
+              [ngClass]="{ 'is-invalid': f['catogryid'].touched && f['catogryid'].invalid }">
+        <option [ngValue]="null" disabled selected>-- Select Category --</option>
+        <option *ngFor="let category of categories" [ngValue]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+       <div *ngIf="f['catogryid'].touched && f['catogryid'].invalid" class="validation-error">
+        <div *ngIf="f['catogryid'].errors?.['required']">Please select a category.</div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+       <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel</button>
+       <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid || isSubmitting">
+         <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+         {{ isSubmitting ? 'Submitting...' : 'Submit Course' }}
+       </button>
+    </div>
+
+  </form>
+
+</div>
