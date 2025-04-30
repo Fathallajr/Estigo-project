@@ -1,138 +1,147 @@
 <div class="simple-form-container">
-    <h2>Add New Quiz</h2>
-  
-    <!-- Display error if no lessons loaded -->
-    <div *ngIf="teacherId && teacherLessons.length === 0" class="alert alert-warning">
-      Loading lessons or no lessons found for this teacher.
-    </div>
-    <div *ngIf="!teacherId" class="alert alert-danger">
-      Teacher ID not found. Cannot load lessons or submit quiz.
-    </div>
-  
-    <form (ngSubmit)="onSubmit()" class="simple-course-form" #quizForm="ngForm"> <!-- Add template reference variable -->
-  
-      <!-- Lesson Selection -->
-      <div class="form-group">
-        <label for="lessonSelect">Select Lesson for Quiz:</label>
-        <select id="lessonSelect" name="lessonSelect" [(ngModel)]="selectedLessonId" required #lessonModel="ngModel"
-                [class.is-invalid]="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)">
-          <option [ngValue]="null" disabled>-- Select Lesson --</option>
-          <option *ngFor="let lesson of teacherLessons" [ngValue]="lesson.lessonId">
-            {{ lesson.lessonTitle }} (ID: {{ lesson.lessonId }})
-          </option>
-        </select>
-        <div *ngIf="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)" class="invalid-feedback">
-          Please select a lesson.
-        </div>
-      </div>
+  <h2>Add New Quiz</h2>
 
-  
-      <!-- Quiz Title -->
-      <div class="form-group">
-        <label for="examTitle">Quiz Title:</label>
-        <input type="text" id="examTitle" name="examTitle" [(ngModel)]="quizData.examTitle" required #titleModel="ngModel"
-               [class.is-invalid]="titleModel.invalid && (titleModel.dirty || titleModel.touched)">
-         <div *ngIf="titleModel.invalid && (titleModel.dirty || titleModel.touched)" class="invalid-feedback">
-           Quiz title is required.
-         </div>
-      </div>
-  
-      <hr>
-      <h3>Questions</h3>
-  
-      <!-- Loop through question view models using trackBy -->
-      <div *ngFor="let questionVM of questionsViewModel; let i = index; trackBy: trackQuestionByIndex"
-           class="question-block" [class.collapsed]="questionVM.isCollapsed">
-  
-          <!-- Header with Toggle and Remove -->
-          <div class="question-header">
-              <h4>Question {{ i + 1 }}</h4>
-              <div class="question-actions">
-                   <!-- Show 'Edit' when collapsed -->
-                   <button type="button" *ngIf="questionVM.isCollapsed" (click)="toggleQuestionCollapse(i)" class="btn-toggle btn-toggle-edit" title="Edit Question {{ i + 1 }}">
-                       Edit
-                   </button>
-                   <!-- Show 'Collapse'/'Done' when expanded -->
-                   <button type="button" *ngIf="!questionVM.isCollapsed" (click)="toggleQuestionCollapse(i)" class="btn-toggle btn-toggle-collapse" title="Collapse Question {{ i + 1 }}">
-                       Done Editing
-                   </button>
-                   <!-- Remove Button -->
-                   <button type="button" (click)="removeQuestion(i)" class="btn-remove" *ngIf="questionsViewModel.length > 1" title="Remove Question {{ i + 1 }}">
-                       × <!-- Use a simple 'x' for remove -->
-                   </button>
-              </div>
-          </div>
-  
-          <!-- Collapsed View (Summary) -->
-          <div *ngIf="questionVM.isCollapsed" class="question-summary" (click)="toggleQuestionCollapse(i)" title="Click to edit Question {{ i + 1 }}">
-              <p><strong>Q:</strong> {{ questionVM.data.questionText || '(No question text yet)' }}</p>
-          </div>
-  
-          <!-- Expanded View (Full Form) - Only render content when not collapsed -->
-          <div *ngIf="!questionVM.isCollapsed" class="question-form-content">
-              <!-- Use ngModel unique names -->
-              <!-- Question Text -->
-              <div class="form-group">
-                  <label for="questionText_{{i}}">Question Text:</label>
-                  <textarea id="questionText_{{i}}" name="questionText_{{i}}"
-                            [(ngModel)]="questionVM.data.questionText" rows="3" required #qTextModel="ngModel"
-                            [class.is-invalid]="qTextModel.invalid && (qTextModel.dirty || qTextModel.touched)">
-                  </textarea>
-                   <div *ngIf="qTextModel.invalid && (qTextModel.dirty || qTextModel.touched)" class="invalid-feedback">
-                     Question text cannot be empty.
-                   </div>
-              </div>
-  
-              <!-- Options -->
-              <div class="form-group">
-                  <label for="optionA_{{i}}">Option A:</label>
-                  <input type="text" id="optionA_{{i}}" name="optionA_{{i}}" [(ngModel)]="questionVM.data.optionA">
-              </div>
-              <div class="form-group">
-                  <label for="optionB_{{i}}">Option B:</label>
-                  <input type="text" id="optionB_{{i}}" name="optionB_{{i}}" [(ngModel)]="questionVM.data.optionB">
-              </div>
-              <div class="form-group">
-                  <label for="optionC_{{i}}">Option C:</label>
-                  <input type="text" id="optionC_{{i}}" name="optionC_{{i}}" [(ngModel)]="questionVM.data.optionC">
-              </div>
-              <div class="form-group">
-                  <label for="optionD_{{i}}">Option D:</label>
-                  <input type="text" id="optionD_{{i}}" name="optionD_{{i}}" [(ngModel)]="questionVM.data.optionD">
-              </div>
-  
-              <!-- Correct Answer -->
-              <div class="form-group">
-                  <label for="correctAnswer_{{i}}">Correct Answer:</label>
-                  <select id="correctAnswer_{{i}}" name="correctAnswer_{{i}}" [(ngModel)]="questionVM.data.correctAnswer" required>
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                      <option value="D">D</option>
-                  </select>
-              </div>
-          </div> <!-- End of expanded view -->
-  
-      </div> <!-- End of question block -->
-  
-      <!-- Button to add more questions -->
-      <div class="add-question-action">
-          <button type="button" (click)="addQuestion()" class="btn-add-question">
-              + Add Another Question
-          </button>
-          <!-- Hint shown only if the last question is currently expanded -->
-          <small *ngIf="questionsViewModel.length > 0 && !questionsViewModel[questionsViewModel.length - 1].isCollapsed">
-              (Adding will collapse Question {{ questionsViewModel.length }})
-          </small>
-      </div>
-  
-  
-      <!-- Submit Button -->
-      <div class="form-actions">
-          <button type="submit" class="btn-submit" [disabled]="!quizForm.form.valid || questionsViewModel.length === 0 || !teacherId">
-              Submit Quiz with {{ questionsViewModel.length }} Question(s)
-          </button>
-      </div>
-    </form>
-  
+  <!-- Display error if no lessons loaded -->
+  <div *ngIf="teacherId && teacherLessons.length === 0" class="alert alert-warning">
+    Loading lessons or no lessons found for this teacher.
   </div>
+  <div *ngIf="!teacherId" class="alert alert-danger">
+    Teacher ID not found. Cannot load lessons or submit quiz.
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="simple-course-form" #quizForm="ngForm">
+
+    <!-- Lesson Selection -->
+    <div class="form-group">
+      <label for="lessonSelect">Select Lesson for Quiz:</label>
+      <select id="lessonSelect" name="lessonSelect" [(ngModel)]="selectedLessonId" required #lessonModel="ngModel"
+              [class.is-invalid]="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)">
+        <option [ngValue]="null" disabled>-- Select Lesson --</option>
+        <option *ngFor="let lesson of teacherLessons" [ngValue]="lesson.lessonId">
+          {{ lesson.lessonTitle }} (ID: {{ lesson.lessonId }})
+        </option>
+      </select>
+      <div *ngIf="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)" class="invalid-feedback">
+        Please select a lesson.
+      </div>
+    </div>
+
+
+    <!-- Quiz Title -->
+    <div class="form-group">
+      <label for="examTitle">Quiz Title:</label>
+      <input type="text" id="examTitle" name="examTitle" [(ngModel)]="quizData.examTitle" required #titleModel="ngModel"
+             [class.is-invalid]="titleModel.invalid && (titleModel.dirty || titleModel.touched)">
+       <div *ngIf="titleModel.invalid && (titleModel.dirty || titleModel.touched)" class="invalid-feedback">
+         Quiz title is required.
+       </div>
+    </div>
+
+    <!-- Is Final Checkbox (NEW) -->
+    <div class="form-group"> <!-- Using form-group for consistent spacing -->
+        <div class="form-check"> <!-- Bootstrap class for checkbox styling -->
+            <input class="form-check-input" type="checkbox" id="isFinalCheck" name="isFinalCheck"
+                   [(ngModel)]="quizData.isFinal"> <!-- Bind to the new property -->
+            <label class="form-check-label" for="isFinalCheck">
+                Mark as Final Exam?
+            </label>
+        </div>
+        <!-- Optional: Helper text like in the first component -->
+        <small class="form-text text-muted d-block">Check this box if this quiz should be treated as the final exam for the selected lesson.</small>
+    </div>
+
+
+    <hr>
+    <h3>Questions</h3>
+
+    <!-- Loop through question view models using trackBy -->
+    <div *ngFor="let questionVM of questionsViewModel; let i = index; trackBy: trackQuestionByIndex"
+         class="question-block" [class.collapsed]="questionVM.isCollapsed">
+
+        <!-- Header with Toggle and Remove -->
+        <div class="question-header">
+            <h4>Question {{ i + 1 }}</h4>
+            <div class="question-actions">
+                 <button type="button" *ngIf="questionVM.isCollapsed" (click)="toggleQuestionCollapse(i)" class="btn-toggle btn-toggle-edit" title="Edit Question {{ i + 1 }}">
+                     Edit
+                 </button>
+                 <button type="button" *ngIf="!questionVM.isCollapsed" (click)="toggleQuestionCollapse(i)" class="btn-toggle btn-toggle-collapse" title="Collapse Question {{ i + 1 }}">
+                     Done Editing
+                 </button>
+                 <button type="button" (click)="removeQuestion(i)" class="btn-remove" *ngIf="questionsViewModel.length > 1" title="Remove Question {{ i + 1 }}">
+                     ×
+                 </button>
+            </div>
+        </div>
+
+        <!-- Collapsed View (Summary) -->
+        <div *ngIf="questionVM.isCollapsed" class="question-summary" (click)="toggleQuestionCollapse(i)" title="Click to edit Question {{ i + 1 }}">
+            <p><strong>Q:</strong> {{ questionVM.data.questionText || '(No question text yet)' }}</p>
+        </div>
+
+        <!-- Expanded View (Full Form) -->
+        <div *ngIf="!questionVM.isCollapsed" class="question-form-content">
+            <!-- Question Text -->
+            <div class="form-group">
+                <label [attr.for]="'questionText_' + i">Question Text:</label> <!-- Use attr.for for dynamic ids -->
+                <textarea [id]="'questionText_' + i" [name]="'questionText_' + i"
+                          [(ngModel)]="questionVM.data.questionText" rows="3" required #qTextModel="ngModel"
+                          [class.is-invalid]="qTextModel.invalid && (qTextModel.dirty || qTextModel.touched)">
+                </textarea>
+                 <div *ngIf="qTextModel.invalid && (qTextModel.dirty || qTextModel.touched)" class="invalid-feedback">
+                   Question text cannot be empty.
+                 </div>
+            </div>
+
+            <!-- Options -->
+            <div class="form-group">
+                <label [attr.for]="'optionA_' + i">Option A:</label>
+                <input type="text" [id]="'optionA_' + i" [name]="'optionA_' + i" [(ngModel)]="questionVM.data.optionA">
+            </div>
+            <div class="form-group">
+                <label [attr.for]="'optionB_' + i">Option B:</label>
+                <input type="text" [id]="'optionB_' + i" [name]="'optionB_' + i" [(ngModel)]="questionVM.data.optionB">
+            </div>
+            <div class="form-group">
+                <label [attr.for]="'optionC_' + i">Option C:</label>
+                <input type="text" [id]="'optionC_' + i" [name]="'optionC_' + i" [(ngModel)]="questionVM.data.optionC">
+            </div>
+            <div class="form-group">
+                <label [attr.for]="'optionD_' + i">Option D:</label>
+                <input type="text" [id]="'optionD_' + i" [name]="'optionD_' + i" [(ngModel)]="questionVM.data.optionD">
+            </div>
+
+            <!-- Correct Answer -->
+            <div class="form-group">
+                <label [attr.for]="'correctAnswer_' + i">Correct Answer:</label>
+                <select [id]="'correctAnswer_' + i" [name]="'correctAnswer_' + i" [(ngModel)]="questionVM.data.correctAnswer" required>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+            </div>
+        </div> <!-- End of expanded view -->
+
+    </div> <!-- End of question block -->
+
+    <!-- Button to add more questions -->
+    <div class="add-question-action">
+        <button type="button" (click)="addQuestion()" class="btn-add-question">
+            + Add Another Question
+        </button>
+        <small *ngIf="questionsViewModel.length > 0 && !questionsViewModel[questionsViewModel.length - 1].isCollapsed">
+            (Adding will collapse Question {{ questionsViewModel.length }})
+        </small>
+    </div>
+
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+        <button type="submit" class="btn-submit" [disabled]="!quizForm.form.valid || questionsViewModel.length === 0 || !teacherId">
+            Submit Quiz with {{ questionsViewModel.length }} Question(s)
+        </button>
+    </div>
+  </form>
+
+</div>

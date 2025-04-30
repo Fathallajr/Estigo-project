@@ -44,7 +44,7 @@
 }
 
 .instructor-card:hover img {
-    border: 2px solid #2a7f62;
+    border: 2px solid var(--estigo-green);
 }
 
 .instructor-name {

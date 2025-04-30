@@ -81,16 +81,16 @@
 
 
 .estigo-card:first-child .card-content {
-  border-top: 5px solid #2a7f62;
+  border-top: 5px solid var(--estigo-green);
   
 }
 
 .estigo-card:first-child .card-content h3 {
-  color: #2a7f62; /* Green text for heading */
+  color: var(--estigo-green); /* Green text for heading */
 }
 
 .estigo-card:first-child .card-content h3::after {
-  background-color: #2a7f62;
+  background-color: var(--estigo-green);
 }
 
 .estigo-card:first-child .card-content p {
@@ -98,7 +98,7 @@
 }
 
 .estigo-card:first-child .card-content button {
-  background-color: #2a7f62;
+  background-color: var(--estigo-green);
 }
 
 .estigo-card:first-child .card-content button:hover {

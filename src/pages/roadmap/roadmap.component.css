@@ -6,7 +6,7 @@
 
 .roadmap-container h2 {
     text-align: center;
-    color: #2a7f62;
+    color: var(--estigo-green);
     font-size: 2rem;
     margin-bottom: 40px;
 }
@@ -34,7 +34,11 @@
     position: absolute;
     top: 0;
     left: 0;
+<<<<<<< HEAD
+    background-color: var(--estigo-green);
+=======
     background-color: #2d635e;
+>>>>>>> 1d66171260fa3dd786ab4926cb6290a20c8d32d4
     color: white;
     padding: 5px 15px;
     border-radius: 0 0 15px 0;
@@ -49,7 +53,7 @@
 }
 
 .step h3 {
-    color: #2a7f62;
+    color: var(--estigo-green);
     font-size: 1.3rem;
     margin-top: 30px;
     margin-bottom: 15px;

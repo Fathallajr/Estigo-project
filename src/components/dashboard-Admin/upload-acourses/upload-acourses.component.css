@@ -1,105 +1,404 @@
-.upload-course-container {
+/* src/app/upload-acourses/upload-acourses.component.css */
+
+/* Define the theme color variable if not globally defined */
+:host {
+  --estigo-green: #6aaa96; /* Example color from your reference */
+  --estigo-green-dark: #5a9a86;
+  --border-color-light: #e9ecef;
+  --border-color-standard: #ced4da;
+  --text-color-muted: #6c757d;
+  --text-color-dark: #333;
+  --text-color-label: #495057;
+  --danger-color: #dc3545;
+  --danger-bg-light: #f8d7da;
+  --danger-border: #f5c6cb;
+  --danger-text-dark: #721c24;
+  --success-color: #155724;
+  --success-bg-light: #d4edda;
+  --success-border: #c3e6cb;
+  --focus-shadow-color-theme: rgba(106, 170, 150, 0.25); /* Theme focus */
+  --focus-shadow-color-danger: rgba(220, 53, 69, 0.25); /* Danger focus */
+
+  display: block;
+  padding-bottom: 30px;
+}
+
+/* Main Container for the Upload Form */
+.upload-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  margin: 20px auto; /* Add some margin */
+  max-width: 800px; /* Limit width */
+}
+
+/* Header Section (Title + Back Button) */
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 15px;
+}
+
+.upload-header h2 {
+  font-size: 22px; /* Adjusted size */
+  color: var(--text-color-dark);
+  position: relative;
+  padding-left: 15px;
+  margin: 0; /* Remove default margin */
+  font-weight: 600;
+}
+.upload-header h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 24px; /* Adjusted height */
+  background-color: var(--estigo-green);
+  border-radius: 3px;
+}
+
+/* Back Button in Header */
+.btn-back {
+  padding: 6px 12px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-back i {
+  font-size: 0.9em;
+}
+
+
+/* --- Loading/Error/Success Messages --- */
+.loading-message {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 15px;
+  color: #777;
+}
+
+.form-message {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  position: relative; /* For potential close button */
+}
+
+.form-message.error {
+  color: var(--danger-text-dark);
+  background-color: var(--danger-bg-light);
+  border-color: var(--danger-border);
+}
+
+.form-message.success {
+  color: var(--success-color);
+  background-color: var(--success-bg-light);
+  border-color: var(--success-border);
+}
+
+/* Optional: Close button for messages */
+.close-message {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+.close-message:hover {
+  opacity: 1;
+}
+
+
+/* --- Form Styling --- */
+form {
+  margin-top: 10px; /* Space below messages/header */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-color-label);
+}
+
+.form-label .text-danger {
+  font-weight: bold;
+  margin-left: 2px;
+  color: var(--danger-color);
+}
+
+.form-control {
+  display: block; /* Ensure file input takes block display */
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color-standard);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box; /* Added for consistency */
+}
+.form-control::placeholder {
+  color: #adb5bd;
+}
+
+.form-control:focus {
+  border-color: var(--estigo-green); /* Use theme color for focus */
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem var(--focus-shadow-color-theme);
+}
+
+/* Specific styling for select */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+}
+select.form-control:disabled {
+  background-color: #e9ecef;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px; /* Adjusted height */
+}
+
+/* Style the file input somewhat like other controls */
+input[type="file"].form-control {
+  line-height: 1.3; /* Try to align text better */
+  /* Override padding if needed, browser defaults can vary */
+  padding: 9px 14px;
+}
+/* Hide default browser file input text like "No file chosen" if possible/desired */
+input[type="file"].form-control::file-selector-button {
+    padding: 0.375rem 0.75rem;
+    margin: -0.375rem -0.75rem; /* Adjust margins to fit */
+    margin-inline-end: 0.75rem;
+    color: #212529;
+    background-color: #e9ecef;
+    border: 0;
+    border-radius: 0; /* Or match form-control radius */
+    border-inline-end: 1px solid var(--border-color-standard);
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+input[type="file"].form-control:hover::file-selector-button {
+    background-color: #dde0e3;
+}
+
+
+/* Style for the selected filename display */
+.selected-file-info {
+  margin-top: 0.5rem;
+  font-size: 0.875em; /* Slightly smaller text */
+  color: var(--text-color-label); /* Match label color or a muted color */
+  background-color: #e9ecef; /* Light background to highlight */
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  display: inline-block; /* Fit content */
+  word-break: break-all; /* Prevent long filenames overflowing */
+}
+
+
+/* --- Validation Error Styling --- */
+.validation-error {
+  color: var(--danger-color);
+  font-size: 0.875em;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* Highlight invalid fields (using is-invalid class added by ngClass) */
+.form-control.is-invalid {
+  border-color: var(--danger-color);
+  /* Optional: Add background icon for invalid state if desired */
+  /* Note: Adding icons to file inputs is very tricky */
+}
+.form-control.is-invalid:focus {
+   border-color: var(--danger-color);
+   box-shadow: 0 0 0 0.2rem var(--focus-shadow-color-danger);
+}
+
+
+/* Helper text styling */
+.form-text {
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: var(--text-color-muted);
+}
+.form-text.text-warning { /* Style for the 'no teachers' warning */
+    color: #ffc107;
+}
+
+
+/* --- Form Action Buttons --- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color-light);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 1px solid transparent; /* Add border for consistency */
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-flex; /* Needed for spinner alignment */
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: var(--estigo-green);
+  color: white;
+  border-color: var(--estigo-green);
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--estigo-green-dark);
+  border-color: var(--estigo-green-dark);
+}
+.btn-primary:disabled {
+  background-color: #a4ccc1; /* Lighter green for disabled */
+  border-color: #a4ccc1;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+/* Specific styling for back button if different from secondary */
+.btn-back {
+    background-color: #f8f9fa;
+    color: #495057;
+    border-color: #ccc;
+}
+.btn-back:hover {
+    background-color: #e9ecef;
+    border-color: #bbb;
+    color: #495057;
+}
+
+
+/* Spinner inside buttons */
+.btn .spinner-border {
+  width: 1em; /* Adjust size relative to font */
+  height: 1em;
+  border-width: 0.15em;
+  vertical-align: text-bottom; /* Better alignment */
+  margin-right: 0.5em; /* Space between spinner and text */
+}
+.btn .spinner-border-sm { /* Ensure this class applies */
+    width: 1em;
+    height: 1em;
+    border-width: .15em;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media screen and (max-width: 768px) {
+  .upload-container {
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
   }
-  
-  .upload-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
   .upload-header h2 {
-    margin: 0;
-    margin-left: 20px;
-    color: #333;
-  }
-  
-  .back-btn {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .back-btn:hover {
-    background-color: #e6e6e6;
-  }
-  
-  .upload-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-  }
-  
-  .form-section {
-    margin-bottom: 30px;
-  }
-  
-  .form-section h3 {
-    color: #333;
     font-size: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    padding-left: 12px;
   }
-  
-  .form-item {
-    margin-bottom: 20px;
+  .upload-header h2::before {
+     height: 22px;
+     width: 4px;
   }
-  
-  .form-item label {
-    display: block;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
-  .form-item input[type="text"],
-  .form-item input[type="url"],
-  .form-item textarea,
-  .form-item select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .form-item textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  .form-item input[type="file"] {
-    padding: 5px;
-  }
-  
+
   .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 30px;
+    flex-direction: column-reverse; /* Stack buttons */
+    gap: 12px;
+    align-items: stretch; /* Full width buttons */
   }
-  
-  .upload-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
+  .btn {
+      width: 100%;
   }
-  
-  .upload-btn:hover {
-    background-color: #3e8e41;
-  }
-  
+}
+
+@media screen and (max-width: 576px) {
+    .form-group label {
+        font-size: 13px;
+    }
+    .form-control {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+    input[type="file"].form-control {
+       line-height: 1.2; /* Adjust for smaller font */
+       padding: 7px 10px;
+    }
+    input[type="file"].form-control::file-selector-button {
+        padding: 0.3rem 0.6rem;
+        margin: -0.3rem -0.6rem;
+        margin-inline-end: 0.6rem;
+    }
+    select.form-control {
+        padding-right: 2rem; /* Adjust padding for arrow */
+    }
+    .btn {
+        font-size: 13px;
+        padding: 9px 15px;
+    }
+    .form-message {
+        font-size: 13px;
+        padding: 0.8rem;
+    }
+    .upload-header {
+        flex-direction: column; /* Stack title and button */
+        align-items: flex-start;
+        gap: 10px;
+    }
+     .btn-back {
+        align-self: flex-end; /* Move back button to right */
+    }
+    .selected-file-info {
+        font-size: 0.8em;
+        padding: 0.25rem 0.5rem;
+    }
+}

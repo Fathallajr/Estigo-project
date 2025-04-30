@@ -1,49 +1,188 @@
-<div class="header">
-    <h1>Upload Quizzes</h1>
-    <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
+<div class="upload-container">
+  <div class="upload-header">
+    <h2>Upload New Quiz</h2>
+    <button class="btn btn-secondary btn-back" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
     </button>
-</div>
+  </div>
 
-<div class="upload-section">
-    <div class="upload-card">
-        <h2>Upload New Quiz</h2>
-        <div class="upload-form">
-            <div class="form-group">
-                <label for="quizTitle">Quiz Title</label>
-                <input type="text" id="quizTitle" placeholder="Enter quiz title">
-            </div>
-            <div class="form-group">
-                <label for="quizDescription">Description</label>
-                <textarea id="quizDescription" placeholder="Enter quiz description"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="quizFile">Upload File</label>
-                <input type="file" id="quizFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
-            </div>
-            <button class="upload-button">
-                <i class="fas fa-upload"></i> Upload Quiz
+  <!-- Loading/Message Area -->
+  <div *ngIf="isLoadingCourses" class="loading-message">Loading courses...</div>
+  <div *ngIf="successMessage" class="form-message success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="form-message error">{{ errorMessage }}</div>
+
+  <form [formGroup]="examForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingCourses">
+
+    <!-- Course Selection -->
+    <div class="form-group mb-3"> 
+      <label for="courseId" class="form-label">Select Course <span class="text-danger">*</span></label>
+      <select id="courseId" class="form-control" formControlName="courseId"
+              [ngClass]="{ 'is-invalid': f['courseId'].touched && f['courseId'].invalid }"
+              [disabled]="courses.length === 0 || isLoadingCourses || isSubmitting">
+        <option [ngValue]="null" disabled selected>-- Select Course --</option>
+        <option *ngFor="let course of courses" [ngValue]="course.courseId">
+          {{ course.courseTitle }}
+        </option>
+      </select>
+      <div *ngIf="f['courseId'].touched && f['courseId'].invalid" class="validation-error">
+        Please select a course.
+      </div>
+    </div>
+
+    <!-- Lesson Selection  -->
+    <div class="form-group mb-3"> 
+      <label for="lessonId" class="form-label">Select Lesson <span class="text-danger">*</span></label>
+      <div *ngIf="isLoadingLessons" class="loading-inline">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading lessons...
+      </div>
+      <select id="lessonId" class="form-control" formControlName="lessonId"
+              [ngClass]="{ 'is-invalid': f['lessonId'].touched && f['lessonId'].invalid }"
+              [disabled]="f['lessonId'].disabled || isLoadingLessons || isSubmitting"> 
+        <option [ngValue]="null" disabled selected>-- Select Lesson --</option>
+        <option *ngFor="let lesson of lessons" [ngValue]="lesson.lessonId">
+          {{ lesson.lessonTitle }} (ID: {{ lesson.lessonId }})
+        </option>
+      </select>
+      <div *ngIf="f['lessonId'].touched && f['lessonId'].invalid" class="validation-error">
+        Please select a lesson.
+      </div>
+      <div *ngIf="!isLoadingLessons && f['courseId'].value && lessons.length === 0 && !f['lessonId'].disabled" class="form-text text-warning mt-1">
+        No lessons found for the selected course. Cannot create a quiz without lessons.
+      </div>
+       <div *ngIf="!f['courseId'].value && !isLoadingLessons" class="form-text text-muted mt-1">
+        Please select a course first to see lessons.
+      </div>
+    </div>
+
+    <!-- Exam Details -->
+    <div class="form-group mb-3"> 
+      <label for="examTitle" class="form-label">Quiz Title <span class="text-danger">*</span></label>
+      <input type="text" id="examTitle" class="form-control" formControlName="examTitle"
+             [ngClass]="{ 'is-invalid': f['examTitle'].touched && f['examTitle'].invalid }">
+      <div *ngIf="f['examTitle'].touched && f['examTitle'].invalid" class="validation-error">
+        <div *ngIf="f['examTitle'].errors?.['required']">Quiz title is required.</div>
+        <div *ngIf="f['examTitle'].errors?.['minlength']">Title must be at least 3 characters.</div>
+      </div>
+    </div>
+
+    <!-- Is Final Checkbox -->
+    <div class="form-check mb-3"> 
+        <input class="form-check-input" type="checkbox" id="isFinalCheck" formControlName="isFinal">
+        <label class="form-check-label" for="isFinalCheck">
+            Mark as Final Exam?
+        </label>
+        <small class="form-text text-muted d-block">Check this box if this quiz should be treated as the final exam for the selected lesson.</small>
+    </div>
+
+
+    <hr class="my-4">
+
+    <!-- Questions Section -->
+    <h4>Questions <span class="text-danger">*</span></h4>
+     <div *ngIf="questionsFormArray.invalid && (examForm.touched || examForm.dirty)" class="alert alert-warning p-2 mb-3">
+         Please ensure all questions are filled out correctly.
+     </div>
+
+
+    <div formArrayName="questions">
+      <div *ngFor="let questionCtrl of questionsFormArray.controls; let i = index" class="question-block mb-3">
+        <div class="question-header" (click)="toggleCollapse(i)">
+            <label class="form-label question-label mb-0">
+               Question {{ i + 1 }}
+               <i class="fas ms-2" [ngClass]="questionCollapsedState[i] ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+            </label>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-question"
+                     (click)="removeQuestion(i); $event.stopPropagation()"
+                     [disabled]="questionsFormArray.length <= 1"
+                     title="Remove Question {{ i + 1 }}">
+               <i class="fas fa-times"></i> Remove
             </button>
         </div>
+
+        <!-- Collapsible Content Area -->
+        <div class="question-content" *ngIf="!questionCollapsedState[i]">
+            <div [formGroupName]="i">
+                <div class="form-group nested-form-group">
+                    <label [for]="'questionText' + i" class="form-label nested-label">Question Text <span class="text-danger">*</span></label>
+                    <textarea [id]="'questionText' + i" class="form-control" formControlName="questionText" rows="2"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('questionText')?.touched && questionCtrl.get('questionText')?.invalid }"></textarea>
+                    <div *ngIf="questionCtrl.get('questionText')?.touched && questionCtrl.get('questionText')?.invalid" class="validation-error">
+                    Question text is required.
+                    </div>
+                </div>
+
+                <!-- Options A-D -->
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group nested-form-group">
+                        <label [for]="'optionA' + i" class="form-label nested-label">Option A <span class="text-danger">*</span></label>
+                        <input type="text" [id]="'optionA' + i" class="form-control" formControlName="optionA"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('optionA')?.touched && questionCtrl.get('optionA')?.invalid }">
+                        <div *ngIf="questionCtrl.get('optionA')?.touched && questionCtrl.get('optionA')?.invalid" class="validation-error">Option A is required.</div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group nested-form-group">
+                        <label [for]="'optionB' + i" class="form-label nested-label">Option B <span class="text-danger">*</span></label>
+                        <input type="text" [id]="'optionB' + i" class="form-control" formControlName="optionB"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('optionB')?.touched && questionCtrl.get('optionB')?.invalid }">
+                        <div *ngIf="questionCtrl.get('optionB')?.touched && questionCtrl.get('optionB')?.invalid" class="validation-error">Option B is required.</div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group nested-form-group">
+                        <label [for]="'optionC' + i" class="form-label nested-label">Option C <span class="text-danger">*</span></label>
+                        <input type="text" [id]="'optionC' + i" class="form-control" formControlName="optionC"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('optionC')?.touched && questionCtrl.get('optionC')?.invalid }">
+                        <div *ngIf="questionCtrl.get('optionC')?.touched && questionCtrl.get('optionC')?.invalid" class="validation-error">Option C is required.</div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group nested-form-group">
+                        <label [for]="'optionD' + i" class="form-label nested-label">Option D <span class="text-danger">*</span></label>
+                        <input type="text" [id]="'optionD' + i" class="form-control" formControlName="optionD"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('optionD')?.touched && questionCtrl.get('optionD')?.invalid }">
+                        <div *ngIf="questionCtrl.get('optionD')?.touched && questionCtrl.get('optionD')?.invalid" class="validation-error">Option D is required.</div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Correct Answer Dropdown -->
+                <div class="form-group nested-form-group">
+                    <label [for]="'correctAnswer' + i" class="form-label nested-label">Correct Answer <span class="text-danger">*</span></label>
+                    <select [id]="'correctAnswer' + i" class="form-control" formControlName="correctAnswer"
+                            [ngClass]="{ 'is-invalid': questionCtrl.get('correctAnswer')?.touched && questionCtrl.get('correctAnswer')?.invalid }">
+                    <option [ngValue]="null" disabled selected>-- Select Correct Option --</option>
+                    <option *ngFor="let opt of correctAnswerOptions" [value]="opt">{{ opt }}</option>
+                    </select>
+                    <div *ngIf="questionCtrl.get('correctAnswer')?.touched && questionCtrl.get('correctAnswer')?.invalid" class="validation-error">
+                        Correct answer is required.
+                    </div>
+                </div>
+
+            </div> 
+        </div>
+
+      </div> 
+    </div> 
+
+    <!-- Add Question Button -->
+    <div class="mt-2 mb-4">
+        <button type="button" class="btn btn-outline-success btn-add-question" (click)="addQuestion()" [disabled]="isSubmitting">
+            <i class="fas fa-plus"></i> Add Another Question
+        </button>
     </div>
 
-    <div class="recent-uploads">
-        <h2>Recently Uploaded Quizzes</h2>
-        <div class="upload-list">
-            <div class="upload-item">
-                <i class="fas fa-file-alt"></i>
-                <div class="upload-details">
-                    <h3>Angular Basics Quiz</h3>
-                    <p>Uploaded 3 hours ago</p>
-                </div>
-            </div>
-            <div class="upload-item">
-                <i class="fas fa-file-alt"></i>
-                <div class="upload-details">
-                    <h3>TypeScript Advanced Quiz</h3>
-                    <p>Uploaded 1 day ago</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+       <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="isSubmitting">Cancel</button>
+       <button type="submit" class="btn btn-primary" [disabled]="examForm.invalid || isSubmitting || isLoadingLessons || isLoadingCourses">
+         <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+         {{ isSubmitting ? 'Submitting...' : 'Submit Quiz' }}
+       </button>
+    </div> 
+
+  </form>
+
+</div> 

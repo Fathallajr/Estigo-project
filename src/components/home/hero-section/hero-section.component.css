@@ -4,15 +4,9 @@
     color: white;
     position: relative;
     overflow: hidden;
-    animation: gradientBg 15s ease infinite;
     background-size: 200% 200%;
 }
 
-@keyframes gradientBg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
 
 .hero-container {
     display: flex;
@@ -58,7 +52,7 @@
 
 @keyframes pulse {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-10px); }
     100% { transform: translateY(0); }
 }
 
@@ -137,37 +131,6 @@
     transform: translateY(-10px) scale(1.02);
 }
 
-/* Floating bubbles */
-.bubble {
-    position: absolute;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.05);
-    z-index: 1;
-}
-
-.bubble:nth-child(1) {
-    width: 120px;
-    height: 120px;
-    top: 20%;
-    left: 10%;
-    animation: float 20s infinite ease-in-out;
-}
-
-.bubble:nth-child(2) {
-    width: 80px;
-    height: 80px;
-    top: 60%;
-    left: 20%;
-    animation: float 15s infinite ease-in-out reverse;
-}
-
-.bubble:nth-child(3) {
-    width: 150px;
-    height: 150px;
-    bottom: 10%;
-    right: 15%;
-    animation: float 25s infinite ease-in-out;
-}
 
 /* Animations */
 @keyframes float {
@@ -207,24 +170,24 @@
         align-items: center;
     }
 
+    .hero-image {
+        order: 1; /* Image first */
+        margin-top: 10px;
+        text-align: center;
+        flex: 1 1 100%;
+    }
+
     .hero-text {
+        order: 2; /* Text second */
         padding: 0 15px;
-        order: 1; /* Text first */
         text-align: center;
         flex: 1 1 100%;
     }
     
     .hero-button {
-        order: 2; /* Button second */
+        order: 3; /* Button third */
         align-self: center;
         margin: 20px 0;
-    }
-
-    .hero-image {
-        order: 3; /* Image last */
-        margin-top: 10px;
-        text-align: center;
-        flex: 1 1 100%;
     }
     
     .hero-title {

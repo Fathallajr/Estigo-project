@@ -35,6 +35,7 @@ interface ExamPayload {
   examDescription: string;
   grade: string;
   lessonId: number;
+  final: boolean; // <-- ADDED: Flag to indicate if it's a final exam
   questions: QuizQuestion[]; // Uses the original QuizQuestion interface
 }
 
@@ -44,7 +45,6 @@ interface ExamPayload {
   imports: [
     FormsModule, // Import FormsModule for ngModel
     CommonModule // Import CommonModule for ngFor, ngIf, etc.
-    // HttpClientModule is typically imported in AppModule or bootstrapApplication, not usually here directly for standalone
   ],
   templateUrl: './upload-quizzes.component.html',
   styleUrls: ['./upload-quizzes.component.css']
@@ -56,8 +56,9 @@ export class UploadQuizzesComponent implements OnInit {
   selectedLessonId: number | null = null;
   quizData = {
     examTitle: '',
-    examDescription: '',
-    grade: ''
+    examDescription: '', // Keep even if not editable in UI for now
+    grade: '',           // Keep even if not editable in UI for now
+    isFinal: false      // <-- ADDED: State for the final exam checkbox
   };
   // Use the ViewModel array to manage questions and their state
   questionsViewModel: QuestionViewModel[] = [];
@@ -77,19 +78,16 @@ export class UploadQuizzesComponent implements OnInit {
       this.fetchTeacherLessons();
     } else {
       console.error("Teacher ID not found in local storage on init. Cannot fetch lessons.");
-      // Optionally display an error message to the user in the template
     }
 
-    // Ensure there's at least one question block displayed initially (expanded)
     if (this.questionsViewModel.length === 0) {
-      this.addInitialQuestion(); // Use a specific method for the first one
+      this.addInitialQuestion();
     }
   }
 
-  // Function to load teacher ID from local storage
   loadTeacherId(): void {
      try {
-       const userDataString = localStorage.getItem('userData'); // Use your actual key
+       const userDataString = localStorage.getItem('userData');
        if (userDataString) {
          const userData: UserData = JSON.parse(userDataString);
          this.teacherId = userData.id || null;
@@ -104,7 +102,6 @@ export class UploadQuizzesComponent implements OnInit {
      }
   }
 
-  // Fetch lessons for the logged-in teacher
   fetchTeacherLessons(): void {
     if (!this.teacherId) {
        console.error("Cannot fetch lessons - teacherId is missing.");
@@ -119,149 +116,107 @@ export class UploadQuizzesComponent implements OnInit {
       .subscribe({
         next: (lessons) => {
           console.log("Lessons received:", lessons);
-          this.teacherLessons = lessons ?? []; // Handle null/undefined response
+          this.teacherLessons = lessons ?? [];
           if(this.teacherLessons.length === 0) {
             console.warn("Received an empty array of lessons.");
           }
         },
         error: (error: HttpErrorResponse) => {
           console.error("Error fetching lessons:", error);
-          this.teacherLessons = []; // Clear lessons on error
+          this.teacherLessons = [];
           alert(`Failed to load lessons. Status: ${error.status}. Check console for details.`);
         }
       });
   }
 
-  // Method to add the very first question (always expanded)
   addInitialQuestion(): void {
     this.questionsViewModel.push({
-        data: {
-          id: 0, // Use 0 for new items
-          questionText: '',
-          optionA: '',
-          optionB: '',
-          optionC: '',
-          optionD: '',
-          correctAnswer: 'A' // Default correct answer
-        },
-        isCollapsed: false // First question starts expanded
+        data: { id: 0, questionText: '', optionA: '', optionB: '', optionC: '', optionD: '', correctAnswer: 'A' },
+        isCollapsed: false
     });
   }
 
-  // Method to add a new question AND collapse the previous one
   addQuestion(): void {
-    // 1. Collapse the last question if it exists
     const lastIndex = this.questionsViewModel.length - 1;
     if (lastIndex >= 0) {
        this.questionsViewModel[lastIndex].isCollapsed = true;
     }
-
-    // 2. Add the new blank question (expanded by default)
     this.questionsViewModel.push({
-        data: {
-          id: 0,
-          questionText: '',
-          optionA: '',
-          optionB: '',
-          optionC: '',
-          optionD: '',
-          correctAnswer: 'A'
-        },
-        isCollapsed: false // New question is always expanded
+        data: { id: 0, questionText: '', optionA: '', optionB: '', optionC: '', optionD: '', correctAnswer: 'A' },
+        isCollapsed: false
     });
   }
 
-  // Method to remove a question by its index
   removeQuestion(index: number): void {
     if (this.questionsViewModel.length > 1) {
         this.questionsViewModel.splice(index, 1);
-        // Optional: If we removed the *last* question, ensure the *new last* question is expanded
         const newLastIndex = this.questionsViewModel.length - 1;
         if (newLastIndex >= 0 && this.questionsViewModel[newLastIndex].isCollapsed) {
-             this.questionsViewModel[newLastIndex].isCollapsed = false; // Expand the new last one
+             this.questionsViewModel[newLastIndex].isCollapsed = false;
         }
     } else {
         alert("A quiz must have at least one question.");
     }
   }
 
-  // Method to manually toggle the collapsed state of a question
   toggleQuestionCollapse(index: number): void {
     if (this.questionsViewModel[index]) {
-      // If we are expanding a question, optionally collapse others
-      // if (!this.questionsViewModel[index].isCollapsed) {
-      //    // Collapse all others (optional behavior)
-      //    this.questionsViewModel.forEach((vm, i) => {
-      //      if (i !== index) vm.isCollapsed = true;
-      //    });
-      // }
       this.questionsViewModel[index].isCollapsed = !this.questionsViewModel[index].isCollapsed;
     }
   }
 
-  // Method to handle form submission
   onSubmit(): void {
-    // Extract only the question data for the payload
     const questionsData: QuizQuestion[] = this.questionsViewModel
-        .map(vm => ({ ...vm.data, id: 0 })); // Ensure ID is 0 for creation payload
+        .map(vm => ({ ...vm.data, id: 0 }));
 
-    // Basic validation check
     if (!this.selectedLessonId || !this.quizData.examTitle.trim() || questionsData.length === 0 || questionsData.some(q => !q.questionText.trim())) {
       alert("Please select a lesson, enter a quiz title, and ensure all questions have text.");
       return;
     }
 
-    // Construct the final payload
+    // Construct the final payload including the 'final' flag
     const payload: ExamPayload = {
-      id: 0, // Backend likely ignores or requires 0 for new exam
+      id: 0,
       examTitle: this.quizData.examTitle.trim(),
-      examDescription: this.quizData.examDescription.trim(),
-      grade: this.quizData.grade.trim(),
+      examDescription: this.quizData.examDescription.trim(), // Use value from quizData
+      grade: this.quizData.grade.trim(),                   // Use value from quizData
       lessonId: this.selectedLessonId,
+      final: this.quizData.isFinal, // <-- ADDED: Map the checkbox state to the payload
       questions: questionsData
     };
 
-    console.log("Submitting Quiz Payload:", JSON.stringify(payload, null, 2)); // Pretty print payload
+    console.log("Submitting Quiz Payload:", JSON.stringify(payload, null, 2));
 
     this.http.post(this.ADD_EXAM_API_URL, payload)
       .subscribe({
-        next: (response) => { // Capture response if needed
+        next: (response) => {
           console.log("Quiz submitted successfully:", response);
           alert("Quiz submitted successfully!");
-          this.resetForm(); // Clear the form on success
+          this.resetForm();
         },
         error: (error: HttpErrorResponse) => {
            console.error("Error submitting quiz:", error);
            let errorMsg = `Failed to submit quiz. Status: ${error.status}`;
-           // Attempt to parse backend error message
            if (error.error) {
-             if (typeof error.error === 'string') {
-               errorMsg += `\nMessage: ${error.error}`;
-             } else if (error.error.title) {
-               errorMsg += `\n${error.error.title}`;
-             } else if (error.error.message) { // Common structure
-               errorMsg += `\nMessage: ${error.error.message}`;
-             } else if (error.error.errors) { // Validation errors
-               errorMsg += `\nValidation Errors: ${JSON.stringify(error.error.errors)}`;
-             }
+             if (typeof error.error === 'string') { errorMsg += `\nMessage: ${error.error}`; }
+             else if (error.error.title) { errorMsg += `\n${error.error.title}`; }
+             else if (error.error.message) { errorMsg += `\nMessage: ${error.error.message}`; }
+             else if (error.error.errors) { errorMsg += `\nValidation Errors: ${JSON.stringify(error.error.errors)}`; }
            }
            alert(errorMsg + "\nCheck console for more details.");
         }
       });
   }
 
-  // Method to reset the form fields
   resetForm(): void {
-     this.quizData = { examTitle: '', examDescription: '', grade: '' };
-     this.questionsViewModel = []; // Clear the view model array
-     this.addInitialQuestion(); // Add one blank, expanded question back
-     this.selectedLessonId = null; // Reset lesson selection
+     this.quizData = { examTitle: '', examDescription: '', grade: '', isFinal: false };
+     this.questionsViewModel = [];
+     this.addInitialQuestion();
+     this.selectedLessonId = null;
   }
 
-
   trackQuestionByIndex(index: number, item: QuestionViewModel): number {
-    // Using the index is a simple and effective tracking strategy here.
     return index;
   }
 
-} // End of class
+}

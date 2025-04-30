@@ -92,17 +92,16 @@ export class UploadTeacherComponent implements OnInit {
     this.feedbackMessage = null;
     this.isError = false;
 
-    // Construct payload
-    // WARNING: Still sending only filename for 'logo'. Backend needs proper file handling.
+
     const payload = {
-      courseId: 0, // Standard practice for creation
+      courseId: 0, 
       courseTitle: this.courseData.courseTitle,
       description: this.courseData.description,
-      logo: this.logoFileName, // Sending filename as placeholder
-      price: this.courseData.price!, // Use non-null assertion as checked in isFormValid
-      available: true, // Default as per API example
-      catogryid: this.courseData.catogryid!, // Use non-null assertion
-      teacherId: this.teacherId!       // Use non-null assertion
+      logo: this.logoFileName, 
+      price: this.courseData.price!, 
+      available: true,
+      catogryid: this.courseData.catogryid!, 
+      teacherId: this.teacherId!      
     };
 
     // Send request
@@ -134,7 +133,7 @@ export class UploadTeacherComponent implements OnInit {
     this.logoFileName = '';
     const fileInput = document.getElementById('logoFile') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''; // Attempt to clear file input visually
+      fileInput.value = ''; 
     }
   }
 }

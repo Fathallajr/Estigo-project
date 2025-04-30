@@ -1,0 +1,176 @@
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #333;
+    position: relative;
+    padding-left: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+  h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 28px;
+    background-color: #6aaa96; /* Theme color */
+    border-radius: 3px;
+  }
+  
+  .container {
+    padding: 0 10px; /* Add some horizontal padding */
+  }
+  
+  /* --- Loading/Error/NoData States --- */
+  .loading-indicator,
+  .error-message,
+  .no-data-message {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  .error-message {
+    color: #dc3545; /* Red for errors */
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px 20px;
+  }
+  
+  /* --- Courses Grid Layout --- */
+  .courses-grid {
+    display: grid;
+    /* Create responsive columns: minimum 280px wide, fill available space */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; /* Space between cards */
+    margin-top: 20px;
+  }
+  
+  /* --- Course Card Styling --- */
+  .course-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Ensure content stays within rounded corners */
+    display: flex;
+    flex-direction: column; /* Stack image, content, actions vertically */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* --- Card Image --- */
+  .card-image-container {
+    width: 100%;
+    height: 160px; /* Fixed height for image container */
+    background-color: #f0f0f0; /* Placeholder background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scale image nicely, cropping if needed */
+    display: block; /* Remove extra space below image */
+  }
+  
+  /* --- Card Content --- */
+  .card-content {
+    padding: 15px 20px;
+    flex-grow: 1; /* Allow content to take up available space */
+  }
+  
+  .card-title {
+    font-size: 1.15rem; /* 18px approx */
+    font-weight: 600;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  
+  .card-detail {
+    font-size: 0.9rem; /* 14px approx */
+    color: #555;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .card-detail.price {
+      font-size: 1rem;
+      color: #333;
+  }
+  .card-detail strong {
+      font-weight: 600;
+      color: #007bff; /* Highlight price */
+  }
+  
+  /* --- Card Actions --- */
+  .card-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between; /* Buttons at opposite ends */
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    flex-grow: 1; /* Make buttons share space (optional) */
+    text-align: center;
+  }
+  
+  .btn-approve {
+    background-color: #28a745; /* Green */
+    color: white;
+  }
+  .btn-approve:hover {
+    background-color: #218838;
+  }
+  
+  .btn-reject {
+    background-color: #dc3545; /* Red */
+    color: white;
+  }
+  .btn-reject:hover {
+    background-color: #c82333;
+  }
+  
+  
+  /* --- Responsive Adjustments --- */
+  @media (max-width: 600px) {
+    .courses-grid {
+      /* Switch to single column on small screens */
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  
+    h1 {
+      font-size: 20px;
+    }
+  
+    .card-title {
+        font-size: 1.1rem;
+    }
+  
+    .btn {
+        padding: 10px 12px; /* More padding vertically */
+        font-size: 13px;
+    }
+  }

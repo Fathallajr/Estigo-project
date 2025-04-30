@@ -1,51 +1,108 @@
-<div class="upload-lessons-container">
-    <div class="header">
-        <h1>Upload Lessons</h1>
-        <button class="back-button" (click)="goBack()">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </button>
+<div class="upload-container"> <!-- Reusing class from previous component -->
+    <div class="upload-header">
+      <h2>Upload New Lesson</h2>
+      <button class="btn btn-secondary btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
     </div>
-
-    <div class="upload-section">
-        <div class="upload-card">
-            <h2>Upload New Lesson</h2>
-            <div class="upload-form">
-                <div class="form-group">
-                    <label for="lessonTitle">Lesson Title</label>
-                    <input type="text" id="lessonTitle" placeholder="Enter lesson title">
-                </div>
-                <div class="form-group">
-                    <label for="lessonDescription">Description</label>
-                    <textarea id="lessonDescription" placeholder="Enter lesson description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="lessonFile">Upload File</label>
-                    <input type="file" id="lessonFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
-                </div>
-                <button class="upload-button">
-                    <i class="fas fa-upload"></i> Upload Lesson
-                </button>
-            </div>
-        </div>
-
-        <div class="recent-uploads">
-            <h2>Recently Uploaded Lessons</h2>
-            <div class="upload-list">
-                <div class="upload-item">
-                    <i class="fas fa-file-alt"></i>
-                    <div class="upload-details">
-                        <h3>Introduction to Angular</h3>
-                        <p>Uploaded 2 hours ago</p>
-                    </div>
-                </div>
-                <div class="upload-item">
-                    <i class="fas fa-file-alt"></i>
-                    <div class="upload-details">
-                        <h3>Advanced TypeScript</h3>
-                        <p>Uploaded 1 day ago</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  
+    <!-- Loading Indicator for Courses -->
+    <div *ngIf="isLoadingCourses" class="loading-message">
+      Loading courses...
     </div>
-</div>
+  
+    <!-- Success/Error Messages -->
+    <div *ngIf="successMessage" class="form-message success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="form-message error">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Disable form if no courses are loaded -->
+    <form [formGroup]="lessonForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingCourses">
+  
+      <!-- Course Dropdown -->
+      <div class="form-group">
+        <label for="courseId" class="form-label">Assign to Course <span class="text-danger">*</span></label>
+        <select id="courseId" class="form-control" formControlName="courseId"
+                [ngClass]="{ 'is-invalid': f['courseId'].touched && f['courseId'].invalid }"
+                [disabled]="courses.length === 0">
+          <option [ngValue]="null" disabled selected>-- Select Course --</option>
+          <option *ngFor="let course of courses" [ngValue]="course.courseId">
+            {{ course.courseTitle }} (ID: {{course.courseId}})
+          </option>
+        </select>
+        <div *ngIf="f['courseId'].touched && f['courseId'].invalid" class="validation-error">
+          <div *ngIf="f['courseId'].errors?.['required']">Please select a course.</div>
+        </div>
+        <div *ngIf="!isLoadingCourses && courses.length === 0" class="form-text text-warning mt-1">
+          No courses available to select. Create a course first.
+        </div>
+      </div>
+  
+      <!-- Lesson Title -->
+      <div class="form-group">
+        <label for="lessonTitle" class="form-label">Lesson Title <span class="text-danger">*</span></label>
+        <input type="text" id="lessonTitle" class="form-control" formControlName="lessonTitle"
+               [ngClass]="{ 'is-invalid': f['lessonTitle'].touched && f['lessonTitle'].invalid }">
+        <div *ngIf="f['lessonTitle'].touched && f['lessonTitle'].invalid" class="validation-error">
+          <div *ngIf="f['lessonTitle'].errors?.['required']">Lesson title is required.</div>
+          <div *ngIf="f['lessonTitle'].errors?.['minlength']">Title must be at least 3 characters.</div>
+        </div>
+      </div>
+  
+      <!-- Lesson Description -->
+      <div class="form-group">
+        <label for="lessonDescription" class="form-label">Lesson Description <span class="text-danger">*</span></label>
+        <textarea id="lessonDescription" class="form-control" formControlName="lessonDescription" rows="3"
+                  [ngClass]="{ 'is-invalid': f['lessonDescription'].touched && f['lessonDescription'].invalid }"></textarea>
+        <div *ngIf="f['lessonDescription'].touched && f['lessonDescription'].invalid" class="validation-error">
+          <div *ngIf="f['lessonDescription'].errors?.['required']">Description is required.</div>
+        </div>
+      </div>
+  
+      <!-- Lesson Content -->
+      <div class="form-group">
+        <label for="lessonContent" class="form-label">Lesson Content <span class="text-danger">*</span></label>
+        <textarea id="lessonContent" class="form-control" formControlName="lessonContent" rows="5"
+                  [ngClass]="{ 'is-invalid': f['lessonContent'].touched && f['lessonContent'].invalid }"></textarea>
+        <div *ngIf="f['lessonContent'].touched && f['lessonContent'].invalid" class="validation-error">
+          <div *ngIf="f['lessonContent'].errors?.['required']">Lesson content is required.</div>
+        </div>
+      </div>
+  
+      <!-- Lesson Video File Input -->
+      <div class="form-group">
+        <label for="lessonVideo" class="form-label">Lesson Video <span class="text-danger">*</span></label>
+        <!-- File input, triggers onVideoFileSelected, no formControlName -->
+        <input type="file" id="lessonVideo" class="form-control"
+               accept="video/*" 
+               (change)="onVideoFileSelected($event)"
+               [ngClass]="{ 'is-invalid': f['lessonVideo'].touched && f['lessonVideo'].invalid }">
+  
+        <!-- Display selected filename -->
+        <div *ngIf="selectedVideoFileName" class="selected-file-info">
+          Selected file: {{ selectedVideoFileName }}
+        </div>
+  
+        <!-- Validation message refers to the 'lessonVideo' form control -->
+        <div *ngIf="f['lessonVideo'].touched && f['lessonVideo'].invalid" class="validation-error">
+          <div *ngIf="f['lessonVideo'].errors?.['required']">Please select a video file.</div>
+        </div>
+        <small class="form-text text-muted">Choose a video file (e.g., .mp4, .mov). Only the filename will be used.</small>
+      </div>
+  
+  
+      <!-- Form Actions -->
+      <div class="form-actions">
+         <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel</button>
+         <button type="submit" class="btn btn-primary" [disabled]="lessonForm.invalid || isSubmitting || courses.length === 0">
+           <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+           {{ isSubmitting ? 'Submitting...' : 'Submit Lesson' }}
+         </button>
+      </div>
+  
+    </form>
+  
+  </div>

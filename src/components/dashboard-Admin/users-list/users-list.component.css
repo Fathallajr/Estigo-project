@@ -1,15 +1,16 @@
-/* users-list.component.css */
-
-/* Style the h1 within the component */
+:host {
+    display: block;
+    padding-bottom: 30px;
+  }
+  
 h1 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: #333;
-    /* Add the heading line style */
     position: relative;
-    padding-left: 10px;
-    border-bottom: 1px solid #eee; /* Optional: Add a separator line */
-    padding-bottom: 10px; /* Optional: Spacing for the separator */
+    padding-left: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
 }
 h1::before {
     content: '';
@@ -17,75 +18,431 @@ h1::before {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 4px;
-    height: 24px; /* Adjusted height for h1 */
-    background-color: #6aaa96; /* Match theme color */
-    border-radius: 2px;
+    width: 5px;
+    height: 28px;
+    background-color: var(--estigo-green);
+    border-radius: 3px;
 }
-
-/* Container similar to .upload-info-section */
-.list-container {
+  
+.controls-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+  
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+  
+.filter-controls button {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    color: #495057;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    font-size: 14px;
+  }
+  
+  .filter-controls button:hover {
+    background-color: #e9ecef;
+    border-color: #bbb;
+  }
+  
+  .filter-controls button.active {
+    background-color: #6aaa96;
+    color: white;
+    border-color: #5a9a86;
+    font-weight: bold;
+  }
+  
+  .add-user-control {
+    /* No specific styles needed unless for alignment */
+  }
+  
+  .add-user-button {
+    padding: 9px 18px; /* Slightly larger padding */
+    background-color: #6aaa96;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500; /* Slightly bolder */
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Increased gap */
+    line-height: 1; /* Prevent extra space */
+  }
+  
+  .add-user-button:hover {
+    background-color: #5a9a86;
+  }
+  
+  .add-user-button i {
+    font-size: 0.9em; /* Adjust icon size relative to text */
+  }
+  
+  
+  /* --- Main List Container --- */
+  .list-container {
     background-color: white;
     border-radius: 15px;
     padding: 25px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    margin-top: 20px; /* Add some space below title */
-    overflow-x: auto; /* Allow horizontal scrolling on small screens */
-}
-
-/* Table Styling */
-.users-table {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07); /* Slightly softer shadow */
+    margin-top: 10px;
+    overflow-x: auto;
+    min-height: 150px;
+    position: relative;
+  }
+  
+  /* --- Loading/Error/NoData Messages --- */
+  .loading-message,
+  .error-message,
+  .no-data-message {
+    text-align: center;
+    padding: 40px 20px; /* More padding */
+    font-size: 15px;
+    color: #777; /* Slightly darker grey */
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-weight: 500;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin: 20px 0; /* Add vertical margin */
+  }
+  
+  /* --- Users Table Styling --- */
+  .users-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.users-table th,
-.users-table td {
-    border: 1px solid #e0e0e0; /* Match input borders */
-    padding: 12px 15px; /* Match input padding */
+  }
+  
+  .users-table th,
+  .users-table td {
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
     text-align: left;
     font-size: 14px;
-    color: #333; /* Default text color */
-    vertical-align: middle; /* Align content vertically */
-}
-
-.users-table thead th {
-    background-color: #f8f9fa; /* Light grey header background */
-    color: #495057; /* Darker grey text for header */
-    font-weight: 600; /* Bolder header text */
-    white-space: nowrap; /* Prevent header text wrapping */
-}
-
-.users-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Subtle alternating row color */
-}
-
-.users-table tbody tr:hover {
-    background-color: #f1f1f1; /* Hover effect for rows */
-}
-
-/* Styling for the 'No Data' message */
-.no-data-message {
-    text-align: center;
-    padding: 20px;
+    color: #333;
+    vertical-align: middle;
+    white-space: nowrap; /* Prevent text wrapping, rely on horizontal scroll */
+  }
+  
+  .users-table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    position: sticky; /* Make header sticky within the scrollable container */
+    top: 0; /* Stick to the top of .list-container */
+    z-index: 1; /* Ensure header stays above table body during scroll */
+  }
+  
+  .users-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .users-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  
+  /* ================================== */
+  /* --- Add User Modal Styles --- */
+  /* ================================== */
+  
+  .modal-overlay {
+    /* Core positioning: Fixed relative to viewport, covers everything */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65); /* Slightly darker overlay */
+    /* Centering the modal content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ensure it's on top */
+    z-index: 1050; /* High z-index, common for modals */
+    padding: 20px; /* Padding ensures content isn't glued to edges on small screens */
+    box-sizing: border-box;
+    overflow-y: auto; /* Allow overlay itself to scroll if modal is taller than viewport */
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 25px 30px; /* Adjusted padding */
+    border-radius: 8px; /* Slightly smaller radius */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 600px; /* Slightly wider max-width */
+    position: relative; /* For positioning the close button */
+    /* Max height is handled by the overlay's overflow now, but can set one here too if needed */
+    /* max-height: 90vh; */
+    /* overflow-y: auto; <- Moved to overlay for better scroll behaviour */
+    margin: auto; /* Helps with centering in some flexbox scenarios */
+  }
+  
+  .modal-content h2 {
+    margin: 0 0 25px 0; /* Adjusted margin */
+    color: #333;
+    font-size: 22px;
+    font-weight: 600; /* Bolder title */
+    border-bottom: 1px solid #e0e0e0; /* Consistent border color */
+    padding-bottom: 15px;
+    line-height: 1.3;
+  }
+  
+  .modal-close-button {
+    position: absolute;
+    top: 12px; /* Adjusted position */
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px; /* Larger close icon */
+    line-height: 1;
+    color: #999; /* Lighter grey */
+    cursor: pointer;
+    padding: 5px; /* Increase clickable area */
+    transition: color 0.2s ease;
+  }
+  .modal-close-button:hover {
+    color: #555; /* Darker on hover */
+  }
+  
+  /* --- Form Styles within Modal --- */
+  .modal-content form {
+    /* No specific styles needed for the form tag itself */
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group:last-of-type {
+     /*margin-bottom: 0; /* Remove bottom margin from the last group before actions */
+  }
+  
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500; /* Slightly less bold */
     font-size: 14px;
-    color: #888;
-}
-
-/* Responsive Table Handling (optional but good practice) */
-@media screen and (max-width: 768px) {
-    .list-container {
-        padding: 15px; /* Reduce padding on smaller screens */
+    color: #495057; /* Consistent dark grey */
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px 14px; /* Adjusted padding */
+    border: 1px solid #ced4da; /* Standard bootstrap-like border color */
+    border-radius: 4px; /* Standard radius */
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  .form-control::placeholder {
+    color: #adb5bd; /* Placeholder color */
+  }
+  
+  .form-control:focus {
+    border-color: #8bc4b1; /* Lighter theme color focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(106, 170, 150, 0.25); /* Theme color focus shadow */
+  }
+  
+  /* Specific styling for select */
+  select.form-control {
+      appearance: none; /* Remove default arrow */
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      padding-right: 2.5rem; /* Make space for custom arrow */
+  }
+  /* Fix for disabled select */
+  select.form-control:disabled {
+    background-color: #e9ecef;
+  }
+  
+  
+  textarea.form-control {
+    resize: vertical;
+    min-height: 90px;
+  }
+  
+  /* --- Validation Error Styling --- */
+  .validation-error {
+    color: #dc3545;
+    font-size: 0.875em; /* Slightly smaller than base font */
+    margin-top: 0.3rem; /* Smaller margin */
+    display: block; /* Ensure it takes its own line */
+  }
+  
+  /* Highlight invalid fields */
+  .form-control.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+  .form-control.ng-invalid.ng-touched:focus {
+     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25); /* Red focus shadow */
+  }
+  
+  
+  /* --- Modal Message Styles (Error/Success) --- */
+  .modal-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem; /* Consistent spacing */
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .modal-message.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+  
+  .modal-message.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+  
+  
+  /* --- Modal Action Buttons --- */
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef; /* Lighter border */
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+    font-weight: 500;
+    line-height: 1.5; /* Ensure consistent button height */
+    text-align: center;
+    white-space: nowrap; /* Prevent button text wrapping */
+  }
+  
+  .btn-primary {
+    background-color: #6aaa96;
+    color: white;
+  }
+  .btn-primary:hover:not(:disabled) { /* Add :not(:disabled) */
+    background-color: #5a9a86;
+  }
+  .btn-primary:disabled {
+    background-color: #a4ccc1;
+    cursor: not-allowed;
+    opacity: 0.65; /* Standard opacity for disabled */
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d; /* Standard secondary grey */
+    color: white;
+    border: 1px solid #6c757d;
+  }
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  
+  
+  /* --- Responsive Adjustments --- */
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 20px;
+      padding-left: 12px;
+      margin-bottom: 20px;
     }
-
+    h1::before {
+       height: 24px;
+       width: 4px;
+    }
+  
+    .controls-header {
+      /* Already flex-wrap: wrap */
+       gap: 10px; /* Reduce gap */
+    }
+  
+    .filter-controls button,
+    .add-user-button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+  
+    .list-container {
+        padding: 15px;
+    }
+  
     .users-table th,
     .users-table td {
-        padding: 10px 8px; /* Reduce padding */
-        font-size: 13px; /* Slightly smaller font */
+        padding: 10px 8px;
+        font-size: 13px;
+        white-space: normal; /* Allow wrapping on small screens */
     }
-
-    h1 {
-        font-size: 20px; /* Smaller title */
+    .users-table thead th {
+        white-space: nowrap; /* Keep headers non-wrapping if possible */
     }
-}
+  
+    /* Modal adjustments */
+    .modal-content {
+      padding: 20px;
+      max-width: 95%;
+    }
+    .modal-content h2 {
+      font-size: 18px; /* Smaller title in modal */
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+    .modal-actions {
+      flex-direction: column-reverse; /* Stack buttons vertically */
+      gap: 12px; /* Space between stacked buttons */
+      align-items: stretch; /* Make buttons full width */
+    }
+    .btn {
+        width: 100%; /* Make buttons take full width */
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+      .form-group label {
+          font-size: 13px; /* Slightly smaller labels */
+      }
+      .form-control {
+          font-size: 13px;
+          padding: 8px 10px;
+      }
+      .btn {
+          font-size: 13px;
+          padding: 9px 15px;
+      }
+       .modal-message {
+          font-size: 13px;
+          padding: 0.8rem;
+      }
+  }

@@ -1,5 +1,5 @@
 .sidebar {
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
     color: white;
     width: 290px;
     height: 100vh; 
@@ -37,7 +37,7 @@ a {
     border-radius: 10px;
     margin-bottom: 10px;
     transition: background-color 0.3s;
-    justify-content: flex-end;
+    justify-content: flex-start;
     width: 80%;
     box-sizing: border-box;
     text-align: center;
@@ -60,7 +60,7 @@ a {
     top: 80px;
     left: 20px;
     z-index: 1000;
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
     color: white;
     border: none;
     border-radius: 5px;

@@ -1,0 +1,245 @@
+
+    :host {
+      display: block;
+      padding-bottom: 30px; 
+    }
+    
+  
+    h2.component-title {
+      font-size: 24px;
+      margin-bottom: 25px;
+      color: #333;
+      position: relative;
+      padding-left: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    .course-item{
+      cursor: pointer;
+    }
+    
+    h2.component-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 15px; 
+      margin: auto 0;
+      width: 5px;
+      height: 28px;
+      background-color: var(--estigo-green); 
+      border-radius: 3px;
+    }
+    
+  
+    .list-container {
+      background-color: white;
+      border-radius: 15px; 
+      padding: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07); 
+      margin-top: 10px; 
+      overflow-x: auto;
+      min-height: 150px; 
+      position: relative; 
+    }
+    
+    /* --- Loading/Error/NoData Messages --- */
+    .loading-message,
+    .error-message,
+    .no-data-message {
+      text-align: center;
+      padding: 40px 20px; /* More padding for emphasis */
+      font-size: 15px;
+      color: #777; /* Grey color for neutral messages */
+      display: flex; /* Use flex for centering spinner or aligning buttons */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .error-message {
+      color: #721c24; 
+      background-color: #f8d7da; 
+      border: 1px solid #f5c6cb;
+      border-radius: 5px;
+      padding: 15px 20px;
+      margin: 20px; 
+      flex-direction: row; 
+      justify-content: space-between; 
+      align-items: center;
+    }
+    
+    .error-message span {
+      flex-grow: 1; 
+      text-align: left;
+      margin-right: 15px;
+    }
+    
+    /* Generic Button Styles*/
+    .btn {
+      padding: 8px 15px; 
+      border: 1px solid transparent;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+      font-weight: 500;
+      line-height: 1.5;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-flex; 
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d; 
+      color: white;
+      border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+    
+ 
+    .btn-retry {
+      flex-shrink: 0;
+    }
+    
+    
+    
+    .courses-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .course-item {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 15px;
+      border-bottom: 1px solid #e0e0e0; 
+      font-size: 14px;
+      color: #333;
+      transition: background-color 0.2s ease-in-out;
+    }
+    
+    .course-item:last-child {
+      border-bottom: none; 
+    }
+    
+    .course-item:hover {
+      background-color: #f1f1f1; 
+    }
+    
+    .course-id {
+      font-weight: 600; 
+      color: #555;
+      margin-right: 10px; 
+      flex-shrink: 0;
+    }
+    
+    .course-title {
+      flex-grow: 1;
+      text-align: left; 
+      margin-right: 15px; /* Space before potential actions */
+    }
+    
+    /* Optional: Style for action buttons within a list item */
+    .course-actions {
+      flex-shrink: 0;
+    }
+    
+    
+    /* --- Responsive Adjustments --- */
+    @media screen and (max-width: 768px) {
+      h2.component-title {
+        font-size: 20px;
+        padding-left: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 12px; /* Match margin */
+      }
+      h2.component-title::before {
+        height: 24px;
+        width: 4px;
+        bottom: 12px; /* Match padding-bottom */
+      }
+    
+      .list-container {
+          padding: 15px;
+      }
+    
+      .course-item {
+          padding: 10px 8px;
+          font-size: 13px;
+      }
+    
+      .error-message {
+        flex-direction: column; /* Stack text and button */
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        margin: 15px;
+      }
+    
+      .error-message span {
+        margin-right: 0;
+        text-align: center;
+      }
+    
+      .btn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+    }
+    
+    @media screen and (max-width: 576px) {
+       .course-id {
+         margin-right: 5px;
+       }
+       .course-title {
+         font-size: 12px;
+       }
+    }
+    .course-actions {
+        flex-shrink: 0; /* Prevent actions area from shrinking */
+        margin-left: 15px; /* Space between title and actions */
+        display: flex; /* Align multiple actions if added later */
+        gap: 5px;
+      }
+      
+      .btn-delete {
+        background-color: #dc3545; /* Bootstrap danger red */
+        color: white;
+        border-color: #dc3545;
+        padding: 5px 10px; /* Smaller button */
+        font-size: 13px;
+        min-width: 80px; /* Give button a minimum width for consistent look */
+        text-align: center;
+      }
+      
+      .btn-delete:hover:not(:disabled) {
+        background-color: #c82333; /* Darker red on hover */
+        border-color: #bd2130;
+      }
+      
+      /* Style for the disabled state */
+      .btn-delete:disabled {
+        background-color: #f1949e; /* Lighter red when disabled */
+        border-color: #f1949e;
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+      
+      /* --- Adjustments for Responsive --- */
+      @media screen and (max-width: 768px) {
+        .course-actions {
+            margin-left: 10px;
+        }
+        .btn-delete {
+            padding: 4px 8px;
+            font-size: 12px;
+            min-width: 70px;
+        }}

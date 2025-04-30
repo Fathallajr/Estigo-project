@@ -1,6 +1,6 @@
 
 .custom-bg {
-      background-color: #2a7f62;
+      background-color: var(--estigo-green);
 }
   
 .navbar {

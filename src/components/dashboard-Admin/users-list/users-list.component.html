@@ -1,30 +1,232 @@
-<!-- users-list.component.html -->
-<h1>Teacher List</h1>
+<h1>Users List</h1>
+
+<div class="controls-header">
+  <!-- Filter Controls -->
+  <div class="filter-controls">
+    <button *ngFor="let role of availableRoles"
+            [class.active]="role === selectedRole"
+            (click)="selectRole(role)">
+      Show {{ role }}s <!-- Example: Show Students -->
+    </button>
+  </div>
+
+  <!-- Add User Button -->
+  <div class="add-user-control">
+    <button class="add-user-button" (click)="openAddUserModal()">
+
+       + Add New User
+    </button>
+  </div>
+</div>
+
 
 <div class="list-container">
-  <table class="users-table" *ngIf="teachers.length > 0; else noData">
+   <!-- Loading Indicator -->
+   <div *ngIf="isLoading" class="loading-message">
+    Loading {{ selectedRole }}s...
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error && !isLoading" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Users Table -->
+  <table class="users-table" *ngIf="!isLoading && !error && displayedUsers.length > 0">
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Subject</th>
-        <!-- Add other columns if needed, e.g., Actions -->
+        <!-- Dynamic Columns Based on Selected Role for Listing -->
+        <th *ngIf="selectedRole === 'Student'">Email</th>
+        <th *ngIf="selectedRole === 'Teacher'">Subject</th>
+
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let teacher of teachers">
-        <td>{{ teacher.id }}</td>
-        <td>{{ teacher.name }}</td>
-        <td>{{ teacher.subject }}</td>
-        <!-- Add corresponding <td> for Actions if header added -->
+      <!-- Iterate over the users fetched based on the selectedRole -->
+      <tr *ngFor="let user of displayedUsers">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <!-- Dynamic Data Cells -->
+        <td *ngIf="selectedRole === 'Student'">{{ user.email }}</td>
+        <td *ngIf="selectedRole === 'Teacher'">{{ user.subject }}</td>
+
       </tr>
     </tbody>
   </table>
 
-  <!-- Template shown when there's no data -->
-  <ng-template #noData>
-    <div class="no-data-message">
-      No teachers found.
-    </div>
-  </ng-template>
+  <!-- No Data Message -->
+  <div *ngIf="!isLoading && !error && displayedUsers.length === 0" class="no-data-message">
+    No {{ selectedRole }}s found matching the criteria.
+  </div>
+
+</div>
+
+
+<!-- Add User Modal -->
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()"> <!-- Close on overlay click -->
+  <div class="modal-content" (click)="$event.stopPropagation()"> <!-- Prevent closing when clicking inside -->
+    <h2>Add New User</h2>
+    <button class="modal-close-button" (click)="closeModal()" title="Close Modal">×</button>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+
+      <!-- Modal Error/Success Messages -->
+      <div *ngIf="modalError" class="modal-message error">{{ modalError }}</div>
+      <div *ngIf="modalSuccess" class="modal-message success">{{ modalSuccess }}</div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label for="role">Role:</label>
+        <select id="role" formControlName="role" class="form-control">
+          <!-- Loop through roles available for registration -->
+          <option *ngFor="let roleOpt of registrationRoles" [value]="roleOpt">
+            {{ roleOpt }}
+          </option>
+        </select>
+        <!-- Validation for Role -->
+        <div *ngIf="f['role'].invalid && (f['role'].dirty || f['role'].touched)" class="validation-error">
+            <span *ngIf="f['role'].errors?.['required']">Role is required.</span>
+        </div>
+      </div>
+
+      <!-- Common Fields (Always visible) -->
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" class="form-control" placeholder="Full Name">
+        <!-- Validation for Name -->
+        <div *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)" class="validation-error">
+            <span *ngIf="f['name'].errors?.['required']">Name is required.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" class="form-control" placeholder="user@example.com">
+        <!-- Validation for Email -->
+         <div *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)" class="validation-error">
+            <span *ngIf="f['email'].errors?.['required']">Email is required.</span>
+            <span *ngIf="f['email'].errors?.['email']">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" formControlName="gender" class="form-control">
+          <option value="" disabled>Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <!-- Add other options like 'Other' if your backend supports them -->
+        </select>
+        <!-- Validation for Gender -->
+         <div *ngIf="f['gender'].invalid && (f['gender'].dirty || f['gender'].touched)" class="validation-error">
+            <span *ngIf="f['gender'].errors?.['required']">Gender is required.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" formControlName="password" class="form-control" placeholder="Min 6 characters">
+        <!-- Validation for Password -->
+         <div *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)" class="validation-error">
+            <span *ngIf="f['password'].errors?.['required']">Password is required.</span>
+            <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters long.</span>
+        </div>
+      </div>
+
+       <div class="form-group">
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Re-enter password">
+        <!-- Validation for Confirm Password -->
+         <div *ngIf="f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched)" class="validation-error">
+            <span *ngIf="f['confirmPassword'].errors?.['required']">Please confirm the password.</span>
+        </div>
+        <!-- Validation for Password Match (Group Level) -->
+         <div *ngIf="registerForm.errors?.['passwordMismatch'] && (f['confirmPassword'].dirty || f['confirmPassword'].touched)" class="validation-error">
+            Passwords do not match.
+        </div>
+      </div>
+
+      <!-- Role-Specific Fields (Conditionally Displayed) -->
+
+      <!-- Student Fields -->
+      <ng-container *ngIf="selectedRegisterRole === 'Student'">
+        <div class="form-group">
+          <!-- ***** NEW Field: Phone ***** -->
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" formControlName="phone" class="form-control" placeholder="Student's contact number">
+           <div *ngIf="f['phone'].invalid && (f['phone'].dirty || f['phone'].touched)" class="validation-error">
+            <span *ngIf="f['phone'].errors?.['required']">Phone number is required for students.</span>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <!-- ***** NEW Field: Birth Date ***** -->
+          <label for="birthDate">Birth Date:</label>
+          <input type="date" id="birthDate" formControlName="birthDate" class="form-control">
+           <div *ngIf="f['birthDate'].invalid && (f['birthDate'].dirty || f['birthDate'].touched)" class="validation-error">
+            <span *ngIf="f['birthDate'].errors?.['required']">Birth Date is required for students.</span>
+            <!-- Add date range validation message if needed -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="track">Track:</label>
+          <input type="text" id="track" formControlName="track" class="form-control" placeholder="e.g., Science, Arts">
+           <div *ngIf="f['track'].invalid && (f['track'].dirty || f['track'].touched)" class="validation-error">
+            <span *ngIf="f['track'].errors?.['required']">Track is required for students.</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="level">Level:</label>
+          <!-- ***** CORRECTED type to number ***** -->
+          <input type="number" id="level" formControlName="level" class="form-control" placeholder="e.g., 10">
+           <div *ngIf="f['level'].invalid && (f['level'].dirty || f['level'].touched)" class="validation-error">
+            <span *ngIf="f['level'].errors?.['required']">Level is required for students.</span>
+ 
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="parentPhone">Parent Phone:</label>
+          <input type="tel" id="parentPhone" formControlName="parentPhone" class="form-control" placeholder="Parent's contact number">
+           <div *ngIf="f['parentPhone'].invalid && (f['parentPhone'].dirty || f['parentPhone'].touched)" class="validation-error">
+            <span *ngIf="f['parentPhone'].errors?.['required']">Parent Phone is required for students.</span>
+
+          </div>
+        </div>
+      </ng-container> <!-- End Student Fields -->
+
+      <!-- Teacher Fields -->
+      <ng-container *ngIf="selectedRegisterRole === 'Teacher'">
+        <div class="form-group">
+          <label for="subject">Subject Taught:</label>
+          <input type="text" id="subject" formControlName="subject" class="form-control" placeholder="e.g., Mathematics, English">
+           <div *ngIf="f['subject'].invalid && (f['subject'].dirty || f['subject'].touched)" class="validation-error">
+             <span *ngIf="f['subject'].errors?.['required']">Subject is required for teachers.</span>
+          </div>
+        </div>
+         <div class="form-group">
+          <label for="notes">Notes (Optional):</label>
+          <!-- ***** Note: No validation message needed as it's optional ***** -->
+          <textarea id="notes" formControlName="notes" class="form-control" rows="3" placeholder="Any additional notes about the teacher"></textarea>
+        </div>
+      </ng-container> <!-- End Teacher Fields -->
+
+
+      <!-- Form Actions -->
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || registerForm.invalid">
+          <!-- Show different text while submitting -->
+          <span *ngIf="!isSubmitting">Register User</span>
+          <span *ngIf="isSubmitting">Registering...</span>
+        </button>
+      </div>
+
+    </form>
+  </div> 
 </div>

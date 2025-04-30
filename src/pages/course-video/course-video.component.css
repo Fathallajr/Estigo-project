@@ -123,7 +123,7 @@
     top: 0;
     bottom: 0;
     width: 0%;
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
     border-radius: 3px;
 }
 
@@ -189,7 +189,7 @@
 .section-header .section-icon {
     width: 24px;
     height: 24px;
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
     border-radius: 4px;
     margin-right: 12px;
     display: flex;
@@ -296,7 +296,7 @@
 
 .outline-item.active-item {
     background-color: #E8F3F0;
-    border-left-color: #2a7f62;
+    border-left-color: var(--estigo-green);
 }
 
 .outline-item.active-item::before {
@@ -331,7 +331,7 @@
 
 .outline-item[data-item-id="gen-ai-history"] .item-status-indicator,
 .outline-item.completed .item-status-indicator {
-    background-color: #2a7f62;
+    background-color: var(--estigo-green);
 }
 .outline-item[data-item-id="gen-ai-history"] .item-status-indicator .icon,
 .outline-item.completed .item-status-indicator .icon {
@@ -342,7 +342,7 @@
 .outline-item.active-item[data-item-id="gen-ai-history"] .item-status-indicator,
 .outline-item.active-item.completed .item-status-indicator
 {
-     background-color: #2a7f62; /* Keep green background */
+     background-color: var(--estigo-green); /* Keep green background */
 }
 .outline-item.active-item[data-item-id="gen-ai-history"] .item-status-indicator .icon,
 .outline-item.active-item.completed .item-status-indicator .icon
