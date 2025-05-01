@@ -21,13 +21,21 @@ body, html {
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 600px;
+  
 }
-
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.chart-container {
+  height: 300px; /* أو اللي يناسبك */
+}
 h1 {
   color: #2a7f62;
   font-size: 2rem;
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .success-rate p {
@@ -37,20 +45,28 @@ h1 {
 }
 
 #chartContainer {
-  width: 100% !important;
+  width: 50% !important;
   height: 300px !important;
-  margin: 0 auto 30px;
+  text-align: left;
 }
 
 ul.notes {
   list-style-position: inside;
   padding: 0 15px;
-  font-size: 90%;
+  font-size: 24px;
   color: #555;
   line-height: 1.6;
-  text-align: left;
+  text-align: center;
 }
 
 ul.notes li {
   margin-bottom: 10px;
+}
+ul.notes p{
+  font-size: 30px;
+  color: #2a7f62;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 10px;
+
 }

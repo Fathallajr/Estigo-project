@@ -1,5 +1,4 @@
 declare var CanvasJS: any;
-
 import { Component, AfterViewInit } from '@angular/core';
 
 @Component({
@@ -9,31 +8,36 @@ import { Component, AfterViewInit } from '@angular/core';
 })
 export class PredictionComponent implements AfterViewInit {
 
+  private readonly containers = [
+    'chartContainer1',
+    'chartContainer2',
+    'chartContainer3',
+    'chartContainer4'
+  ];
+
   ngAfterViewInit(): void {
-    this.createChart();
+    // نعمل ريندر لكل واحد فيهم
+    this.containers.forEach(id => this.createChart(id));
   }
 
-  private createChart(): void {
-    const chart = new CanvasJS.Chart("chartContainer", {
+  private createChart(containerId: string): void {
+    const chart = new CanvasJS.Chart(containerId, {
       theme: "light2",
       exportEnabled: false,
       animationEnabled: true,
-      title: {
-        text: "EstiGo prediction"
-      },
+      title: { text: "Exp prediction" },
       data: [{
         type: "pie",
         startAngle: 25,
         toolTipContent: "<b>{label}</b>: {y}%",
-        showInLegend: "true",
+        showInLegend: true,
         legendText: "{label}",
         indexLabelFontSize: 16,
         indexLabel: "{label} - {y}%",
         dataPoints: [
-          { y: 50, label: "Attendance" },
-          { y: 20, label: "Avg quiz score" },
-         { y: 20, label: "Final Exam Score" },
-         { y: 10, label: "Student Exam Avg" },
+          { y: 50, label: "success" },
+          { y: 20, label: "failed" },
+          
         ]
       }]
     });
