@@ -57,7 +57,7 @@ h1::before {
   }
   
   .filter-controls button.active {
-    background-color: #6aaa96;
+    background-color: #2A7F62;
     color: white;
     border-color: #5a9a86;
     font-weight: bold;
@@ -69,7 +69,7 @@ h1::before {
   
   .add-user-button {
     padding: 9px 18px; /* Slightly larger padding */
-    background-color: #6aaa96;
+    background-color: #2A7F62;
     color: white;
     border: none;
     border-radius: 5px;
