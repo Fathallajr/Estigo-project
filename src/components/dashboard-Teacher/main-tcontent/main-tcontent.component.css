@@ -6,6 +6,7 @@
     width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
-    background-color: #05ae0b;
+    background-color: var(--estigo-green);
+    color: white;
 }
 

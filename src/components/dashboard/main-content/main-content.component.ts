@@ -6,8 +6,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component'; // Adjust path 
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
-import { RouterLink, RouterModule } from '@angular/router';
-
+import { RouterLink, RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 export interface EnrolledCourse {
   courseId:number;
@@ -62,7 +62,8 @@ export interface UserInfo {
     GHeaderProfileComponent,
     SidebarComponent,
     RouterLink,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.css']
@@ -70,11 +71,16 @@ export interface UserInfo {
 export class MainContentComponent implements OnInit {
   private http = inject(HttpClient);
   private sanitizer = inject(DomSanitizer); // Inject DomSanitizer
+  private router = inject(Router); // Inject Router for navigation
 
   dashboardData$: Observable<StudentDashboardData | null> | undefined;
   isLoading = true;
   errorMessage: string | null = null;
   studentName: string = 'User';
+  
+  // Level selector modal properties
+  showLevelSelector = false;
+  selectedLevel: number | null = null;
 
   private readonly localStorageKey = 'userData';
 
@@ -150,5 +156,26 @@ export class MainContentComponent implements OnInit {
       }
       
       return defaultImageUrl;
+  }
+  
+  // Level selector modal methods
+  showPredictionLevelSelector(): void {
+    this.showLevelSelector = true;
+    this.selectedLevel = null; // Reset selection when opening modal
+  }
+  
+  closeLevelSelector(): void {
+    this.showLevelSelector = false;
+  }
+  
+  selectPredictionLevel(level: number): void {
+    this.selectedLevel = level;
+  }
+  
+  navigateToPrediction(): void {
+    if (this.selectedLevel) {
+      this.closeLevelSelector();
+      this.router.navigate(['/predict', { number: this.selectedLevel }]);
+    }
   }
 }

@@ -1,18 +1,67 @@
 <div class="result-container">
-  <h1>Congrats, You've Passed the Course!</h1>
-  <br>
+  <h1>Academic Performance Insights</h1>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    Loading prediction data...
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error-message">
+    <p>Error: {{ error }}</p>
+  </div>
+
+  <!-- Show Predicted Grade Section -->
+  <div *ngIf="!isLoading && !error && predictedGrade" class="predicted-grade-display">
+    <h2>Predicted Grade for this subject</h2>
+    <p class="grade">{{ predictedGrade }}</p>
+  </div>
+  <!-- Show message if grade couldn't be fetched but other data might be available -->
+   <div *ngIf="!isLoading && !error && !predictedGrade && predictionData" class="predicted-grade-display no-grade">
+    <p>Predicted grade is currently unavailable for this subject.</p>
+  </div>
+  
+
   <div class="charts-grid">
     <div id="chartContainer1" class="chart-container"></div>
     <div id="chartContainer2" class="chart-container"></div>
     <div id="chartContainer3" class="chart-container"></div>
-    <div id="chartContainer4" class="chart-container"></div>
   </div>
-  <ul class="notes">
-     <p><b>The prediction is based on your previous academic performance</b></p> 
-     <br>
-      <li>The prediction is based on your attendance</li>
-      <li>nis based on quiz scores, final exam results, and performance.</li>
-      <li>It gets updated automatically with your latest academic data.</li>
-      <li>Use it to stay motivated and track your progress.</li>
-  </ul>
+
+  <br>
+  <hr>
+  <br>
+
+  <!-- Show Performance Metrics Section -->
+  <div *ngIf="!isLoading && !error && predictionData">
+    <div class="info-grid">
+       <div class="info-item">
+        <h2>Final Exam Attempts</h2>
+        <p>{{ predictionData.final_exam_attempts }}</p>
+       </div>
+       <div class="info-item">
+        <h2>Final Exam Score</h2>
+        <p>{{ predictionData.final_exam_score }}%</p>
+       </div>
+       <div class="info-item">
+        <h2>Education System</h2>
+        <p>{{ educationSystem }}</p>
+       </div>
+    </div>
+
+
+    <br>
+    <ul class="notes">
+      <p><b>Note:</b></p>
+      <br>
+      <li>The predicted grade is an estimate based on historical data patterns.</li>
+      <li>Performance metrics reflect your activity and scores for the selected level.</li>
+      <li>Attendance, quiz scores, completion rates, and exam details are key factors.</li>
+      <li>Use these insights to focus your efforts and track progress.</li>
+    </ul>
+  </div>
+
+  <!-- Show message if NO data at all is available -->
+  <div *ngIf="!isLoading && !error && !predictionData && !predictedGrade">
+     <p class="no-data-message">No prediction data or grade available for this level.</p>
+  </div>
+
 </div>

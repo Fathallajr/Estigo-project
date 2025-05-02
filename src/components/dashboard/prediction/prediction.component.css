@@ -1,7 +1,9 @@
+/* START OF FILE prediction.component.css */
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Ensure padding/border are included in width/height */
 }
 
 body, html {
@@ -21,52 +23,186 @@ body, html {
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   width: 90%;
-  
+  max-width: 1200px;
 }
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-.chart-container {
-  height: 300px; /* أو اللي يناسبك */
-}
+
 h1 {
   color: #2a7f62;
   font-size: 2rem;
-  margin-bottom: 15px;
+  margin-bottom: 25px; /* Increased margin */
   text-align: center;
 }
 
-.success-rate p {
-  font-size: 1.2rem;
+h2 {
   color: #333;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
-#chartContainer {
-  width: 50% !important;
-  height: 300px !important;
-  text-align: left;
+/* Specific styling for section titles */
+.result-container > h2,
+.predicted-grade-display h2 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
-ul.notes {
-  list-style-position: inside;
-  padding: 0 15px;
-  font-size: 24px;
+
+.loading-indicator, .error-message, .no-data-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
   color: #555;
-  line-height: 1.6;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #d9534f;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  border-radius: 4px;
+  white-space: pre-wrap; /* Allow line breaks in error messages */
+}
+
+.no-data-message {
+    font-style: italic;
+}
+
+/* Styles for the predicted grade display */
+.predicted-grade-display {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #e8f3ee;
+    border-left: 5px solid #2a7f62;
+    border-radius: 5px;
+}
+
+.predicted-grade-display h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    color: #1e5a46;
+}
+
+.predicted-grade-display p.grade {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2a7f62;
+    margin: 0;
+}
+
+.predicted-grade-display.no-grade p {
+    font-size: 1.2rem;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+}
+/* End of predicted grade styles */
+
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-ul.notes li {
-  margin-bottom: 10px;
+.info-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-ul.notes p{
-  font-size: 30px;
-  color: #2a7f62;
-  line-height: 1.6;
-  text-align: center;
-  margin-bottom: 10px;
 
+.info-item p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #eee;
+  margin: 30px 0;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+  align-items: stretch; /* Ensure grid items stretch vertically */
+  justify-items: stretch; /* Ensure grid items stretch horizontally */
+}
+
+.chart-container {
+  height: 350px; 
+  width: 100%; 
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px; 
+  background-color: #fff;
+  position: relative; 
+  box-sizing: border-box; 
+
+}
+
+.chart-container .canvasjs-chart-container {
+  width: 100% !important; 
+  height: 100% !important; 
+  position: absolute; 
+  top: 0;
+  left: 0;
+}
+
+/* Target the actual canvas element */
+.chart-container .canvasjs-chart-canvas {
+  width: 100% !important; 
+  height: 100% !important; 
+  display: block; 
+}
+
+
+
+.canvasjs-chart-legend {
+    text-align: center !important;
+    cursor: default !important; /* Override cursor if needed */
+}
+
+
+.notes {
+    list-style: none;
+    padding: 15px;
+    margin-top: 30px;
+    background-color: #eef7f4;
+    border-left: 4px solid #2a7f62;
+    border-radius: 4px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.notes p b {
+    color: #1e5a46;
+    font-size: 1rem;
+}
+
+.notes li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.notes li::before {
+    content: "•";
+    color: #2a7f62;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 }
