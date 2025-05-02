@@ -34,7 +34,7 @@ export class UploadTeacherComponent implements OnInit {
   isError = false;
   teacherId: string | null = null;
 
-  readonly API_URL = 'https://estigo.tryasp.net/api/Teacher/add';
+  readonly API_URL = 'https://estigo.tryasp.net/api/Teacher/add-course';
 
   constructor(private http: HttpClient) {}
 
