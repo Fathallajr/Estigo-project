@@ -1,15 +1,106 @@
-/* OPTIONAL: Keep the simplified CSS for basic layout */
-.simple-form-container { max-width: 500px; margin: 20px auto; padding: 25px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; }
-.simple-form-container h2 { text-align: center; margin-bottom: 20px; color: #333; }
-.simple-course-form { display: flex; flex-direction: column; gap: 15px; }
-.form-group { display: flex; flex-direction: column; }
-.form-group label { margin-bottom: 5px; font-weight: bold; color: #555; }
-.form-group input[type="text"],
-.form-group input[type="number"], /* Keep just in case */
-.form-group input[type="url"],
-.form-group textarea,
-.form-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
-.form-group textarea { resize: vertical; }
-.form-actions { margin-top: 15px; text-align: center; }
-.form-actions button { padding: 10px 25px; background-color: var(--estigo-green); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; }
-.form-actions button:hover { background-color: #037f07; }
+/* add-lesson.component.css */
+/* 1. full-page bg + centering */
+.page-container {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--estigo-off-white);
+  }
+  
+  /* 2. card style */
+  .form-card {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 2rem 3rem;
+    animation: fadeInUp 0.6s ease-out both;
+  }
+  
+  /* 3. title */
+  .form-card h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--estigo-green);
+    font-size: 1.75rem;
+    animation: slideIn 0.5s ease-out both;
+    font-weight: 700;
+  }
+  
+  /* 4. form layout */
+  .course-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  /* 5. form-group */
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    animation: slideIn 0.5s ease-out both;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease;
+  }
+  .form-group input:hover,
+  .form-group textarea:hover,
+  .form-group select:hover {
+    box-shadow: 0 0 8px rgba(47,62,70,0.1);
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    animation: shakeBorder 0.8s ease-in-out both;
+    box-shadow: 0 0 6px rgba(47,62,70,0.2);
+  }
+  
+  /* 6. submit button */
+  .form-actions {
+    text-align: right;
+    margin-top: 1.5rem;
+  }
+  .form-actions button {
+    padding: 0.75rem 2rem;
+    background: var(--estigo-green);
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    animation: pulse 2s ease-in-out infinite 1s;
+    transition: transform 0.2s ease;
+  }
+  .form-actions button:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+  
+  /* 7. animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.03); }
+  }
+  @keyframes shakeBorder {
+    0%,100% { border-color: #ccc; }
+    50%     { border-color: var(--estigo-green); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  

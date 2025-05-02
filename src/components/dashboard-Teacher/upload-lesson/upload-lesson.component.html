@@ -1,48 +1,58 @@
-<div class="simple-form-container">
+<!-- add-lesson.component.html -->
+<div class="page-container">
+  <div class="form-card">
     <h2>Add Lesson</h2>
-  
-    <!-- Combined Form -->
-    <form (ngSubmit)="onSubmit()" class="simple-course-form">
-  
+
+    <form (ngSubmit)="onSubmit()" class="course-form">
+
       <!-- Course Selection -->
       <div class="form-group">
-        <label for="courseSelect">Select Course:</label>
-        <select id="courseSelect" name="courseSelect" [(ngModel)]="selectedCourseId" required>
+        <label for="courseSelect">Select Course</label>
+        <select id="courseSelect" name="courseSelect"
+                [(ngModel)]="selectedCourseId" required>
           <option [ngValue]="null" disabled>-- Select --</option>
-          <option *ngFor="let course of teacherCourses" [ngValue]="course.courseId">
+          <option *ngFor="let course of teacherCourses"
+                  [ngValue]="course.courseId">
             {{ course.courseTitle }}
           </option>
         </select>
       </div>
-  
+
       <!-- Lesson Title -->
       <div class="form-group">
-        <label for="lessonTitle">Lesson Title:</label>
-        <input type="text" id="lessonTitle" name="lessonTitle" [(ngModel)]="lessonData.lessonTitle" required>
+        <label for="lessonTitle">Lesson Title</label>
+        <input type="text" id="lessonTitle" name="lessonTitle"
+               [(ngModel)]="lessonData.lessonTitle" required>
       </div>
-  
+
       <!-- Lesson Description -->
       <div class="form-group">
-        <label for="lessonDescription">Lesson Description:</label>
-        <textarea id="lessonDescription" name="lessonDescription" [(ngModel)]="lessonData.lessonDescription" rows="3"></textarea>
+        <label for="lessonDescription">Lesson Description</label>
+        <textarea id="lessonDescription" name="lessonDescription"
+                  [(ngModel)]="lessonData.lessonDescription"
+                  rows="3"></textarea>
       </div>
-  
+
       <!-- Lesson Content -->
       <div class="form-group">
-        <label for="lessonContent">Lesson Content:</label>
-        <textarea id="lessonContent" name="lessonContent" [(ngModel)]="lessonData.lessonContent" rows="5"></textarea>
+        <label for="lessonContent">Lesson Content</label>
+        <textarea id="lessonContent" name="lessonContent"
+                  [(ngModel)]="lessonData.lessonContent"
+                  rows="5"></textarea>
       </div>
-  
+
       <!-- Lesson Video URL -->
       <div class="form-group">
-        <label for="lessonVideo">Lesson Video URL:</label>
-        <input type="url" id="lessonVideo" name="lessonVideo" [(ngModel)]="lessonData.lessonVideo">
+        <label for="lessonVideo">Lesson Video URL</label>
+        <input type="url" id="lessonVideo" name="lessonVideo"
+               [(ngModel)]="lessonData.lessonVideo">
       </div>
-  
+
       <!-- Submit Button -->
       <div class="form-actions">
         <button type="submit">Add Lesson</button>
       </div>
+
     </form>
-  
   </div>
+</div>
