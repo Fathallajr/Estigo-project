@@ -1,69 +1,185 @@
-.simple-form-container {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+/* add-course.component.css */
+/* full-page bg + centering */
+.page-container {
+    min-height: calc(100vh - 80px); /* adjust for your header height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--estigo-off-white);
+  }
+  
+  /* card */
+  .form-card {
+    width: 100%;
+    max-width: 900px;
     background: #fff;
-}
-
-.simple-form-container h2 {
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 2rem 3rem;
+  }
+  
+  /* title */
+  .form-card h2 {
     text-align: center;
-    margin-bottom: 20px;
-}
-
-.simple-course-form {
+    margin-bottom: 1.5rem;
+    color: var(--estigo-green);
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+  
+  /* form grid */
+  .course-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    margin-bottom: 5px;
+    gap: 1.25rem;
+  }
+  
+  .two-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* inputs */
+  .form-group label {
     font-weight: 600;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.form-actions {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.form-actions button {
-    padding: 10px 25px;
+    margin-bottom: 0.4rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  /* file-info */
+  .file-info {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* button */
+  .form-actions {
+    text-align: right;
+    margin-top: 1.5rem;
+  }
+  
+  .form-actions button {
+    padding: 0.75rem 2rem;
     background: var(--estigo-green);
-    color: white;
+    color: #fff;
+    font-size: 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-}
-
-.message-success,
-.message-error {
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+    transition: transform 0.2s ease;
+  }
+  
+  .form-actions button:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* feedback messages */
+  .message-success,
+  .message-error {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
     text-align: center;
-}
-
-.message-success {
+    font-weight: 500;
+  }
+  
+  .message-success {
     background: #e8f5e9;
     color: #2e7d32;
-}
-
-.message-error {
+  }
+  
+  .message-error {
     background: #ffebee;
     color: #c62828;
-}
+  }
+  
+  /* 1. Fade-in-up animation للـ card */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .form-card {
+    /* existing styles... */
+    animation: fadeInUp 0.6s ease-out both;
+  }
+  
+  /* 2. Pulse effect على الـ button لما تحمل الصفحة */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .form-actions button {
+    /* existing styles... */
+    animation: pulse 2s ease-in-out infinite 1s; /* starts بعد 1s */
+  }
+  
+  /* 3. Input focus animation */
+  @keyframes shakeBorder {
+    0%, 100% { border-color: #ccc; }
+    50%      { border-color: var(--estigo-green); }
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    animation: shakeBorder 0.8s ease-in-out both;
+    box-shadow: 0 0 6px rgba(47,62,70,0.2);
+  }
+  
+  /* 4. Label slide-in on load */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .form-group label {
+    /* existing styles... */
+    animation: slideIn 0.5s ease-out both;
+  }
+  
+  /* 5. Button hover subtle lift */
+  .form-actions button:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+  
+  /* 6. Optional: input hover glow */
+  .form-group input:hover,
+  .form-group textarea:hover,
+  .form-group select:hover {
+    box-shadow: 0 0 8px rgba(47,62,70,0.1);
+  }
+  

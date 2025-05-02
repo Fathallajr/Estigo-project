@@ -1,59 +1,74 @@
-<div class="simple-form-container">
+<!-- add-course.component.html -->
+<div class="page-container">
+  <div class="form-card">
     <h2>Add New Course</h2>
-  
-    <!-- Feedback Message Area -->
+
+    <!-- Feedback Message -->
     <div *ngIf="feedbackMessage"
          [ngClass]="{'message-success': !isError, 'message-error': isError}">
       {{ feedbackMessage }}
     </div>
-  
+
     <!-- Form -->
-    <form (ngSubmit)="onSubmit()" class="simple-course-form">
-  
-      <!-- Course Title -->
-      <div class="form-group">
-        <label for="courseTitle">Course Title:</label>
-        <input type="text" id="courseTitle" name="courseTitle" [(ngModel)]="courseData.courseTitle" required>
+    <form (ngSubmit)="onSubmit()" class="course-form">
+
+      <div class="two-columns">
+        <!-- Course Title -->
+        <div class="form-group">
+          <label for="courseTitle">Course Title</label>
+          <input type="text" id="courseTitle" name="courseTitle"
+                 [(ngModel)]="courseData.courseTitle" required>
+        </div>
+
+        <!-- Price -->
+        <div class="form-group">
+          <label for="price">Price ($)</label>
+          <input type="number" id="price" name="price"
+                 [(ngModel)]="courseData.price" min="0" required>
+        </div>
       </div>
-  
+
       <!-- Description -->
       <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" [(ngModel)]="courseData.description" rows="3" required></textarea>
+        <label for="description">Description</label>
+        <textarea id="description" name="description"
+                  [(ngModel)]="courseData.description"
+                  rows="4" required></textarea>
       </div>
-  
-      <!-- Price -->
-      <div class="form-group">
-        <label for="price">Price ($):</label>
-        <input type="number" id="price" name="price" [(ngModel)]="courseData.price" min="0" required>
+
+      <div class="two-columns">
+        <!-- Category -->
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category"
+                  [(ngModel)]="courseData.catogryid" required>
+            <option [ngValue]="null" disabled>-- Select --</option>
+            <option [ngValue]="1">Mathematics</option>
+            <option [ngValue]="2">Physics</option>
+            <option [ngValue]="3">Biology</option>
+            <option [ngValue]="4">Chemistry</option>
+            <option [ngValue]="5">English</option>
+          </select>
+        </div>
+
+        <!-- Logo Upload -->
+        <div class="form-group">
+          <label for="logoFile">Course Image</label>
+          <input type="file" id="logoFile" name="logoFile"
+                 (change)="onFileSelected($event)" accept="image/*" required>
+          <span *ngIf="logoFileName" class="file-info">
+            {{ logoFileName }}
+          </span>
+        </div>
       </div>
-  
-      <!-- Category -->
-      <div class="form-group">
-        <label for="category">Category:</label>
-        <select id="category" name="category" [(ngModel)]="courseData.catogryid" required>
-          <option [ngValue]="null" disabled>-- Select --</option>
-          <option [ngValue]="1">Mathematics</option>
-          <option [ngValue]="2">Physics</option>
-          <option [ngValue]="3">Biology</option>
-          <option [ngValue]="4">Chemistry</option>
-          <option [ngValue]="5">English</option>
-        </select>
-      </div>
-  
-      <!-- Logo Upload -->
-      <div class="form-group">
-        <label for="logoFile">Course Image:</label>
-        <input type="file" id="logoFile" name="logoFile" (change)="onFileSelected($event)" accept="image/*" required>
-        <span *ngIf="logoFileName" class="file-info">{{ logoFileName }}</span>
-      </div>
-  
-      <!-- Submit Button -->
+
+      <!-- Submit -->
       <div class="form-actions">
         <button type="submit" [disabled]="isLoading || !isFormValid()">
           {{ isLoading ? 'Adding...' : 'Add Course' }}
         </button>
       </div>
-  
+
     </form>
   </div>
+</div>
