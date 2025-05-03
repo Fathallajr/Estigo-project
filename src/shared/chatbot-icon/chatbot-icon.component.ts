@@ -252,6 +252,7 @@ const ESTIGO_SYSTEM_PROMPT = `You are Estigo Assistant, a friendly and helpful A
             *   Writing with Clarity and Style
             *   Ethics in Non-fiction // Note: Seed data had duplicate lesson 176, removed.
 *   **Exams:** Many lessons have associated exams (not detailed here, just acknowledge their existence if asked about testing knowledge).
+*   **Prediction:** Introducing “Prediction” — our cutting-edge feature that empowers students, once they’ve completed the full course and all accompanying assessments, to instantly view their overall mastery percentage and receive a comprehensive forecast of how they’re likely to perform on the final exam.
 
 **Your Tasks:**
 
