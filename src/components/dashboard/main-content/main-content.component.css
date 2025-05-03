@@ -256,8 +256,8 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
-/* Level Selector Modal Styles */
-.level-selector-modal {
+/* Number Selection Modal Styles */
+.number-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -270,107 +270,82 @@
     z-index: 1000;
 }
 
-.level-selector-content {
+.number-modal {
     background-color: white;
-    border-radius: 10px;
-    padding: 25px;
+    border-radius: 15px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
 }
 
-.level-selector-content h2 {
-    color: #333;
-    margin-bottom: 15px;
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Level selector modal styling */
-.level-dropdown {
-  margin: 20px 0;
+.number-modal-header {
+    background-color: var(--estigo-green, #6A9C89);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.level-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
+.number-modal-header h3 {
+    margin: 0;
+    font-size: 1.2em;
 }
 
-.level-select:focus {
-  outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-}
-
-/* Remove the old level buttons styling if no longer needed */
-.level-buttons {
-  display: none;
-}
-.level-buttons button {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    background-color: white;
-    font-size: 16px;
-    font-weight: bold;
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
     cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.number-modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.number-selector {
+    margin: 15px 0;
+    width: 100%;
+}
+
+.number-selector select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1.1em;
+    background-color: #f8f8f8;
+}
+
+.select-number-btn {
+    background-color: var(--estigo-green, #6A9C89);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 15px;
     transition: all 0.3s ease;
 }
 
-.level-buttons button:hover {
-    border-color: #6A9C89;
-    transform: scale(1.05);
-}
-
-.level-buttons button.active {
-    background-color: #6A9C89;
-    color: white;
-    border-color: #6A9C89;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.confirm-button, .cancel-button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.confirm-button {
-    background-color: #6A9C89;
-    color: white;
-    border: none;
-}
-
-.confirm-button:hover:not([disabled]) {
-    background-color: #5d8a7a;
-}
-
-.confirm-button[disabled] {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-.cancel-button {
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ddd;
-}
-
-.cancel-button:hover {
-    background-color: #e0e0e0;
+.select-number-btn:hover {
+    background-color: #5e9179;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
 .no-courses-placeholder,

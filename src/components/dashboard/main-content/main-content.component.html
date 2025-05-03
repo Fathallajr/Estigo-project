@@ -1,27 +1,27 @@
 <div class="main-content" id="main-content-area">
-    <!-- Level Selection Modal -->
-    <div *ngIf="showLevelSelector" class="level-selector-modal">
-        <div class="level-selector-content">
-            <h2>Select Level for Prediction</h2>
-            <p>Please select a level from 1 to 5:</p>
-            <div class="level-dropdown">
-                <select [(ngModel)]="selectedLevel" class="level-select">
-                    <option [ngValue]="null" disabled>Select a subject</option>
-                    <option *ngFor="let subject of [
-                        {id: 1, name: 'Mathematics'},
-                        {id: 2, name: 'Physics'},
-                        {id: 3, name: 'Biology'},
-                        {id: 4, name: 'Chemistry'},
-                        {id: 5, name: 'English'}
-                    ]" [ngValue]="subject.id">{{subject.name}}</option>
-                </select>
+    <!-- Number Selection Modal -->
+    <div *ngIf="showNumberModal" class="number-modal-overlay">
+        <div class="number-modal">
+            <div class="number-modal-header">
+                <h3>Student Performace Model</h3>
+                <button class="close-modal-btn" (click)="closeNumberModal()">×</button>
             </div>
-            <div class="modal-actions">
-                <button (click)="navigateToPrediction()" class="confirm-button" [disabled]="!selectedLevel">Confirm</button>
-                <button (click)="closeLevelSelector()" class="cancel-button">Cancel</button>
+            <div class="number-modal-body">
+                <p>Please select your subject</p>
+                <div class="number-selector">
+                    <select [(ngModel)]="selectedModalNumber">
+                        <option [value]="1">Mathematics</option>
+                        <option [value]="2">Physics</option>
+                        <option [value]="3">Biology</option>
+                        <option [value]="4">Chemistry</option>
+                        <option [value]="5">English</option>
+                    </select>
+                </div>
+                <button class="select-number-btn" (click)="onSelectNumber()">Confirm</button>
             </div>
         </div>
     </div>
+    
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-indicator" style="text-align: center; padding: 20px;">
         <i>Loading dashboard...</i>
@@ -53,7 +53,7 @@
                     <div class="section-title" style="border-left: 4px solid green; padding-left: 8px;">
                         Enrolled Courses
 
-                        <button (click)="showPredictionLevelSelector()" class="pred-button">predict</button>
+                        <button (click)="onPredictClick()" class="pred-button">predict</button>
                     </div>
                     
                     <div class="enrolled-courses-grid" *ngIf="data.enrolledCourses && data.enrolledCourses.length > 0; else noCourses">

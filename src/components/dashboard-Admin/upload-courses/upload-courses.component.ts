@@ -21,7 +21,7 @@ interface CourseFormData {
   price: number | null;
   available: boolean;
   catogryid: number | null;
-  teacherId: string; // Keep as string
+  teacherId: string; 
 }
 
 
@@ -31,7 +31,7 @@ interface CourseFormData {
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule // Or remove if using provideHttpClient() globally
+    HttpClientModule 
   ],
   templateUrl: './upload-courses.component.html',
   styleUrls: ['./upload-courses.component.css']

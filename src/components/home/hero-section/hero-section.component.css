@@ -11,21 +11,21 @@
 .hero-container {
     display: flex;
     align-items: center;
-    justify-content: center; /* Changed to center */
+    justify-content: center; 
     max-width: 1400px;
     margin: 0 auto;
     flex-wrap: wrap;
     position: relative;
     z-index: 2;
-    gap: 20px; /* Added gap for better spacing */
+    gap: 20px; 
 }
 
 .hero-text {
     font-size: 0.7rem;
     flex: 1 1 400px;
-    padding: 0 20px; /* Changed padding to be on both sides */
+    padding: 0 20px;
     margin-bottom: 20px;
-    text-align: center; /* Center-aligned text */
+    text-align: center; 
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUp 0.8s ease forwards;

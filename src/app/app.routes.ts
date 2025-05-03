@@ -33,7 +33,7 @@ export const routes: Routes = [
      { path: 'course-s/:term', component: CourseSearchComponent },
      {path:"myCourse/:id",component:MycoursePageComponent},
      {path:"quiz/:id",component:QuizComponent},
-     {path:"predict",component:PredictionComponent},
-     {path:"predict/:number",component:PredictionComponent}
+     {path:"predict/:number",component:PredictionComponent},
+     {path:"predict",component:PredictionComponent}
      
 ];

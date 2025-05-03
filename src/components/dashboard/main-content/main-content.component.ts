@@ -1,13 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { GHeaderProfileComponent } from '../../../shared/g-header-profile/g-header-profile.component'; // Adjust path if needed
 import { SidebarComponent } from '../sidebar/sidebar.component'; // Adjust path if needed
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
-import { RouterLink, RouterModule, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+
 
 export interface EnrolledCourse {
   courseId:number;
@@ -58,12 +59,12 @@ export interface UserInfo {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     HttpClientModule,
     GHeaderProfileComponent,
     SidebarComponent,
     RouterLink,
-    RouterModule,
-    FormsModule
+    RouterModule
   ],
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.css']
@@ -71,16 +72,12 @@ export interface UserInfo {
 export class MainContentComponent implements OnInit {
   private http = inject(HttpClient);
   private sanitizer = inject(DomSanitizer); // Inject DomSanitizer
-  private router = inject(Router); // Inject Router for navigation
+  private router = inject(Router); // Inject Router
 
   dashboardData$: Observable<StudentDashboardData | null> | undefined;
   isLoading = true;
   errorMessage: string | null = null;
   studentName: string = 'User';
-  
-  // Level selector modal properties
-  showLevelSelector = false;
-  selectedLevel: number | null = null;
 
   private readonly localStorageKey = 'userData';
 
@@ -133,7 +130,27 @@ export class MainContentComponent implements OnInit {
     }
   }
 
+  // Modal properties
+  showNumberModal = false;
+  selectedModalNumber = 1;
   
+  // Method to handle predict button click
+  onPredictClick(): void {
+    // Show the modal instead of using prompt
+    this.showNumberModal = true;
+  }
+  
+  // Method to handle number selection and close modal
+  onSelectNumber(): void {
+    // Navigate to prediction component with the selected number
+    this.router.navigate(['/predict', this.selectedModalNumber]);
+    this.showNumberModal = false;
+  }
+  
+  // Method to close the modal without selection
+  closeNumberModal(): void {
+    this.showNumberModal = false;
+  }
 
   private handleError(message: string): void {
       this.errorMessage = message;
@@ -156,26 +173,5 @@ export class MainContentComponent implements OnInit {
       }
       
       return defaultImageUrl;
-  }
-  
-  // Level selector modal methods
-  showPredictionLevelSelector(): void {
-    this.showLevelSelector = true;
-    this.selectedLevel = null; // Reset selection when opening modal
-  }
-  
-  closeLevelSelector(): void {
-    this.showLevelSelector = false;
-  }
-  
-  selectPredictionLevel(level: number): void {
-    this.selectedLevel = level;
-  }
-  
-  navigateToPrediction(): void {
-    if (this.selectedLevel) {
-      this.closeLevelSelector();
-      this.router.navigate(['/predict', { number: this.selectedLevel }]);
-    }
   }
 }
