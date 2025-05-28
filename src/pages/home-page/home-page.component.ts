@@ -7,7 +7,7 @@ import { ClassroomSectionComponent } from '../../components/home/classroom-secti
 import { InterfaceSectionComponent } from '../../components/home/interface-section/interface-section.component';
 import { ToolsSectionComponent } from '../../components/home/tools-section/tools-section.component';
 import { AssessmentsSectionComponent } from '../../components/home/assessments-section/assessments-section.component';
-import { ClassManagementSectionComponent } from '../../components/home/class-management-section/class-management-section.component';
+import { ClassManagementSectionComponent } from '../../components/home/CTA/CTA.component';
 import { PopularCoursesSectionComponent } from '../../components/home/popular-courses-section/popular-courses-section.component';
 import { InstructorsSectionComponent } from '../../components/home/instructors-section/instructors-section.component';
 import { GHeaderProfileComponent } from "../../shared/g-header-profile/g-header-profile.component";

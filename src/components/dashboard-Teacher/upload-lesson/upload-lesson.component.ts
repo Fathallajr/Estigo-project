@@ -28,10 +28,12 @@ export class UploadLessonComponent implements OnInit {
     lessonVideo: ''
   };
   teacherId: string | null = null;
+  selectedVideoName: string | null = null;
 
   // API Endpoints
   readonly COURSES_API_URL = 'https://estigo.tryasp.net/api/Teacher/teacher-courses';
   readonly LESSON_API_URL = 'https://estigo.tryasp.net/api/Lesson';
+  readonly VIDEO_BASE_URL = 'https://estigo.tryasp.net/';
 
   constructor(private http: HttpClient) {}
 
@@ -61,10 +63,21 @@ export class UploadLessonComponent implements OnInit {
       // No .error() handling
   }
 
+  onVideoSelected(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement;
+    const fileList: FileList | null = element.files;
+
+    if (fileList && fileList.length > 0) {
+      const file = fileList[0];
+      this.selectedVideoName = file.name;
+      this.lessonData.lessonVideo = this.VIDEO_BASE_URL + file.name;
+    }
+  }
+
   onSubmit(): void {
     if (!this.selectedCourseId || !this.lessonData.lessonTitle || !this.teacherId) {
       console.warn("Missing course selection or lesson title.");
-      alert("Please select a course and enter a lesson title."); // Minimal feedback
+      alert("Please select a course and enter a lesson title.");
       return;
     }
 

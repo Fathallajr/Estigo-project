@@ -1,0 +1,132 @@
+.class-management-section {
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+}
+
+.class-management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.class-management-text {
+    padding-right: 30px;
+}
+
+.class-management-text h2 { /* This targets .section-title by element */
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2c3e50; /* Note: Inline style in HTML sets color to #2F327D, which will take precedence */
+}
+
+.class-management-text p { /* This targets .section-subtitle by element */
+    color: #777;
+    margin-bottom: 20px; /* Note: Inline style in HTML sets margin-bottom to 30px, which will take precedence */
+    line-height: 1.6;
+}
+
+.class-management-image img {
+    width: 100%;
+    max-width: 80%;
+    height: auto;
+    display: block;
+}
+
+/* CTA Button Styles */
+.cta-button {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: var(--estigo-green, #00A99D); /* Using estigo-green if defined, else a fallback teal/green */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600; /* Semi-bold */
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px; /* Spacing from the paragraph */
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: #00877A; /* Darker shade for hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 992px) {
+    .class-management-grid {
+        gap: 30px;
+    }
+    
+    .class-management-text h2 { /* Targets .section-title */
+        font-size: 1.75rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .class-management-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .class-management-text {
+        padding-right: 0;
+        order: 2; /* Text and button below image on mobile */
+        text-align: center; /* Center button and text content */
+    }
+
+    /* To center text content of h2 and p, overriding inline styles */
+    /* Ensure .section-title and .section-subtitle classes are on h2 and p in HTML */
+    .class-management-text .section-title,
+    .class-management-text .section-subtitle {
+        text-align: center !important; /* Override inline 'text-align: left' */
+    }
+    
+    .class-management-image {
+        order: 1; /* Image above text on mobile */
+    }
+    
+    .class-management-image img {
+        width: 70%; /* Adjust image size for mobile */
+        max-width: 350px; /* Max image size */
+        margin: 0 auto; /* Center the image */
+    }
+
+    .cta-button {
+        margin-top: 25px; /* More space on mobile */
+        padding: 12px 25px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .class-management-section {
+        padding: 30px 15px;
+    }
+    
+    .class-management-text h2 { /* Targets .section-title */
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .class-management-text p { /* Targets .section-subtitle */
+        margin-bottom: 15px;
+        font-size: 0.9rem; /* Slightly smaller text for small screens */
+    }
+
+    .cta-button {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+}
+
+/* This existing rule hides <br> tags inside <p> on smaller screens */
+@media (max-width: 768px) {
+    p br {
+      display: none;
+    }
+}

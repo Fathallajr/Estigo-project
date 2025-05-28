@@ -44,8 +44,13 @@
       <!-- Lesson Video URL -->
       <div class="form-group">
         <label for="lessonVideo">Lesson Video URL</label>
-        <input type="url" id="lessonVideo" name="lessonVideo"
-               [(ngModel)]="lessonData.lessonVideo">
+        <div class="file-upload-wrapper">
+  <input type="file" id="lessonVideo" name="lessonVideo" (change)="onVideoSelected($event)"
+         accept="video/*">
+  <small class="form-text text-muted mt-2" *ngIf="selectedVideoName">
+    Selected video: {{ selectedVideoName }}
+  </small>
+</div>
       </div>
 
       <!-- Submit Button -->

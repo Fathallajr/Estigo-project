@@ -53,9 +53,14 @@
 
     <div class="form-group">
       <label for="logo" class="form-label">Logo Filename <span class="text-danger">*</span></label>
-      <input type="text" id="logo" class="form-control" formControlName="logo"
-             placeholder="e.g., biology-course.png"
-             [ngClass]="{ 'is-invalid': f['logo'].touched && f['logo'].invalid }">
+      <div class="file-upload-wrapper">
+  <input type="file" id="logo" class="form-control" (change)="onFileSelected($event)"
+         [ngClass]="{ 'is-invalid': f['logo'].touched && f['logo'].invalid }"
+         accept="image/*">
+  <small class="form-text text-muted mt-2" *ngIf="selectedFileName">
+    Selected file: {{ selectedFileName }}
+  </small>
+</div>
       <div *ngIf="f['logo'].touched && f['logo'].invalid" class="validation-error">
         <div *ngIf="f['logo'].errors?.['required']">Logo filename is required.</div>
       </div>

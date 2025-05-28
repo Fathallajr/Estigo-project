@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClassManagementSectionComponent } from './class-management-section.component';
+import { ClassManagementSectionComponent } from './CTA.component';
 
 describe('ClassManagementSectionComponent', () => {
   let component: ClassManagementSectionComponent;

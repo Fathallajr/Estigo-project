@@ -1,0 +1,21 @@
+<section class="class-management-section section-padding">
+    <div class="container class-management-grid">
+        <div class="class-management-text">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 20px; color: #2F327D;">
+                What are you waiting for?<br>
+                <span style="color: var(--estigo-green);">Start your success with Estigo!</span>
+            </h2>
+            <p class="section-subtitle" style="text-align: left; margin-bottom: 30px;">
+                Take the first step toward achieving your goals.<br>
+                Your journey to success begins now.
+            </p>
+            <!-- Added Button -->
+            <a *ngIf="buttonText" [routerLink]="buttonLink" class="cta-button">
+                {{ buttonText }}
+            </a>
+        </div>
+        <div class="class-management-image">
+            <img src="graduation-bro.svg" alt="Start your success with Estigo">
+        </div>
+    </div>
+</section>

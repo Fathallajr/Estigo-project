@@ -1,14 +1,26 @@
 <section class="instructors-section section-padding">
     <div class="container">
         <h2 class="section-title" style="text-align: left; color: #2F327D;">Meet our <span style="color:var(--estigo-green);">Instructors</span></h2>
-        <div class="instructors-carousel" #instructorsCarousel>
-            <div *ngIf="isLoading" class="loading">
-                Loading instructors...
+        <div class="instructors-carousel">
+            <div class="instructor-card">
+                <img src="assets/images/instructor1.jpg" alt="John Smith">
+                <h3 class="instructor-name">John Smith</h3>
+                <p class="instructor-expertise">Mathematics</p>
             </div>
-            <div *ngFor="let teacher of teachers" class="instructor-card">
-                <img [src]="teacher.image" [alt]="teacher.name">
-                <h3 class="instructor-name">{{teacher.name}}</h3>
-                <p class="instructor-expertise">{{teacher.subject}}</p>
+            <div class="instructor-card">
+                <img src="assets/images/instructor2.jpg" alt="Sarah Johnson">
+                <h3 class="instructor-name">Sarah Johnson</h3>
+                <p class="instructor-expertise">Computer Science</p>
+            </div>
+            <div class="instructor-card">
+                <img src="assets/images/instructor3.jpg" alt="Michael Brown">
+                <h3 class="instructor-name">Michael Brown</h3>
+                <p class="instructor-expertise">Physics</p>
+            </div>
+            <div class="instructor-card">
+                <img src="assets/images/instructor4.jpg" alt="Emily Davis">
+                <h3 class="instructor-name">Emily Davis</h3>
+                <p class="instructor-expertise">Chemistry</p>
             </div>
         </div>
     </div>
