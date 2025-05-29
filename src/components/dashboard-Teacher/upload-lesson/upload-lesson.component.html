@@ -1,28 +1,37 @@
-<!-- add-lesson.component.html -->
+<!-- upload-lesson.component.html -->
 <div class="page-container">
   <div class="form-card">
-    <h2>Add Lesson</h2>
+    <h2>Add New Lesson</h2>
 
-    <form (ngSubmit)="onSubmit()" class="course-form">
+    <!-- Loading/Error/Success Messages -->
+    <div *ngIf="isFetchingCourses" class="loading-message">Loading courses...</div>
+    <div *ngIf="errorMessage" class="form-message error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="form-message success-message">{{ successMessage }}</div>
+
+    <form (ngSubmit)="onSubmit()" class="course-form" *ngIf="!isFetchingCourses || teacherCourses.length > 0">
 
       <!-- Course Selection -->
       <div class="form-group">
-        <label for="courseSelect">Select Course</label>
+        <label for="courseSelect">Select Course <span class="required">*</span></label>
         <select id="courseSelect" name="courseSelect"
-                [(ngModel)]="selectedCourseId" required>
-          <option [ngValue]="null" disabled>-- Select --</option>
+                [(ngModel)]="selectedCourseId" required
+                [disabled]="teacherCourses.length === 0">
+          <option [ngValue]="null" disabled>-- Select Course --</option>
           <option *ngFor="let course of teacherCourses"
                   [ngValue]="course.courseId">
-            {{ course.courseTitle }}
+            {{ course.courseTitle }} (ID: {{ course.courseId }})
           </option>
         </select>
+        <div *ngIf="teacherCourses.length === 0 && !isFetchingCourses" class="form-text text-warning">
+            No courses available. Please create a course first.
+        </div>
       </div>
 
       <!-- Lesson Title -->
       <div class="form-group">
-        <label for="lessonTitle">Lesson Title</label>
+        <label for="lessonTitle">Lesson Title <span class="required">*</span></label>
         <input type="text" id="lessonTitle" name="lessonTitle"
-               [(ngModel)]="lessonData.lessonTitle" required>
+               [(ngModel)]="lessonData.lessonTitle" required minlength="3">
       </div>
 
       <!-- Lesson Description -->
@@ -41,21 +50,47 @@
                   rows="5"></textarea>
       </div>
 
-      <!-- Lesson Video URL -->
+      <!-- Is Live Checkbox -->
       <div class="form-group">
-        <label for="lessonVideo">Lesson Video URL</label>
-        <div class="file-upload-wrapper">
-  <input type="file" id="lessonVideo" name="lessonVideo" (change)="onVideoSelected($event)"
-         accept="video/*">
-  <small class="form-text text-muted mt-2" *ngIf="selectedVideoName">
-    Selected video: {{ selectedVideoName }}
-  </small>
-</div>
+        <div class="form-check">
+          <input type="checkbox" id="isLiveCheckbox" name="isLiveCheckbox" class="form-check-input"
+                 [(ngModel)]="lessonData.isLive">
+          <label for="isLiveCheckbox" class="form-check-label">Is this a Live Video/Stream Link?</label>
+        </div>
       </div>
+
+      <!-- Conditional Video File Input -->
+      <div class="form-group" *ngIf="!lessonData.isLive">
+        <label for="videoFile">Lesson Video File <span class="required">*</span></label>
+        <div class="file-upload-wrapper">
+          <input type="file" id="videoFile" name="videoFile"
+                 (change)="onVideoFileSelected($event)"
+                 accept="video/*" [required]="!lessonData.isLive">
+          <small class="form-text text-muted mt-1" *ngIf="selectedVideoFileName">
+            Selected file: {{ selectedVideoFileName }}
+          </small>
+          <small *ngIf="!selectedVideoFileName" class="form-text text-muted">
+            Upload a video file (e.g., .mp4, .mov).
+          </small>
+        </div>
+      </div>
+
+      <!-- Conditional Live Video URL Input -->
+      <div class="form-group" *ngIf="lessonData.isLive">
+        <label for="liveVideoUrl">Live Video Link <span class="required">*</span></label>
+        <input type="url" id="liveVideoUrl" name="liveVideoUrl" class="form-control"
+               [(ngModel)]="liveVideoUrl" placeholder="e.g., https://zoom.us/j/..."
+               [required]="lessonData.isLive">
+        <small class="form-text text-muted">Enter the full URL for the live video stream.</small>
+      </div>
+
 
       <!-- Submit Button -->
       <div class="form-actions">
-        <button type="submit">Add Lesson</button>
+        <button type="submit" [disabled]="isSubmitting || !selectedCourseId || teacherCourses.length === 0">
+          <span *ngIf="isSubmitting" class="spinner"></span> <!-- Add a spinner class if you have one -->
+          {{ isSubmitting ? 'Submitting...' : 'Add Lesson' }}
+        </button>
       </div>
 
     </form>

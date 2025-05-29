@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // --- Configuration ---
-const GROQ_API_KEY = "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"; // Your active key
+const GROQ_API_KEY = "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"; // Your active key
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const MODEL_NAME = "llama3-70b-8192";
 

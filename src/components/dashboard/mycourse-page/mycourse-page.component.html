@@ -1,57 +1,95 @@
-<div *ngIf="isLoading" class="loading">
+<div *ngIf="isLoading" class="loading"> <!-- Assuming you have a .loading class in your CSS -->
   Loading course content...
 </div>
 
-<div *ngIf="error" class="error">
-  {{ error }}
+<div *ngIf="error && !isLoading" class="error"> <!-- Assuming you have an .error class in your CSS -->
+  <p>{{ error }}</p>
+  <button *ngIf="courseId" (click)="fetchCourseDetails(courseId)" class="btn-retry"> <!-- Define .btn-retry or use a generic button class -->
+    Try Again
+  </button>
 </div>
 
 <div *ngIf="!isLoading && !error" class="course-container">
 
   <div class="video-section">
-    <h2>{{ currentLessonTitle || 'Select a Lesson' }}</h2>
-
-    <div *ngIf="!isViewingExamPrompt">
-      <div *ngIf="currentVideoUrl; else noVideoSelected" class="video-player-wrapper">
-        <video [src]="currentVideoUrl" controls width="100%"></video>
-      </div>
-      <ng-template #noVideoSelected>
-        <div class="no-video-placeholder">
-          <p>No video available for this lesson, or please select a lesson.</p>
-        </div>
-      </ng-template>
-    </div>
+    <h2>{{ currentLessonTitle || (courseDetails.length > 0 ? 'Select a Lesson' : 'Course Content') }}</h2>
 
     <div *ngIf="isViewingExamPrompt" class="exam-prompt-section">
        <h3>{{ selectedExamTitle }}</h3>
-       <p>You are about to start the exam for this lesson.</p>
-       <button (click)="startExam()" class="start-exam-button">Start Exam</button>
+       <p>You are about to start the exam for this lesson. Ensure you are ready before proceeding.</p>
+       <button (click)="startExam()" class="start-exam-button"> <!-- Uses your CSS -->
+        Start Exam
+       </button>
+    </div>
+
+    <div *ngIf="!isViewingExamPrompt">
+      <ng-container *ngIf="selectedLesson; else noLessonSelectedYetTpl">
+        <!-- Selected Lesson is LIVE -->
+        <div *ngIf="selectedLesson.isLive">
+          <div *ngIf="isValidVideoUrl(selectedLesson.lessonVideo); else invalidLiveLinkTpl" class="live-stream-display-area"> <!-- You might want a specific class here -->
+            <p>This lesson is a live stream. Click the button below to join.</p>
+            <!-- Apply a class for styling this button if needed, e.g., 'btn-live-stream' -->
+            <a [href]="selectedLesson.lessonVideo!" target="_blank" rel="noopener noreferrer" class="btn-live-stream">
+              Go to Live Stream
+            </a>
+          </div>
+          <ng-template #invalidLiveLinkTpl>
+            <div class="no-video-placeholder"> <!-- Uses your CSS -->
+              <p>The live stream link for this lesson is currently unavailable or invalid.</p>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- Selected Lesson is a VIDEO -->
+        <div *ngIf="!selectedLesson.isLive">
+          <div *ngIf="currentVideoUrl; else noVideoForThisLessonTpl" class="video-player-wrapper"> <!-- Uses your CSS -->
+            <video [src]="currentVideoUrl" controls (error)="currentVideoUrl=null; selectedLesson!.lessonVideo=null">
+                Your browser does not support the video tag.
+            </video>
+          </div>
+          <ng-template #noVideoForThisLessonTpl>
+            <div class="no-video-placeholder"> <!-- Uses your CSS -->
+              <p>No video available for this lesson, or the video link is invalid.</p>
+            </div>
+          </ng-template>
+        </div>
+      </ng-container>
+
+      <ng-template #noLessonSelectedYetTpl>
+        <div class="no-video-placeholder" *ngIf="courseDetails.length > 0"> <!-- Uses your CSS -->
+          <p>Please select a lesson from the content list to begin.</p>
+        </div>
+      </ng-template>
     </div>
   </div>
 
-  <div class="content-section">
+  <div class="content-section"> <!-- Uses your CSS -->
     <h3>Course Content</h3>
-    <ul *ngIf="courseDetails.length > 0; else noContent">
+    <ul *ngIf="courseDetails.length > 0; else noContentTpl">
       <li
         *ngFor="let lesson of courseDetails"
         (click)="selectLesson(lesson)"
         [class.active]="lesson === selectedLesson"
         [class.no-video]="!isValidVideoUrl(lesson.lessonVideo)"
-        class="content-item">
+        class="content-item"> <!-- Uses your CSS -->
 
         <span class="lesson-title">{{ lesson.lessonTitle }}</span>
-        <span *ngIf="!isValidVideoUrl(lesson.lessonVideo)" class="video-indicator">(No Video)</span>
+        <!-- Indicator for live vs video can be text or implied by the action in video section -->
+        <span *ngIf="lesson.isLive && isValidVideoUrl(lesson.lessonVideo)" class="video-indicator">(Live Stream)</span>
+        <span *ngIf="!lesson.isLive && !isValidVideoUrl(lesson.lessonVideo)" class="video-indicator">(No Video)</span>
 
-        <div *ngIf="lesson.examTitle && lesson.examId" class="exam-link">
-           <button (click)="prepareExam(lesson, $event)" class="exam-button">
+
+        <div *ngIf="lesson.examTitle && lesson.examId" class="exam-link"> <!-- Uses your CSS -->
+           <button (click)="prepareExam(lesson, $event)" class="exam-button"> <!-- Uses your CSS -->
              {{ lesson.examTitle }}
            </button>
         </div>
       </li>
     </ul>
-    <ng-template #noContent>
-      <p>No content found for this course.</p>
+    <ng-template #noContentTpl>
+      <p *ngIf="!isLoading"> <!-- Class this as needed, e.g., .no-content-message -->
+        No lessons found for this course.
+      </p>
     </ng-template>
   </div>
-
 </div>

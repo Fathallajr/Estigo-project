@@ -1,3 +1,6 @@
+/* PASTE YOUR EXACT CSS HERE */
+/* For example, the CSS you provided in the previous message: */
+
 .course-container {
   display: flex;
   flex-wrap: wrap;
@@ -23,12 +26,12 @@
 
 .video-player-wrapper {
   position: relative;
-  padding-bottom: 56.25%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
   overflow: hidden;
   background-color: #000;
   border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(106,156,137,0.1);
+  box-shadow: 0 2px 8px rgba(106,156,137,0.1); /* Assuming var(--estigo-green-rgb) for shadow */
   width: 100%;
 }
 
@@ -48,7 +51,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: var(--estigo-green);
+  color: var(--estigo-green, #6aaa96); /* Fallback color */
   border: 1px dashed #a8d5c0;
   border-radius: 5px;
   min-height: 200px;
@@ -62,7 +65,7 @@
   justify-content: center;
   text-align: center;
   background-color: #f5faf8;
-  border: 1px solid var(--estigo-green);
+  border: 1px solid var(--estigo-green, #6aaa96); /* Fallback color */
   border-radius: 5px;
   padding: 3rem 2rem;
   min-height: 300px;
@@ -89,7 +92,7 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #11412e;
+  background-color: #11412e; /* Dark green */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -97,13 +100,52 @@
 }
 
 .start-exam-button:hover {
-  background-color: #11412e;
+  background-color: #0a3b28; /* Slightly darker green */
 }
+
+/* Style for the Live Stream button if needed */
+.btn-live-stream {
+  display: inline-block; /* Or inline-flex if you add icons later */
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--estigo-green); /* Example: blue */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  margin-top: 10px; /* Example spacing */
+}
+.btn-live-stream:hover {
+  background-color:rgb(1, 83, 1); /* Darker blue */
+}
+/* You might want a container for the live stream message and button */
+.live-stream-display-area {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5faf8; /* Similar to no-video-placeholder */
+  border: 1px dashed #a8d5c0;
+  border-radius: 5px;
+  min-height: 200px; /* Or match no-video-placeholder */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.live-stream-display-area p {
+  color: var(--estigo-green, #6aaa96);
+  margin-bottom: 15px;
+}
+
 
 .content-section {
   flex: 1;
   min-width: 250px;
-  max-height: 70vh;
+  max-height: 70vh; /* Adjust as needed */
   overflow-y: auto;
   border-left: 1px solid #e0f0e8;
   padding: 20px;
@@ -133,7 +175,7 @@
   border-radius: 6px;
   cursor: pointer;
   background-color: #fff;
-  transition: 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
@@ -143,8 +185,8 @@
 }
 
 .content-item.active {
-  background-color: var(--estigo-green);
-  border-color: #0a3b28;
+  background-color: var(--estigo-green, #6aaa96); /* Fallback color */
+  border-color: #0a3b28; /* Darker estigo green */
 }
 
 .content-item.active .lesson-title {
@@ -152,20 +194,27 @@
   color: #ffffff;
 }
 
-.content-item.no-video {
-  background-color: #f8fbfa;
+/* This class was in your HTML, you might want to define it if not using it for other purposes */
+.content-item.no-video .lesson-title {
+  /* color: #95a5a6; */ /* Example: Mute title if no video */
 }
+.content-item.no-video {
+   /* background-color: #f8fbfa; */ /* Example: different background for no video items */
+}
+
 
 .lesson-title {
   display: block;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */ /* Removed as .video-indicator will provide spacing */
   color: #34495e;
 }
 
 .video-indicator {
+  display: block; /* Ensure it's on its own line or adjust as needed */
   font-size: 0.8em;
   color: #95a5a6;
-  margin-left: 5px;
+  /* margin-left: 5px; */ /* Not needed if it's a block */
+  margin-top: 3px;
 }
 
 .exam-link {
@@ -180,18 +229,47 @@
   font-size: 0.9em;
   font-weight: normal;
   cursor: pointer;
-  border: 1px solid #11412e;
-  background-color: #e8f5f1;
-  color: var(--estigo-green);
+  border: 1px solid #11412e; /* Dark green border */
+  background-color: #e8f5f1; /* Light green background */
+  color: var(--estigo-green, #6aaa96); /* estigo green text, fallback */
   border-radius: 3px;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .exam-button:hover {
-  background-color: #11412e;
-  border-color: var(--estigo-green);
+  background-color: #11412e; /* Dark green background */
+  border-color: #0a3b28; /* Darker estigo green border */
   color: #fff;
 }
+
+/* General .loading and .error classes for completeness, style as you wish */
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+}
+.loading {
+  color: #333;
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+.btn-retry { /* Style for retry button in error message */
+  padding: 8px 15px;
+  margin-top: 10px;
+  background-color: #ffc107;
+  border: none;
+  color: #212529;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-retry:hover {
+  background-color: #e0a800;
+}
+
 
 @media (max-width: 768px) {
   .course-container {
@@ -200,20 +278,21 @@
 
   .content-section {
     border-left: none;
-    padding-left: 0;
+    /* padding-left: 0; */ /* Keep padding consistent */
     border-top: 1px solid #e0f0e8;
     padding-top: 20px;
-    max-height: none;
-    overflow-y: visible;
+    max-height: none; /* Allow it to grow */
+    overflow-y: visible; /* No separate scroll for content on mobile */
   }
 
   .video-section,
   .content-section {
-    min-width: 100%;
+    min-width: 100%; /* Take full width when stacked */
+    flex-basis: auto; /* Reset flex-basis */
   }
 
   .exam-prompt-section {
-    min-height: 250px;
+    min-height: 250px; /* Adjust for smaller screens */
     padding: 2rem 1rem;
   }
 }

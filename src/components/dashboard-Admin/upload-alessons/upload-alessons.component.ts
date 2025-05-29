@@ -15,14 +15,15 @@ export interface LessonPayload {
   lessonTitle: string;
   lessonDescription: string;
   lessonContent: string;
-  lessonVideo: string; 
+  lessonVideo: string;
+  isLive: boolean; // Added
   courseId: number;
 }
 
 
 @Component({
   selector: 'app-upload-alessons',
-  standalone: true, 
+  standalone: true,
   imports: [
     CommonModule, // Needed for *ngIf, *ngFor etc.
     ReactiveFormsModule // Needed for reactive forms
@@ -44,25 +45,51 @@ export class UploadAlessonsComponent implements OnInit {
   isSubmitting = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  selectedVideoFileName: string | null = null; 
+  selectedVideoFileName: string | null = null;
 
   // --- API URLs & Constants ---
-  private readonly coursesApiUrl = 'https://estigo.tryasp.net/api/Course/AdminCourses';
-  private readonly lessonsApiUrl = 'https://estigo.tryasp.net/api/Lesson';
-  private readonly videoBaseUrl = 'https://estigo.tryasp.net/';
+  private readonly coursesApiUrl = 'https://localhost:5071/api/Course/AdminCourses';
+  private readonly lessonsApiUrl = 'https://localhost:5071/api/Lesson';
+  private readonly videoBaseUrl = 'https://localhost:5071/'; // Used for non-live videos
 
   ngOnInit(): void {
     this.initializeForm();
     this.fetchCourses();
+
+    // Subscribe to isLive changes to update validators
+    this.lessonForm.get('isLive')?.valueChanges.subscribe(isLiveValue => {
+      const videoFileControl = this.lessonForm.get('videoFile');
+      const liveVideoUrlControl = this.lessonForm.get('liveVideoUrl');
+
+      if (isLiveValue) {
+        videoFileControl?.clearValidators();
+        videoFileControl?.setValue(null); // Clear any selected file info
+        this.selectedVideoFileName = null; // Clear displayed filename
+
+        liveVideoUrlControl?.setValidators([
+          Validators.required,
+          Validators.pattern(/^(ftp|http|https|rtsp|mms):\/\/[^ "]+$/) // Basic URL pattern
+        ]);
+      } else {
+        liveVideoUrlControl?.clearValidators();
+        liveVideoUrlControl?.setValue(''); // Clear URL
+
+        videoFileControl?.setValidators(Validators.required);
+      }
+      videoFileControl?.updateValueAndValidity();
+      liveVideoUrlControl?.updateValueAndValidity();
+    });
   }
 
   initializeForm(): void {
     this.lessonForm = this.fb.group({
-      courseId: [null, Validators.required], 
+      courseId: [null, Validators.required],
       lessonTitle: ['', [Validators.required, Validators.minLength(3)]],
       lessonDescription: ['', Validators.required],
-      lessonContent: ['', Validators.required],    
-      lessonVideo: ['', Validators.required]
+      lessonContent: ['', Validators.required],
+      isLive: [false], // Default to not live
+      videoFile: [null, Validators.required], // For file input (name/validation), required by default
+      liveVideoUrl: [''] // For live URL, validators set dynamically
     });
   }
 
@@ -85,22 +112,22 @@ export class UploadAlessonsComponent implements OnInit {
       });
   }
 
-  // Handle video file selection
+  // Handle video file selection (for non-live videos)
   onVideoFileSelected(event: Event): void {
     const element = event.currentTarget as HTMLInputElement;
     const fileList: FileList | null = element.files;
 
     if (fileList && fileList.length > 0) {
       const file = fileList[0];
-      this.selectedVideoFileName = file.name; 
+      this.selectedVideoFileName = file.name;
       this.lessonForm.patchValue({
-        lessonVideo: file.name
+        videoFile: file.name // Store filename for validation state
       });
-      this.lessonForm.controls['lessonVideo'].markAsTouched();
+      this.lessonForm.controls['videoFile'].markAsTouched();
       console.log('Selected video filename:', file.name);
     } else {
       this.selectedVideoFileName = null;
-      this.lessonForm.patchValue({ lessonVideo: '' });
+      this.lessonForm.patchValue({ videoFile: null });
     }
   }
 
@@ -110,23 +137,39 @@ export class UploadAlessonsComponent implements OnInit {
 
     if (this.lessonForm.invalid) {
       this.lessonForm.markAllAsTouched();
-      this.errorMessage = 'Please fill all required fields correctly, including selecting a video file.';
+      this.errorMessage = 'Please fill all required fields correctly.';
+       // More specific error if possible
+      if (this.f['isLive'].value && this.f['liveVideoUrl'].invalid) {
+        this.errorMessage = 'Please provide a valid Live Video URL.';
+      } else if (!this.f['isLive'].value && this.f['videoFile'].invalid) {
+        this.errorMessage = 'Please select a video file.';
+      }
       return;
     }
 
     this.isSubmitting = true;
     const formValue = this.lessonForm.value;
+    let lessonVideoValue: string;
 
-    const fullVideoUrl = this.videoBaseUrl + formValue.lessonVideo.trim();
+    if (formValue.isLive) {
+      lessonVideoValue = formValue.liveVideoUrl.trim();
+    } else {
+      if (!this.selectedVideoFileName) {
+        // This should ideally be caught by form validation, but as a safeguard:
+        this.errorMessage = "Video file is required and was not selected.";
+        this.isSubmitting = false;
+        return;
+      }
+      lessonVideoValue = this.videoBaseUrl + this.selectedVideoFileName.trim();
+    }
 
-   
     const payload: LessonPayload = {
       lessonTitle: formValue.lessonTitle,
       lessonDescription: formValue.lessonDescription,
       lessonContent: formValue.lessonContent,
-      lessonVideo: fullVideoUrl, 
-      courseId: Number(formValue.courseId), 
-
+      lessonVideo: lessonVideoValue,
+      isLive: formValue.isLive,
+      courseId: Number(formValue.courseId),
     };
 
     console.log('Submitting lesson payload:', payload);
@@ -140,13 +183,20 @@ export class UploadAlessonsComponent implements OnInit {
         next: (response) => {
           console.log('Lesson created successfully:', response);
           this.successMessage = 'Lesson uploaded successfully!';
-          this.lessonForm.reset();
-          this.selectedVideoFileName = null; 
-          this.lessonForm.patchValue({ courseId: null });
+          this.lessonForm.reset({
+            courseId: null,
+            lessonTitle: '',
+            lessonDescription: '',
+            lessonContent: '',
+            isLive: false, // Reset to default
+            videoFile: null,
+            liveVideoUrl: ''
+          });
+          this.selectedVideoFileName = null;
+          // valueChanges on 'isLive' will re-apply validators for the reset 'false' state.
           this.lessonForm.markAsPristine();
           this.lessonForm.markAsUntouched();
         },
-
       });
   }
 
@@ -154,19 +204,15 @@ export class UploadAlessonsComponent implements OnInit {
     this.backClicked.emit();
   }
 
-  // Centralized Error Handling 
   private handleError = (error: HttpErrorResponse) => {
     this.isSubmitting = false;
-    this.isLoadingCourses = false; 
+    this.isLoadingCourses = false;
     let errorMsg = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
-      // Client-side or network error
       errorMsg = `Client error: ${error.error.message}`;
     } else {
-      // Backend returned an unsuccessful response code.
       errorMsg = `Server error: ${error.status} - ${error.statusText || ''}. `;
        if (error.error && typeof error.error === 'object') {
-         // Try to extract more details if the error is an object
           errorMsg += JSON.stringify(error.error.errors || error.error);
        } else if (error.error && typeof error.error === 'string') {
           errorMsg += error.error;
@@ -179,6 +225,5 @@ export class UploadAlessonsComponent implements OnInit {
     return throwError(() => new Error(errorMsg));
   }
 
-  // Template helper
   get f() { return this.lessonForm.controls; }
 }

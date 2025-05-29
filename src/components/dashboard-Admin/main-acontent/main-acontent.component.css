@@ -55,7 +55,7 @@
 }
 
 .action-card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
+    
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
     border-top-color: var(--estigo-green); /* Theme color accent on hover */
 }
