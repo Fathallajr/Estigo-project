@@ -127,3 +127,79 @@
     }
   }
   
+  
+/* Styles for Prediction Selection Section */
+.student-details-section { /* Wrapper for both prediction and exam history */
+  margin-top: 30px;
+  width: 100%;
+}
+
+.prediction-selection-section {
+  background-color: #f8f9fa; /* Light background for this section */
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  text-align: left; /* Align content to the left */
+  border: 1px solid #e0e0e0;
+}
+
+.prediction-selection-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #3a6b5a; /* Consistent header color */
+  font-size: 1.3em;
+}
+
+.prediction-selection-section label {
+  display: block; /* Make label take full width */
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.category-select {
+  width: 100%; /* Make select full width of its container */
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1em;
+  margin-bottom: 15px;
+  background-color: #fff;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.category-select:focus {
+  border-color: #5d927e;
+  box-shadow: 0 0 0 0.2rem rgba(93, 146, 126, 0.25);
+  outline: none;
+}
+
+.predict-button {
+  background-color: #28a745; /* A different color for predict, e.g., success green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block; /* Make it take full width or adjust as needed */
+  width: 100%; /* Example: Full width button */
+  box-sizing: border-box;
+}
+
+.predict-button:hover:not([disabled]) {
+  background-color: #218838; /* Darker shade of green */
+}
+
+.predict-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.section-divider {
+  border: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 30px 0;
+}

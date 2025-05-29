@@ -1,5 +1,47 @@
 <div class="main-content">
-    <div class="welcome-section" style=" padding: 20px; text-align: center;">
+    <div class="welcome-section">
         <h1>Teacher Dashboard</h1>
+        <h2 *ngIf="teacherName" class="teacher-greeting">Welcome, {{ teacherName }}!</h2>
+    </div>
+
+    <div class="students-container">
+        <h3 class="students-header">Your Students</h3>
+
+        <div *ngIf="isLoading" class="status-message loading-message">
+            <p>Loading students...</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="status-message error-message">
+            <p><strong>Error:</strong> {{ errorMessage }}</p>
+        </div>
+
+        <div *ngIf="!isLoading && !errorMessage" class="table-responsive">
+            <table *ngIf="students.length > 0; else noStudents" class="students-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students">
+                        <td>{{ student.name }}</td>
+                        <td>
+                            <!--
+                                The routerLink now uses student.id for the :studentId parameter
+                                and student.categoryId for the :categoryId parameter in the route
+                                '/teacher/student-prediction/:studentId/:categoryId'
+                            -->
+                            <a [routerLink]="['/student-prediction', student.id, student.categoryId]" class="action-link">
+                                View Predictions
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #noStudents>
+                <p *ngIf="teacherId" class="status-message no-students-message">No students found for you at the moment.</p>
+            </ng-template>
+        </div>
     </div>
 </div>

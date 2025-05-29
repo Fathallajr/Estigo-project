@@ -34,6 +34,11 @@ export const routes: Routes = [
      {path:"myCourse/:id",component:MycoursePageComponent},
      {path:"quiz/:id",component:QuizComponent},
      {path:"predict/:number",component:PredictionComponent},
-     {path:"predict",component:PredictionComponent}
+     {path:"predict",component:PredictionComponent},
+     {
+        path: 'student-prediction/:studentId/:categoryId',
+        component: PredictionComponent,
+        canActivate: [AuthGuard] // Teacher viewing student data needs to be authenticated and authorized
+    }
      
 ];

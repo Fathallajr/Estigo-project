@@ -26,7 +26,7 @@ export class ClassManagementSectionComponent implements OnInit {
       this.buttonText = 'Go to Dashboard';
       this.buttonLink = '/dashboard';
     } else {
-      this.buttonText = 'Start Your Success';
+      this.buttonText = 'Join Now';
       this.buttonLink = '/login';
     }
   }

@@ -6,18 +6,60 @@
   <div class="dashboard-content">
     <div class="code-input-section">
       <h3>Enter Student Code</h3>
-      <input [(ngModel)]="studentCodeInput" type="text" placeholder="Input code here..." class="code-input" />
-      <button class="submit-button" (click)="fetchStudentData()">Submit</button>
+      <input [(ngModel)]="studentCodeInput" type="text" placeholder="Input code here..." class="code-input" (keyup.enter)="fetchStudentData()" />
+      <button class="submit-button" (click)="fetchStudentData()" [disabled]="isLoading">
+        {{ isLoading ? 'Loading...' : 'Submit' }}
+      </button>
 
-      <div class="student-data" *ngIf="studentName">
-        <h3>{{ studentName }}'s Exams</h3>
-        <div *ngFor="let exam of examHistory" class="exam-card">
-          <h4>{{ exam.examTitle }}</h4>
-          <p><strong>Score:</strong> {{ exam.score }}</p>
-          <p><strong>Date:</strong> {{ exam.examDate | date:'mediumDate' }}</p>
-          <p><strong>Lesson:</strong> {{ exam.lessonName }}</p>
-        </div>
+      <div *ngIf="errorMessage && !isLoading" class="error-message-display">
+        <p>{{ errorMessage }}</p>
       </div>
+
+      <div *ngIf="isLoading" class="loading-indicator-display">
+        <p>Fetching student data, please wait...</p>
+      </div>
+
+      <!-- Student Data and Prediction Section -->
+      <div *ngIf="studentId && studentName && !isLoading && !errorMessage" class="student-details-section">
+        
+        <!-- Prediction Selection -->
+        <div class="prediction-selection-section">
+          <h3>View {{ studentName }}'s Performance Prediction</h3>
+          <label for="categorySelect">Select Prediction Category:</label>
+          <select id="categorySelect" [(ngModel)]="selectedCategoryId" class="category-select">
+            <option [ngValue]="null" disabled>-- Choose a Subject --</option>
+            <option *ngFor="let category of categories" [ngValue]="category">
+              {{ category === 1 ? 'Mathematics' : 
+                 category === 2 ? 'Physics' : 
+                 category === 3 ? 'Biology' : 
+                 category === 4 ? 'Chemistry' : 
+                 'English' }}
+            </option>
+          </select>
+          <button class="predict-button" (click)="viewPrediction()" [disabled]="!selectedCategoryId">
+            View Prediction
+          </button>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Exam History -->
+        <div class="student-data">
+          <h3>{{ studentName }}'s Exam History</h3>
+          <div *ngIf="examHistory.length > 0; else noExams">
+            <div *ngFor="let exam of examHistory" class="exam-card">
+              <h4>{{ exam.examTitle }}</h4>
+              <p><strong>Score:</strong> {{ exam.score }}</p>
+              <p><strong>Date:</strong> {{ exam.examDate | date:'mediumDate' }}</p>
+              <p><strong>Lesson:</strong> {{ exam.lessonName }}</p>
+            </div>
+          </div>
+          <ng-template #noExams>
+            <p>No exam history found for {{ studentName }}.</p>
+          </ng-template>
+        </div>
+      </div> <!-- End of student-details-section -->
+
     </div>
   </div>
 </div>
