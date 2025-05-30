@@ -1,161 +1,279 @@
 /* ====== Base Styles ====== */
-.roadmap-container {
-    max-width: 1200px;
-    margin: 0 auto 100px;
-    padding: 90px 50px;
-  }
-  .roadmap-container h2 {
-    text-align: center;
-    color: var(--estigo-green);
-    font-size: 2rem;
-    margin-bottom: 80px;
-    font-weight: 700;
-  }
+:host {
+  --text-color-dark: #333;
+  --text-color-light: #555;
+  --background-light-gray: #f9f9f9;
+  --background-medium-gray: #e0e0e0;
+  --border-light-gray: #e2e8f0;
+  --white-color: #fff;
+  --dark-gray-connector: #4a5568;
+}
+
+/* ====== Button Styles ====== */
+.roadmap-selection-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 60px; /* Increased margin */
+  padding: 40px 20px 0;
+}
+
+.roadmap-selector-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  border: 2px solid var(--border-light-gray);
+  border-radius: 12px;
+  background-color: var(--white-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 200px;
+  height: 220px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.roadmap-selector-button img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.roadmap-selector-button span {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-color-dark);
+  margin-top: auto;
+}
+
+.roadmap-selector-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-color: var(--estigo-green);
+}
+
+.roadmap-selector-button.active {
+  border-color: var(--estigo-green);
+
   
-  /* horizontal line */
+}
+
+.roadmap-selector-button.active span {
+    color: var(--estigo-green);
+}
+
+/* ====== Roadmap Styles ====== */
+.roadmap-container {
+  max-width: 1200px;
+  margin: 0 auto 100px;
+  padding: 50px 50px 90px;
+}
+.roadmap-container h2 {
+  text-align: center;
+  color: var(--estigo-green);
+  font-size: 2rem;
+  margin-bottom: 80px;
+  font-weight: 700;
+}
+
+.roadmap-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 450px; 
+}
+.roadmap-steps::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--border-light-gray);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.step {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  z-index: 2;
+}
+
+.circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4rem;
+  height: 4rem;
+  background: var(--estigo-green);
+  color: var(--white-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.circle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 50px; /* Increased connector length slightly */
+  background: var(--dark-gray-connector);
+  top: 100%;
+  bottom: auto;
+}
+.step:nth-child(even) .circle::after {
+  top: auto;
+  bottom: 100%;
+}
+
+.content {
+  position: absolute;
+  left: 50%;
+  width: 230px; /* Slightly wider */
+  transform: translateX(-50%);
+  padding: 15px; /* ADDED padding inside content box */
+  background-color: var(--white-color); /* ADDED background */
+  border-radius: 8px; /* ADDED rounded corners */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08); /* ADDED subtle shadow */
+}
+
+/* Content positioning: Odd steps content below, Even steps content above */
+.step:nth-child(odd) .content {
+  top: 50%;
+  transform: translate(-50%, 0);
+  /* Adjusted margin-top: half circle height (2rem) + connector height (50px) + desired space (20px) */
+  margin-top: calc(2rem + 50px + 20px);
+}
+
+.step:nth-child(even) .content {
+  /* Position bottom of content relative to center line to avoid content height issues */
+  bottom: 50%; /* Align bottom of content with center line initially */
+  transform: translate(-50%, 0);
+  /* Adjusted margin-bottom: half circle height (2rem) + connector height (50px) + desired space (20px) */
+  margin-bottom: calc(2rem + 50px + 20px);
+  top: auto; /* Explicitly set top to auto when using bottom */
+}
+
+
+.content h3 {
+  font-size: 1.15rem; /* Slightly adjusted */
+  color: var(--text-color-dark);
+  margin: 0 0 12px; /* INCREASED margin-bottom */
+  font-weight: 700;
+}
+.content p {
+  font-size: 0.9rem; /* Slightly adjusted */
+  color: var(--text-color-light);
+  line-height: 1.6; /* INCREASED line-height */
+  margin: 0;
+}
+
+
+/* ====== Tablet (<=1024px) ====== */
+@media (max-width: 1024px) {
   .roadmap-steps {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Increased minmax for content width */
+    gap: 3rem 1.5rem; /* Adjusted gap */
+    height: auto;
+    padding: 0;
   }
-  .roadmap-steps::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #e2e8f0;
-    transform: translateY(-50%);
-    z-index: 1;
-  }
+  .roadmap-steps::before { display: none; }
   
   .step {
-    position: relative;
-    flex: 1;
+    position: static;
     text-align: center;
-    z-index: 2;
+    flex: none;
+    /* margin-bottom: 2rem; /* Removed as grid gap should handle it. Can add if more space needed */
   }
-  
-  /* circle */
-  .circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 4rem;
-    height: 4rem;
-    background: var(--estigo-green);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  /* vertical connector */
-  .circle::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 40px;
-    background: #4a5568;
-    top: 100%;
-    bottom: auto;
-  }
-  .step:nth-child(even) .circle::after {
-    top: auto;
-    bottom: 100%;
-  }
-  
-  /* text content */
+  .circle,
+  .circle::after,
   .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 220px;
-    transform: translateX(-50%);
+    position: static !important;
+    transform: none !important;
+    margin: 0 auto !important;
   }
-  /* odd: يظهر فوق الخط */
-  .step:nth-child(odd) .content {
-    transform: translate(-50%, 0-50%);
-    margin-top: 100px;
+  .circle::after { display: none; }
+  .circle { margin-bottom: 1.2rem !important; } /* Increased space */
+  .content {
+    width: 100%;
+    padding: 15px; /* Ensure padding is consistent */
+    background-color: var(--white-color); /* Ensure background */
+    border-radius: 8px; /* Ensure border-radius */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08); /* Ensure shadow */
   }
-  
-  /* even: يظهر تحت الخط */
-  .step:nth-child(even) .content {
-    transform: translate(-50%, 0);
-    margin-top: -170px;
+}
+
+/* ====== Mobile (<=600px) ====== */
+@media (max-width: 600px) {
+  .roadmap-selection-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
-  
-  .content h3 {
+  .roadmap-selector-button {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    padding: 15px;
+  }
+  .roadmap-selector-button img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  .roadmap-selector-button span {
     font-size: 1.2rem;
-    color: var(--estigo-green);
-    margin: 0 0 8px;
+  }
+
+  .roadmap-container {
+    padding: 30px 15px 60px; /* Adjusted padding */
+  }
+  .roadmap-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+  .roadmap-steps {
+    display: block;
+  }
+  .step {
+    display: flex;
+    align-items: center; /* Changed to center for better alignment with potentially multi-line content */
+    gap: 1.2rem; /* Adjusted gap */
+    margin: 2.5rem 0; /* Increased margin */
+    text-align: left;
+  }
+  .circle { 
+    margin: 0 !important;
+    width: 3.5rem; /* Slightly larger */
+    height: 3.5rem;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .content {
+    text-align: left;
+    flex: 1;
+    width: auto;
+    /* Padding, background, etc., from base .content style should apply */
+  }
+  .content h3 {
+    font-size: 1.05rem; /* Adjusted */
   }
   .content p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.5;
-    margin: 0;
+    font-size: 0.85rem; /* Adjusted */
   }
-  
-  
-  /* ====== Tablet (<=1024px) ====== */
-  @media (max-width: 1024px) {
-    .roadmap-steps {
-      /* grid layout for 3 per row */
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 3rem 1rem;
-      height: auto;
-      padding: 0;
-    }
-    .roadmap-steps::before { display: none; }
-    .step {
-      position: static;
-      text-align: center;
-      flex: none;
-      margin-bottom: 2rem;
-    }
-    .circle,
-    .circle::after,
-    .content {
-      position: static !important;
-      transform: none !important;
-      margin: 0 auto !important;
-    }
-    .circle::after { display: none; }
-    .circle { margin-bottom: 1rem; }
-    .content { width: 100%; }
-  }
-  
-  /* ====== Mobile (<=600px) ====== */
-  @media (max-width: 600px) {
-    .roadmap-steps {
-      display: block;
-    }
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    .circle { margin: 0; }
-    .circle::after { display: none; }
-    .content {
-      position: static!important;
-      transform: none!important;
-      margin: 0;
-      text-align: left;
-      flex: 1;
-      width: auto;
-    }
-  }
-  
+}

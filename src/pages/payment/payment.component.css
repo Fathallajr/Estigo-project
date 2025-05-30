@@ -6,18 +6,16 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Add this if not globally defined */
 :host {
- display: block; /* Ensure the component takes up space */
+ display: block;
 }
 
-body { /* Note: body styles might not apply directly inside component scope, apply to :host or a wrapper if needed */
+body {
     background-color: #f5f5f5;
     color: #333;
-    /* padding: 20px; Consider adding padding to .payment-page or a container within the component instead */
 }
 
-/* Generic Form Styles */
+/* Generic Form Styles (Kept for potential future use, not strictly needed for current Fawry-only) */
 .form-row {
     display: flex;
     gap: 20px;
@@ -46,12 +44,11 @@ body { /* Note: body styles might not apply directly inside component scope, app
 
 .form-group input:focus {
     outline: none;
-    border-color: #6aaa96;
+    border-color: #6aaa96; /* Estigo color variable or direct value */
 }
 
 /* Payment Page Styles */
 .payment-page {
-    /* display: block; -- Handled by :host */
     padding: 30px;
     max-width: 700px;
     margin: 40px auto;
@@ -78,7 +75,7 @@ body { /* Note: body styles might not apply directly inside component scope, app
 }
 
 .payment-details {
-    /* margin-bottom: 30px; -- Removed as payment-buttons has margin-top */
+    /* No specific styles needed here for now */
 }
 
 .course-summary {
@@ -96,14 +93,14 @@ body { /* Note: body styles might not apply directly inside component scope, app
     overflow: hidden;
     margin-right: 20px;
     flex-shrink: 0;
-    background-color: #eee; /* Placeholder color */
+    background-color: #eee;
 }
 
 .course-summary-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block; /* Prevents small gap below image */
+    display: block;
 }
 
 .course-summary-info {
@@ -125,7 +122,7 @@ body { /* Note: body styles might not apply directly inside component scope, app
 .course-summary-price {
     font-size: 18px;
     font-weight: 700;
-    color: #6aaa96;
+    color: #6aaa96; /* Estigo color */
 }
 
 /* Payment Methods */
@@ -139,64 +136,67 @@ body { /* Note: body styles might not apply directly inside component scope, app
 }
 
 .payment-method-options {
-    display: flex;
+    display: flex; /* Keeps it flexible if you ever add another option side-by-side */
     gap: 15px;
     margin-bottom: 25px;
 }
 
-.payment-method {
-    flex: 1;
+.payment-method { /* General style for any payment method block */
+    flex: 1; /* Allows it to take available space */
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    min-width: 150px;
+    min-width: 150px; /* Minimum width */
+    background-color: rgba(106, 170, 150, 0.05); /* Light active/highlight color */
+    border-color: #6aaa96; /* Estigo color for border */
+    box-shadow: 0 0 0 1px #6aaa96; /* Subtle shadow to indicate selection */
 }
 
-.payment-method:hover {
-    border-color: #6aaa96;
-    background-color: rgba(106, 170, 150, 0.05);
-}
-
-.payment-method.active {
-    border-color: #6aaa96;
-    background-color: rgba(106, 170, 150, 0.1);
-    box-shadow: 0 0 0 1px #6aaa96;
+.fawry-method { /* Specific styling for Fawry if needed, inherits from .payment-method */
+    /* Example: if you want Fawry to be wider or have a specific background */
+    /* cursor: default; Remove hover effects if it's not clickable to change */
 }
 
 .payment-method-icon {
-    width: 25px;
-    font-size: 18px;
-    margin-right: 10px;
+    width: auto; /* Adjust width as needed for the logo */
+    min-width: 30px; /* Minimum width for the icon/logo container */
+    font-size: 18px; /* For FontAwesome icon if used */
+    margin-right: 15px;
     text-align: center;
-    color: #555;
+    color: #6aaa96; /* Icon color to match theme */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.payment-method.active .payment-method-icon {
-    color: #6aaa96;
+
+.payment-method-logo {
+    max-height: 30px; /* Adjust size of the Fawry logo */
+    max-width: 70px;  /* Adjust size of the Fawry logo */
+    object-fit: contain;
 }
 
 .payment-method-name {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 16px; /* Slightly larger for better readability */
+    font-weight: 600; /* Bolder for the method name */
+    color: #333;
 }
 
 /* Payment Forms */
 .payment-form {
     margin-top: 25px;
-    /* display: none; is handled by *ngIf now */
 }
 
 .payment-form h3 {
     font-size: 18px;
     margin-bottom: 15px;
 }
-#fawry-form p { /* Keep ID selectors if specific styling needed */
+#fawry-form p {
     margin-bottom: 10px;
-    line-height: 1.5;
+    line-height: 1.6;
     color: #555;
+    font-size: 15px;
 }
 #fawry-form p strong {
     font-weight: 600;
@@ -220,7 +220,7 @@ body { /* Note: body styles might not apply directly inside component scope, app
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-    display: inline-flex; /* Helps align text and icon */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
@@ -231,13 +231,12 @@ body { /* Note: body styles might not apply directly inside component scope, app
     box-shadow: none;
 }
 
-
 .payment-btn {
-    background-color: var(--estigo-green);
+    background-color: #6aaa96; /* Estigo green, or use var(--estigo-green) if defined globally */
     color: white;
 }
 .payment-btn:hover:not(:disabled) {
-    background-color: #066a01;
+    background-color: #589382; /* Darker shade of Estigo green */
     transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(106, 170, 150, 0.2);
 }
@@ -260,7 +259,7 @@ body { /* Note: body styles might not apply directly inside component scope, app
     border: 1px solid #ebccd1;
     padding: 15px;
     border-radius: 8px;
-    margin: 15px 0; /* Adjusted margin */
+    margin: 15px 0;
     text-align: center;
 }
 
@@ -271,7 +270,7 @@ body { /* Note: body styles might not apply directly inside component scope, app
     font-size: 16px;
 }
 
-/* Add styles for spinner if using one */
+/* Spinner Animation */
 @keyframes fa-spin {
  0% { transform: rotate(0deg); }
  100% { transform: rotate(360deg); }

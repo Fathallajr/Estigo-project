@@ -1,27 +1,23 @@
-
 <div class="payment-page">
 
   <!-- Unified Loading State -->
   <div *ngIf="isLoading" class="loading-indicator">
     <p>Loading...</p>
-    <!-- Optional spinner -->
   </div>
 
   <!-- Unified Error Display -->
   <div *ngIf="error && !isLoading" class="error-message">
     {{ error }}
-    <!-- Optionally add retry or guidance -->
   </div>
 
-  <!-- Main Payment Content (Show when not loading and no critical initial error) -->
-  <div *ngIf="!isLoading && courseData"> <!-- Changed condition slightly -->
+  <!-- Main Payment Content -->
+  <div *ngIf="!isLoading && courseData">
     <div class="payment-header">
       <h1>Course Purchase</h1>
-      <!-- Use definite assignment assertion (!) if sure courseData exists here -->
       <p>Complete your purchase for {{ courseData!.courseTitle }}</p>
     </div>
 
-     <!-- Display Enrollment Specific Error (if different from initial load error) -->
+     <!-- Display Enrollment Specific Error -->
      <div *ngIf="error && isProcessingPayment" class="error-message">
        {{ error }}
      </div>
@@ -34,7 +30,6 @@
         </div>
         <div class="course-summary-info">
           <h2 class="course-summary-title">{{ courseData!.courseTitle }}</h2>
-          <!-- Use teacherName directly from the new API response -->
           <p class="course-summary-instructor" *ngIf="courseData!.teacherName">
             by {{ courseData!.teacherName }}
           </p>
@@ -46,53 +41,22 @@
       <div class="payment-methods">
         <h3>Payment Method</h3>
         <div class="payment-method-options">
-          <!-- Credit Card -->
-          <div class="payment-method"
-               [class.active]="selectedPaymentMethod === 'credit-card'"
-               (click)="selectPaymentMethod('credit-card')">
-            <div class="payment-method-icon"><i class="fa-solid fa-credit-card"></i></div>
-            <div class="payment-method-name">Credit Card</div>
-          </div>
-          <!-- Fawry -->
-          <div class="payment-method"
-               [class.active]="selectedPaymentMethod === 'fawry'"
-               (click)="selectPaymentMethod('fawry')">
-            <div class="payment-method-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <!-- Fawry (Only Option) -->
+          <div class="payment-method fawry-method">
+            <div class="payment-method-icon">
+              <!-- Fawry Logo -->
+              <img [src]="fawryLogoUrl" alt="Fawry Logo" class="payment-method-logo">
+              <!-- Optional: FontAwesome icon if needed alongside or as fallback
+              <i class="fa-solid fa-money-bill-wave"></i>
+              -->
+            </div>
             <div class="payment-method-name">Fawry</div>
           </div>
         </div>
 
-        <!-- Credit Card Form (Conditional) -->
-        <div class="payment-form" id="credit-card-form" *ngIf="selectedPaymentMethod === 'credit-card'">
-          <h3>Card Details</h3>
-          <!-- Using ngModel requires FormsModule -->
-          <div class="form-row">
-            <div class="form-group">
-              <label for="cardName">Cardholder Name</label>
-              <input type="text" id="cardName" placeholder="Name on card" [(ngModel)]="cardName" name="cardName" [disabled]="isProcessingPayment">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="cardNumber">Card Number</label>
-              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" inputmode="numeric" [(ngModel)]="cardNumber" name="cardNumber" [disabled]="isProcessingPayment">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="expiryDate">Expiry Date</label>
-              <input type="text" id="expiryDate" placeholder="MM / YY" inputmode="numeric" [(ngModel)]="expiryDate" name="expiryDate" [disabled]="isProcessingPayment">
-            </div>
-            <div class="form-group">
-              <label for="cvv">CVV</label>
-              <input type="text" id="cvv" placeholder="123" inputmode="numeric" [(ngModel)]="cvv" name="cvv" [disabled]="isProcessingPayment">
-            </div>
-          </div>
-        </div>
-
-        <!-- Fawry Form (Conditional) -->
-        <div class="payment-form" id="fawry-form" *ngIf="selectedPaymentMethod === 'fawry'">
-          <h3>Fawry Payment</h3>
+        <!-- Fawry Payment Details -->
+        <div class="payment-form" id="fawry-form">
+          <h3>Fawry Payment Instructions</h3>
           <p>After clicking 'Complete Purchase', you will receive a <strong>Fawry Pay reference code</strong>.</p>
           <p>Use this code to pay at any Fawry outlet within 48 hours.</p>
           <p>Your course access will be granted upon confirmation of payment.</p>

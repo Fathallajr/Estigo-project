@@ -63,7 +63,26 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
+  // Add password pattern validation
+  isPasswordValid(password: string): boolean {
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+    return pattern.test(password);
+  }
+
   async onSubmit() {
+    // Password validation check
+    if (!this.isPasswordValid(this.formData.password)) {
+      alert('Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character, and be 8+ characters');
+      return;
+    }
+
+    // Phone number validation
+    if (this.selectedRole === 'student' && 
+        this.formData.phone === this.formData.parentPhone) {
+      alert('Student phone number must be different from parent phone number');
+      return;
+    }
+
     if (this.formData.password !== this.formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
@@ -118,7 +137,15 @@ export class RegisterComponent implements AfterViewInit {
       }
     } catch (error: any) {
       console.error('Registration failed:', error);
-      const errorMessage = error.error?.message || error.message || 'Registration failed. Please try again.';
+      let errorMessage = 'Email Already exist, try another one.';
+      
+      if (error.status === 400) {
+        errorMessage = error.error?.message || errorMessage;
+        if (errorMessage.toLowerCase().includes('email')) {
+          errorMessage = 'Email address is already registered';
+        }
+      }
+      
       alert(`Registration failed: ${errorMessage}`);
     }
   }

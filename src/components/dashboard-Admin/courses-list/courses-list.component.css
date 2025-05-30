@@ -1,245 +1,543 @@
+/* Ensure this is in courses-list.component.css and linked correctly */
+:host {
+  display: block;
+  padding-bottom: 30px;
+}
 
-    :host {
-      display: block;
-      padding-bottom: 30px; 
-    }
-    
-  
-    h2.component-title {
-      font-size: 24px;
-      margin-bottom: 25px;
-      color: #333;
-      position: relative;
-      padding-left: 15px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 15px;
-    }
-    .course-item{
-      cursor: pointer;
-    }
-    
-    h2.component-title::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 15px; 
-      margin: auto 0;
-      width: 5px;
-      height: 28px;
-      background-color: var(--estigo-green); 
-      border-radius: 3px;
-    }
-    
-  
-    .list-container {
-      background-color: white;
-      border-radius: 15px; 
-      padding: 25px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07); 
-      margin-top: 10px; 
-      overflow-x: auto;
-      min-height: 150px; 
-      position: relative; 
-    }
-    
-    /* --- Loading/Error/NoData Messages --- */
-    .loading-message,
-    .error-message,
-    .no-data-message {
-      text-align: center;
-      padding: 40px 20px; /* More padding for emphasis */
-      font-size: 15px;
-      color: #777; /* Grey color for neutral messages */
-      display: flex; /* Use flex for centering spinner or aligning buttons */
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .error-message {
-      color: #721c24; 
-      background-color: #f8d7da; 
-      border: 1px solid #f5c6cb;
-      border-radius: 5px;
-      padding: 15px 20px;
-      margin: 20px; 
-      flex-direction: row; 
-      justify-content: space-between; 
-      align-items: center;
-    }
-    
-    .error-message span {
-      flex-grow: 1; 
-      text-align: left;
-      margin-right: 15px;
-    }
-    
-    /* Generic Button Styles*/
-    .btn {
-      padding: 8px 15px; 
-      border: 1px solid transparent;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
-      font-weight: 500;
-      line-height: 1.5;
-      text-align: center;
-      white-space: nowrap;
-      display: inline-flex; 
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .btn-secondary {
-      background-color: #6c757d; 
-      color: white;
-      border-color: #6c757d;
-    }
-    .btn-secondary:hover {
-      background-color: #5a6268;
-      border-color: #545b62;
-    }
-    
- 
-    .btn-retry {
-      flex-shrink: 0;
-    }
-    
-    
-    
-    .courses-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .course-item {
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      padding: 12px 15px;
-      border-bottom: 1px solid #e0e0e0; 
-      font-size: 14px;
-      color: #333;
-      transition: background-color 0.2s ease-in-out;
-    }
-    
-    .course-item:last-child {
-      border-bottom: none; 
-    }
-    
-    .course-item:hover {
-      background-color: #f1f1f1; 
-    }
-    
-    .course-id {
-      font-weight: 600; 
-      color: #555;
-      margin-right: 10px; 
-      flex-shrink: 0;
-    }
-    
-    .course-title {
-      flex-grow: 1;
-      text-align: left; 
-      margin-right: 15px; /* Space before potential actions */
-    }
-    
-    /* Optional: Style for action buttons within a list item */
-    .course-actions {
-      flex-shrink: 0;
-    }
-    
-    
-    /* --- Responsive Adjustments --- */
-    @media screen and (max-width: 768px) {
-      h2.component-title {
-        font-size: 20px;
-        padding-left: 12px;
-        margin-bottom: 20px;
-        padding-bottom: 12px; /* Match margin */
-      }
-      h2.component-title::before {
-        height: 24px;
-        width: 4px;
-        bottom: 12px; /* Match padding-bottom */
-      }
-    
-      .list-container {
-          padding: 15px;
-      }
-    
-      .course-item {
-          padding: 10px 8px;
-          font-size: 13px;
-      }
-    
-      .error-message {
-        flex-direction: column; /* Stack text and button */
-        align-items: center;
-        gap: 10px;
-        text-align: center;
-        margin: 15px;
-      }
-    
-      .error-message span {
-        margin-right: 0;
-        text-align: center;
-      }
-    
-      .btn {
-        padding: 8px 12px;
-        font-size: 13px;
-      }
-    }
-    
-    @media screen and (max-width: 576px) {
-       .course-id {
-         margin-right: 5px;
-       }
-       .course-title {
-         font-size: 12px;
-       }
-    }
-    .course-actions {
-        flex-shrink: 0; /* Prevent actions area from shrinking */
-        margin-left: 15px; /* Space between title and actions */
-        display: flex; /* Align multiple actions if added later */
-        gap: 5px;
-      }
-      
-      .btn-delete {
-        background-color: #dc3545; /* Bootstrap danger red */
-        color: white;
-        border-color: #dc3545;
-        padding: 5px 10px; /* Smaller button */
-        font-size: 13px;
-        min-width: 80px; /* Give button a minimum width for consistent look */
-        text-align: center;
-      }
-      
-      .btn-delete:hover:not(:disabled) {
-        background-color: #c82333; /* Darker red on hover */
-        border-color: #bd2130;
-      }
-      
-      /* Style for the disabled state */
-      .btn-delete:disabled {
-        background-color: #f1949e; /* Lighter red when disabled */
-        border-color: #f1949e;
-        cursor: not-allowed;
-        opacity: 0.65;
-      }
-      
-      /* --- Adjustments for Responsive --- */
-      @media screen and (max-width: 768px) {
-        .course-actions {
-            margin-left: 10px;
-        }
-        .btn-delete {
-            padding: 4px 8px;
-            font-size: 12px;
-            min-width: 70px;
-        }}
+h2.component-title {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+  position: relative;
+  padding-left: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+h2.component-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 15px; /* Aligns with padding-bottom of h2 */
+  margin: auto 0;
+  width: 5px;
+  height: 28px; /* Height of the accent bar */
+  background-color: var(--estigo-green, #4CAF50); /* Fallback to green if var not defined */
+  border-radius: 3px;
+}
+
+.list-outer-container {
+  /* This container is mostly for semantic grouping if needed, or overall page padding */
+}
+
+.list-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  margin-top: 10px;
+  overflow-x: auto; /* For table responsiveness if content is too wide */
+  min-height: 150px; /* Ensure it has some height even when empty */
+  position: relative; /* For positioning of loading/error messages if absolutely positioned */
+}
+
+/* --- Loading/Error/NoData Messages --- */
+.loading-message,
+.error-message, /* General error message style for list view */
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 15px;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message { /* This style is for errors shown in the list or general page errors */
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 15px 20px;
+  margin: 20px 0; /* Common margin for list errors */
+  display: flex;
+  flex-direction: row; /* Align text and button horizontally */
+  justify-content: space-between; /* Pushes button to the right */
+  align-items: center;
+}
+
+.error-message span {
+  flex-grow: 1; /* Allows text to take available space */
+  text-align: left; /* Align error text to the left */
+  margin-right: 15px; /* Space between text and button */
+}
+
+/* --- Generic Button Styles --- */
+.btn {
+  padding: 8px 15px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-flex; /* For aligning icon/text if any */
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* Space between text and icon if any */
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+.btn-retry { /* Specific for retry button in error message */
+  flex-shrink: 0; /* Prevent retry button from shrinking */
+}
+.btn-primary {
+  background-color: var(--estigo-green, #28a745);
+  color: white;
+  border-color: var(--estigo-green, #28a745);
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: #1f8336; /* Darker shade for hover */
+  border-color: #1e7e34;
+}
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+.btn-primary:disabled {
+    background-color: #a3d8b0; /* Lighter, less vibrant green for disabled primary */
+    border-color: #a3d8b0;
+}
+
+
+/* --- Table Layout Styles for Course List --- */
+.courses-table-header {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); /* Adjust ratio as needed */
+  padding: 10px 15px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f9f9f9; /* Light background for header */
+  border-bottom: 2px solid #e0e0e0;
+  border-top-left-radius: 8px; /* Rounded corners for table top */
+  border-top-right-radius: 8px;
+}
+.courses-table-header .header-info,
+.courses-table-header .header-actions {
+  padding: 5px 0; /* Vertical padding within header cells */
+}
+.courses-table-header .header-actions {
+  text-align: right;
+  padding-right: 10px; /* Align actions header text to the right */
+}
+
+.courses-list.courses-as-table {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-item.course-table-row {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); /* Same as header */
+  align-items: center; /* Vertically align content in row */
+  border-bottom: 1px solid #e0e0e0; /* Separator line for rows */
+}
+.course-item.course-table-row:last-child {
+  border-bottom: none; /* No border for the last item */
+}
+
+.course-info-cell {
+  padding: 12px 15px;
+  display: flex;
+  flex-direction: column; /* Stack ID, Title, Status vertically */
+  align-items: flex-start; /* Align text to the left */
+  gap: 4px; /* Space between text elements */
+  cursor: pointer; /* Indicate it's clickable */
+  transition: background-color 0.2s ease-in-out;
+}
+.course-info-cell:hover {
+  background-color: #f7f7f7; /* Slight hover effect */
+}
+
+.course-id {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9em;
+}
+.course-title {
+  color: #333;
+  font-size: 1em; /* Main text size */
+}
+.course-status-display {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.course-actions-cell {
+  padding: 12px 15px;
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 8px; /* Space between action buttons */
+  flex-shrink: 0; /* Prevent action cell from shrinking too much */
+}
+
+.btn-delete, .btn-update { /* List action buttons styling */
+  padding: 5px 10px; /* Smaller padding for action buttons in list */
+  font-size: 13px;
+  min-width: 80px; /* Ensure buttons have a decent tap target */
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+.btn-delete:hover:not(:disabled) {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+.btn-delete:disabled {
+  background-color: #f1949e; /* Lighter red for disabled delete */
+  border-color: #f1949e;
+}
+
+.btn-info { /* Update button in list */
+  background-color: var(--estigo-green);
+  color: white;
+  border-color: #17a2b8;
+}
+.btn-info:hover:not(:disabled) {
+  background-color: #117504;
+  border-color: #117a8b;
+}
+.btn-info:disabled {
+  background-color: #73cde0; /* Lighter blue for disabled info */
+  border-color: #73cde0;
+}
+
+/* Styles for Centered Dialog Panel (Semi-Page Overlay) */
+.dialog-overlay {
+  position: fixed; /* Cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65); /* Semi-transparent black background */
+  z-index: 1040; /* Ensure it's above list content but below panel content if panel has higher z-index */
+  display: flex; /* Use flexbox for centering the panel */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 20px; /* Added: Provides spacing from viewport edges for the centered panel */
+  box-sizing: border-box; /* Added: Includes padding in width/height calculation */
+  overflow-y: auto; /* Added: Allows the overlay to scroll if the panel is taller than the viewport + padding */
+}
+
+.dialog-panel {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Soft shadow for depth */
+  /* z-index: 1050; */ /* Can be removed or kept; child of overlay will be on top of overlay bg */
+  display: flex;
+  flex-direction: column; /* Stack header, form, actions vertically */
+  width: 100%; /* Take full width of its container (overlay padding will constrain it) */
+  max-width: 600px; /* Max width for the dialog */
+  max-height: 90vh; /* Prevent dialog from being too tall within the viewport (after overlay padding) */
+  overflow: hidden; /* Panel itself does not scroll, its content (.dialog-panel-form) will */
+  /* position: relative; */ /* Not strictly necessary if it's a simple flex child for centering */
+  /* margin: auto; */ /* Not needed if parent overlay is using flex for centering */
+}
+
+.dialog-panel-header {
+  display: flex;
+  justify-content: space-between; /* Title on left, close button on right */
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f7f7f7; /* Light header background */
+  border-bottom: 1px solid #e0e0e0; /* Separator line */
+  border-top-left-radius: 8px; /* Match panel radius */
+  border-top-right-radius: 8px;
+  flex-shrink: 0; /* Prevent header from shrinking if content is too long */
+}
+.dialog-panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+  white-space: nowrap; /* Prevent title from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for long titles */
+}
+.dialog-panel-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  line-height: 1; /* Ensure proper vertical alignment */
+  padding: 0 5px; /* Clickable area */
+}
+.dialog-panel-header .close-btn:hover {
+  color: #333; /* Darken on hover */
+}
+
+.dialog-panel-form {
+  padding: 20px;
+  overflow-y: auto; /* Form content scrolls if it exceeds panel's max-height */
+  flex-grow: 1; /* Allows form to take available space between header and actions */
+}
+
+/* Form Elements within Dialog Panel */
+.dialog-panel .form-section {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0; /* Light separator between sections */
+}
+.dialog-panel .form-section:last-of-type { /* The section containing file input is often last data section */
+  border-bottom: none; /* No border for the last section before actions */
+}
+.dialog-panel .form-section.two-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive columns */
+  gap: 20px; /* Space between columns */
+}
+.dialog-panel .form-group {
+  margin-bottom: 15px; /* Space between form groups within a section */
+}
+.dialog-panel .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  color: #444;
+}
+
+.dialog-panel .form-group input[type="text"],
+.dialog-panel .form-group input[type="number"],
+.dialog-panel .form-group input[type="file"],
+.dialog-panel .form-group textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+/* Focus styles for inputs */
+.dialog-panel .form-group input[type="text"]:focus,
+.dialog-panel .form-group input[type="number"]:focus,
+.dialog-panel .form-group input[type="file"]:focus,
+.dialog-panel .form-group textarea:focus {
+  border-color: var(--estigo-green, #4CAF50);
+  box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+.dialog-panel .form-group textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+.dialog-panel .form-group .file-name-display {
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 5px;
+    display: block;
+    word-break: break-all;
+    padding: 3px 0;
+}
+.dialog-panel .error-text { /* For form validation messages */
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+/* Error message specific to the panel (e.g., API errors from submit) */
+.dialog-panel .error-message.panel-error {
+  margin: 0 0 15px 0; /* Sits above form content, below header */
+  padding: 10px 15px; /* Standard error message padding */
+  font-size: 0.9em;
+  border-radius: 4px; /* Panel specific error radius */
+  justify-content: flex-start; /* Align text to left, no button expected here */
+}
+.dialog-panel .error-message.panel-error span {
+  margin-right: 0; /* No retry button in panel error usually */
+}
+
+
+.dialog-panel .panel-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Space between buttons */
+  padding: 20px 20px 20px 20px; /* Padding around action buttons, matches form padding */
+  margin-top: 10px; /* Space above the action buttons, after last form element */
+  border-top: 1px solid #e0e0e0; /* Separator line above actions */
+  flex-shrink: 0; /* Prevent action area from shrinking */
+  background-color: #f7f7f7; /* Optional: slight background for actions area */
+  border-bottom-left-radius: 8px; /* Match panel radius */
+  border-bottom-right-radius: 8px;
+}
+.dialog-panel .panel-actions .btn {
+    min-width: 100px; /* Give buttons in panel a decent minimum width */
+}
+
+/* --- Responsive Adjustments --- */
+@media screen and (max-width: 768px) {
+  h2.component-title {
+    font-size: 20px;
+    padding-left: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+  h2.component-title::before {
+    height: 24px;
+    width: 4px;
+    bottom: 12px; /* Match padding */
+  }
+
+  .list-container {
+    padding: 15px;
+  }
+
+  .courses-table-header {
+    padding: 8px 10px;
+    font-size: 0.9em;
+  }
+
+  .course-item.course-table-row, .courses-table-header {
+    grid-template-columns: 1fr; /* Stack info and actions in list */
+    gap: 5px; /* Reduced gap for stacked items */
+  }
+
+  .course-info-cell {
+    padding: 10px;
+    border-bottom: 1px dashed #eee; /* Separator for stacked items within a row */
+  }
+  .course-item.course-table-row:last-child .course-info-cell {
+    border-bottom: none;
+  }
+
+  .course-actions-cell {
+    padding: 10px;
+    justify-content: flex-start; /* Align actions to start when stacked */
+  }
+  .courses-table-header .header-actions {
+    text-align: left; /* Align header text to start when stacked */
+    padding-right: 0;
+  }
+
+  .error-message { /* General error message responsiveness */
+    flex-direction: column; /* Stack text and button */
+    align-items: center; /* Center items */
+    gap: 10px;
+    text-align: center;
+    margin: 15px; /* Adjust margin for stacked layout */
+  }
+  .error-message span {
+    margin-right: 0; /* Remove right margin when stacked */
+    text-align: center; /* Center text */
+  }
+
+  .btn { /* General button sizing for smaller screens */
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .course-actions-cell .btn { /* Specific for list actions */
+     min-width: 70px;
+  }
+
+  /* Dialog Panel responsive adjustments */
+  /* .dialog-panel max-width and max-height already handle responsiveness well with overlay padding */
+  .dialog-panel .form-section.two-column {
+    grid-template-columns: 1fr; /* Stack columns in dialog form */
+  }
+  .dialog-panel .panel-actions {
+    padding: 15px; /* Reduce padding for actions on smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .course-actions-cell {
+    flex-direction: column; /* Stack buttons vertically in list on small screens */
+    align-items: stretch; /* Make buttons full width of their container */
+  }
+  .course-actions-cell .btn {
+     width: 100%; /* Make buttons take full available width */
+     margin-bottom: 5px; /* Space between stacked buttons */
+  }
+  .course-actions-cell .btn:last-child {
+     margin-bottom: 0;
+  }
+
+  .dialog-overlay {
+      padding: 10px; /* Reduce overlay padding on very small screens */
+  }
+  .dialog-panel {
+    /* max-width: 95%; */ /* width: 100% of padded overlay is usually fine */
+    max-height: 95vh; /* Allow a bit more height if needed */
+  }
+  .dialog-panel-form {
+    padding: 15px; /* Reduce form padding on small screens */
+  }
+  .dialog-panel .panel-actions {
+    flex-direction: column; /* Stack dialog buttons */
+  }
+  .dialog-panel .panel-actions .btn {
+    width: 100%; /* Full width buttons in dialog */
+    margin-bottom: 8px; /* Space between stacked dialog buttons */
+  }
+  .dialog-panel .panel-actions .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Spinner for loading messages */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: var(--estigo-green, #4CAF50); /* Use theme color for spinner */
+  animation: spin 1s ease infinite;
+  margin-top: 10px; /* Space spinner from text */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.dialog-panel .form-group select { /* ADDED/MODIFIED for select styling */
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background-color: white; /* Ensure background for select */
+  appearance: none; /* Remove default arrow for more custom styling if needed */
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 2.5rem; /* Make space for custom arrow */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dialog-panel .form-group select:focus { /* ADDED for select focus */
+  border-color: var(--estigo-green, #4CAF50);
+  box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+  outline: 0;
+}

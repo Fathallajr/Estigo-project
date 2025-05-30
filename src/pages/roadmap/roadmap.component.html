@@ -1,54 +1,30 @@
-<div class="roadmap-container">
-    <h2>IGCSE Qualification Roadmap in Egypt</h2>
-  
-    <div class="roadmap-steps">
-      <div class="step">
-        <div class="circle">1</div>
-        <div class="content">
-          
-          <p>Select 5-7 subjects including core subjects (Math, English, Science) and electives</p>
-        </div>
-      </div>
-  
-      <div class="step">
-        <div class="circle">2</div>
-        <div class="content">
-          
-          <p>Register for IGCSE exams through the British Council Egypt</p>
-        </div>
-      </div>
-  
-      <div class="step">
-        <div class="circle">3</div>
-        <div class="content">
-          
-          <p>Create a 2-year study plan covering all syllabus topics</p>
-        </div>
-      </div>
-  
-      <div class="step">
-        <div class="circle">4</div>
-        <div class="content">
-          
-          <p>Take practice exams to assess your readiness</p>
-        </div>
-      </div>
-  
-      <div class="step">
-        <div class="circle">5</div>
-        <div class="content">
-          
-          <p>Focus on past papers and exam techniques</p>
-        </div>
-      </div>
-  
-      <div class="step">
-        <div class="circle">6</div>
-        <div class="content">
-          
-          <p>Sit for your IGCSE exams in May/June or October/November sessions</p>
-        </div>
+<div class="roadmap-selection-container">
+  <button 
+    class="roadmap-selector-button" 
+    (click)="showRoadmap('EST')"
+    [class.active]="selectedRoadmap === 'EST'">
+    <img src="EST.png" alt="EST Logo">
+    <span>EST</span>
+  </button>
+  <button 
+    class="roadmap-selector-button" 
+    (click)="showRoadmap('IG')"
+    [class.active]="selectedRoadmap === 'IG'">
+    <img src="IGCSE.png" alt="IGCSE Logo">
+    <span>IG</span>
+  </button>
+</div>
+
+<div *ngIf="selectedRoadmap" class="roadmap-container">
+  <h2>{{ currentRoadmapTitle }}</h2>
+
+  <div class="roadmap-steps">
+    <div class="step" *ngFor="let step of currentSteps; let i = index">
+      <div class="circle">{{ i + 1 }}</div>
+      <div class="content">
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
       </div>
     </div>
   </div>
-  
+</div>

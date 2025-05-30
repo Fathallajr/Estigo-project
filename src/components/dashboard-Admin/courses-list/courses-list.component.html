@@ -1,45 +1,105 @@
 <div class="list-outer-container">
-    <h2 class="component-title">Admin Courses</h2>
-  
-    <div class="list-container">
-  
-      <!-- Loading Indicator -->
-      <div *ngIf="isLoading && courses.length === 0" class="loading-message">
-        Loading courses... <span class="spinner"></span>
-      </div>
- 
-      <div *ngIf="error && !isLoading" class="error-message">
-        <span>{{ error }}</span>
+  <h2 class="component-title">Admin Courses</h2>
 
-        <button *ngIf="!deletingIds.size" class="btn btn-secondary btn-retry" (click)="fetchCourses()">Retry</button>
-      </div>
-  
-      <!-- Course List -->
-      <!-- Use the local 'courses' array -->
-      <div *ngIf="!isLoading || courses.length > 0"> 
-        <ul *ngIf="courses.length > 0; else noCourses" class="courses-list">
-          <li *ngFor="let course of courses" class="course-item" [routerLink]="['/myCourse', course.courseId]">
-            <span class="course-id">ID: {{ course.courseId }}</span>
-            <span class="course-title">{{ course.courseTitle }}</span>
-            <!-- Actions Container -->
-            <div class="course-actions">
-              <button
-                class="btn btn-danger btn-delete"
-                (click)="triggerDeleteCourse(course.courseId)"
-                [disabled]="isDeleting(course.courseId) || isLoading"
-                title="Delete Course {{ course.courseId }}">
-                <span *ngIf="!isDeleting(course.courseId)">Delete</span>
-                <span *ngIf="isDeleting(course.courseId)">Deleting...</span>
-
-              </button>
+  <div class="list-container">
+    <ng-container *ngIf="!isUpdatePanelVisible">
+        <div *ngIf="isLoading && courses.length === 0" class="loading-message">
+            Loading courses... <span class="spinner"></span>
+        </div>
+        <div *ngIf="error && !isLoading" class="error-message">
+            <span>{{ error }}</span>
+            <button *ngIf="!deletingIds.size && !updatingIds.size" class="btn btn-secondary btn-retry" (click)="fetchCourses()">Retry</button>
+        </div>
+        <div *ngIf="(!isLoading || courses.length > 0)">
+            <div class="courses-table-header" *ngIf="courses.length > 0 && !error">
+                <div class="header-info">Course Information</div>
+                <div class="header-actions">Actions</div>
             </div>
-          </li>
-        </ul>
-        <!-- Message when no courses are found (and not loading/no error) -->
-        <ng-template #noCourses>
-          <p *ngIf="!isLoading && !error" class="no-data-message">No courses found.</p>
-        </ng-template>
+            <ul *ngIf="courses.length > 0; else noCourses" class="courses-list courses-as-table">
+                <li *ngFor="let course of courses" class="course-item course-table-row">
+                    <div class="course-info-cell" [routerLink]="['/myCourse', course.courseId]" title="View Details for {{course.courseTitle}}">
+                        <span class="course-title">{{ course.courseTitle }}</span>
+                    </div>
+                    <div class="course-actions-cell">
+                        <button class="btn btn-info btn-update" (click)="$event.stopPropagation(); openUpdatePanel(course)"
+                            [disabled]="isUpdating(course.courseId) || isDeleting(course.courseId) || isLoading"
+                            title="Update Course {{ course.courseId }}">
+                            <span *ngIf="!isUpdating(course.courseId) || selectedCourseForUpdate?.courseId !== course.courseId">Edit</span>
+                            <span *ngIf="isUpdating(course.courseId) && selectedCourseForUpdate?.courseId === course.courseId">Updating...</span>
+                        </button>
+                        <button class="btn btn-danger btn-delete" (click)="$event.stopPropagation(); triggerDeleteCourse(course.courseId)"
+                            [disabled]="isDeleting(course.courseId) || isUpdating(course.courseId) || isLoading"
+                            title="Delete Course {{ course.courseId }}">
+                            <span *ngIf="!isDeleting(course.courseId)">Delete</span>
+                            <span *ngIf="isDeleting(course.courseId)">Deleting...</span>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <ng-template #noCourses>
+                <p *ngIf="!isLoading && !error" class="no-data-message">No courses found.</p>
+            </ng-template>
+        </div>
+    </ng-container>
+  </div>
+
+  <div class="dialog-overlay" *ngIf="isUpdatePanelVisible" (click)="closeUpdatePanel()">
+    <div class="dialog-panel" (click)="$event.stopPropagation()">
+      <div class="dialog-panel-header">
+        <h3>Update Course: {{ selectedCourseForUpdate?.courseTitle }} (ID: {{ selectedCourseForUpdate?.courseId }})</h3>
+        <button class="close-btn" (click)="closeUpdatePanel()" title="Close Panel">×</button>
       </div>
-  
-    </div> 
-  </div> 
+
+      <div *ngIf="error && isUpdatePanelVisible" class="error-message panel-error">
+          <span>{{ error }}</span>
+      </div>
+
+      <form [formGroup]="updateForm" (ngSubmit)="onUpdateSubmit()" class="dialog-panel-form" *ngIf="selectedCourseForUpdate">
+        <div class="form-section">
+          <div class="form-group">
+            <label for="upd_courseTitle">Title *:</label>
+            <input type="text" id="upd_courseTitle" formControlName="courseTitle">
+            <div *ngIf="updateForm.get('courseTitle')?.invalid && updateForm.get('courseTitle')?.touched" class="error-text">
+              Title is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="upd_description">Description:</label>
+            <textarea id="upd_description" formControlName="description" rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Section that previously held Price and Category. Now only Price. -->
+        <!-- Removed 'two-column' class to make Price full-width in this section -->
+        <div class="form-section">
+          <div class="form-group">
+            <label for="upd_price">Price *:</label>
+            <input type="number" id="upd_price" formControlName="price">
+            <div *ngIf="updateForm.get('price')?.invalid && updateForm.get('price')?.touched" class="error-text">
+              Price is required and must be 0 or more.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-section">
+          <div class="form-group">
+            <label for="upd_logoFile">Image:</label>
+            <input type="file" id="upd_logoFile" #logoFileInput (change)="onLogoFileChange($event)" accept="image/png, image/jpeg, image/gif">
+            
+            <small *ngIf="logoFileName" class="file-name-display">New: {{ logoFileName }}</small>
+
+            <small *ngIf="!logoFileName && !selectedCourseForUpdate.logo" class="file-name-display">No logo set.</small>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid || isSubmittingUpdate">
+            {{ isSubmittingUpdate ? 'Saving...' : 'Save Changes' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeUpdatePanel()" [disabled]="isSubmittingUpdate">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
