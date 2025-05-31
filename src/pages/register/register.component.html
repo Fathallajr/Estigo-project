@@ -80,9 +80,11 @@
                 <div class="password-wrapper">
                     <select class="input" id="subject" [(ngModel)]="formData.subject" name="subject">
                         <option value="">Select Subject</option>
-                        <option value="math">Math</option>
+                        <option value="math">Mathematics</option>
+                        <option value="physics">Physics</option>
+                        <option value="biology">Biology</option>
+                        <option value="chemistry">Chemistry</option>
                         <option value="english">English</option>
-                        <option value="science">Science</option>
                     </select>
                     <label for="subject">Subject</label>
                 </div>
@@ -101,11 +103,6 @@
             </div>
 
             <button type="submit">SIGN UP</button>
-            <p>or sign up with</p>
-            <div class="social-login">
-                <button type="button" class="google"><img src="google.ico" alt="Google"></button>
-                <button type="button" class="facebook"><img src="facebook.ico" alt="Facebook"></button>
-            </div>
             <p>Already have an account? <a routerLink="/login">Login</a></p>
         </form>
     </div>

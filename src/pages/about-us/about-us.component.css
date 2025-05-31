@@ -19,11 +19,7 @@ div {
 
 h3 {
   font-size: 24px;
-<<<<<<< HEAD
-  color: var(--estigo-green);
-=======
   color: #2d635e;
->>>>>>> 1d66171260fa3dd786ab4926cb6290a20c8d32d4
   border-bottom: 2px solid #2d635e;
   display: inline-block;
   padding-bottom: 5px;

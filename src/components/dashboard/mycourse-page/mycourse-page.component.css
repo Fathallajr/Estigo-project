@@ -1,38 +1,68 @@
-/* PASTE YOUR EXACT CSS HERE */
-/* For example, the CSS you provided in the previous message: */
-
-.course-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 15px;
-  background-color: #f8fbfa;
+/* General Page Styling */
+.loading-page, .error-page {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 20px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+.loading-page {
+  color: #555;
+}
+.error-page {
+  background-color: #f8d7da; /* Keep error colors distinct */
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+.btn-retry {
+  padding: 10px 20px;
+  margin-top: 15px;
+  background-color: var(--estigo-green, #6aaa96); /* Green */
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn-retry:hover {
+  background-color: #11412e; /* Darker Green */
 }
 
-.video-section {
-  flex: 2.2;
-  min-width: 300px;
+/* Main Layout Container */
+.course-view-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Left Column: Main Content Area */
+.main-content-area {
+  flex: 3;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
-.video-section h2 {
-  margin-top: 20px;
+.current-lesson-header {
+  margin-top: 0;
   margin-bottom: 20px;
-  font-size: 1.5rem;
-  color: #2c3e50;
-  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
 }
 
 .video-player-wrapper {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
   background-color: #000;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(106,156,137,0.1); /* Assuming var(--estigo-green-rgb) for shadow */
+  border-radius: 8px;
   width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .video-player-wrapper video {
@@ -42,257 +72,297 @@
   width: 100%;
   height: 100%;
   border: none;
+  border-radius: 8px;
 }
 
-.no-video-placeholder {
-  aspect-ratio: 16 / 9;
-  background-color: #f5faf8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: var(--estigo-green, #6aaa96); /* Fallback color */
-  border: 1px dashed #a8d5c0;
-  border-radius: 5px;
-  min-height: 200px;
-  width: 100%;
-}
-
+.no-video-placeholder,
+.live-stream-display-area,
 .exam-prompt-section {
+  aspect-ratio: 16 / 9;
+  background-color: #e9ecef;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #f5faf8;
-  border: 1px solid var(--estigo-green, #6aaa96); /* Fallback color */
-  border-radius: 5px;
-  padding: 3rem 2rem;
+  color: #495057;
+  border: none;
+  border-radius: 8px;
   min-height: 300px;
-  aspect-ratio: 16 / 9;
   width: 100%;
+  padding: 20px;
   box-sizing: border-box;
+}
+.live-stream-display-area p, .no-video-placeholder p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+.btn-live-stream {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--estigo-green, #6aaa96); /* Green */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.btn-live-stream:hover {
+  background-color: #11412e; /* Darker Green */
 }
 
 .exam-prompt-section h3 {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 1.4rem;
-  color: #2c3e50;
+  font-size: 1.5rem;
+  color: #333;
 }
-
 .exam-prompt-section p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
-  color: #34495e;
+  color: #555;
+  max-width: 450px;
 }
-
-.start-exam-button {
-  padding: 10px 25px;
+.start-exam-button { /* This is the main "Start Exam" button in the prompt */
+  padding: 12px 30px;
   font-size: 1.1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #11412e; /* Dark green */
+  background-color: var(--estigo-green); /* Prominent Green */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
 .start-exam-button:hover {
-  background-color: #0a3b28; /* Slightly darker green */
-}
-
-/* Style for the Live Stream button if needed */
-.btn-live-stream {
-  display: inline-block; /* Or inline-flex if you add icons later */
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #fff;
-  background-color: var(--estigo-green); /* Example: blue */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  transition: background-color 0.2s ease;
-  margin-top: 10px; /* Example spacing */
-}
-.btn-live-stream:hover {
-  background-color:rgb(1, 83, 1); /* Darker blue */
-}
-/* You might want a container for the live stream message and button */
-.live-stream-display-area {
-  text-align: center;
-  padding: 20px;
-  background-color: #f5faf8; /* Similar to no-video-placeholder */
-  border: 1px dashed #a8d5c0;
-  border-radius: 5px;
-  min-height: 200px; /* Or match no-video-placeholder */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.live-stream-display-area p {
-  color: var(--estigo-green, #6aaa96);
-  margin-bottom: 15px;
+  background-color: #025414; /* Darker Prominent Green */
 }
 
 
-.content-section {
+/* Right Column: Lessons Sidebar */
+.lessons-sidebar {
   flex: 1;
-  min-width: 250px;
-  max-height: 70vh; /* Adjust as needed */
-  overflow-y: auto;
-  border-left: 1px solid #e0f0e8;
+  min-width: 280px;
+  max-width: 350px;
+  background-color: #f8f9fa;
   padding: 20px;
-  background-color: #ffffff;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  scroll-behavior: smooth;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-self: flex-start;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
-.content-section h3 {
+.sidebar-title {
   margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
-  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.content-section ul {
+.lessons-sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.content-item {
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  border: 1px solid #e0f0e8;
+.lesson-item-sidebar {
+  display: flex;
+  /* align-items: center; Removed: to allow lesson-info-wrapper to control vertical alignment better */
+  padding: 12px 10px;
+  margin-bottom: 8px;
   border-radius: 6px;
   cursor: pointer;
-  background-color: #fff;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  transition: background-color 0.2s ease, border-left 0.2s ease, color 0.2s ease;
+  position: relative;
 }
 
-.content-item:hover {
-  background-color: #f5faf8;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+.lesson-item-sidebar:hover {
+  background-color: #f0f5f3; /* Lighter green tint for hover */
 }
 
-.content-item.active {
-  background-color: var(--estigo-green, #6aaa96); /* Fallback color */
-  border-color: #0a3b28; /* Darker estigo green */
+.lesson-number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #6c757d; /* Default badge background (grey) */
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-right: 12px;
+  flex-shrink: 0;
+  align-self: flex-start; /* Align badge to the top of the flex item */
+  margin-top: 2px; /* Slight top margin for alignment with first line of title */
 }
 
-.content-item.active .lesson-title {
-  font-weight: bold;
-  color: #ffffff;
+.lesson-info-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack title and exam button */
+  flex-grow: 1; /* Take remaining space */
 }
 
-/* This class was in your HTML, you might want to define it if not using it for other purposes */
-.content-item.no-video .lesson-title {
-  /* color: #95a5a6; */ /* Example: Mute title if no video */
-}
-.content-item.no-video {
-   /* background-color: #f8fbfa; */ /* Example: different background for no video items */
-}
-
-
-.lesson-title {
-  display: block;
-  /* margin-bottom: 5px; */ /* Removed as .video-indicator will provide spacing */
-  color: #34495e;
+.lesson-title-sidebar {
+  font-size: 0.95rem;
+  color: #343a40;
+  line-height: 1.4;
+  margin-bottom: 5px; /* Space between title and exam button if exam exists */
 }
 
-.video-indicator {
-  display: block; /* Ensure it's on its own line or adjust as needed */
-  font-size: 0.8em;
-  color: #95a5a6;
-  /* margin-left: 5px; */ /* Not needed if it's a block */
-  margin-top: 3px;
+/* Active Lesson Styling (Green Theme) */
+.lesson-item-sidebar.active {
+  background-color: #e8f5f1; /* Light green background for active item */
+  border-left: 4px solid var(--estigo-green, #6aaa96); /* Main green left border */
+  padding-left: 6px;
 }
 
-.exam-link {
-  margin-top: 8px;
+.lesson-item-sidebar.active .lesson-number-badge {
+  background-color: var(--estigo-green, #6aaa96); /* Main green background for active badge */
+  color: white;
 }
 
-.exam-button {
-  display: inline-block;
+.lesson-item-sidebar.active .lesson-title-sidebar {
+  color: #11412e; /* Dark green for active title text */
+  font-weight: 500;
+}
+
+/* Exam link and button within sidebar */
+.exam-link-sidebar {
+  margin-top: 8px; /* Space above the exam button */
+}
+.exam-button-sidebar {
+  display: block; /* Make button take full width of its container */
   width: 100%;
-  text-align: left;
+  text-align: center; /* Center text in button */
   padding: 8px 10px;
-  font-size: 0.9em;
-  font-weight: normal;
+  font-size: 0.85rem; /* Slightly larger for better readability */
+  font-weight: 500;
   cursor: pointer;
-  border: 1px solid #11412e; /* Dark green border */
-  background-color: #e8f5f1; /* Light green background */
-  color: var(--estigo-green, #6aaa96); /* estigo green text, fallback */
-  border-radius: 3px;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.exam-button:hover {
-  background-color: #11412e; /* Dark green background */
-  border-color: #0a3b28; /* Darker estigo green border */
-  color: #fff;
-}
-
-/* General .loading and .error classes for completeness, style as you wish */
-.loading, .error {
-  text-align: center;
-  padding: 20px;
-  margin: 20px;
-  border-radius: 5px;
-}
-.loading {
-  color: #333;
-}
-.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-.btn-retry { /* Style for retry button in error message */
-  padding: 8px 15px;
-  margin-top: 10px;
-  background-color: #ffc107;
-  border: none;
-  color: #212529;
+  border: 1px solid var(--estigo-green, #6aaa96);
+  background-color: transparent;
+  color: var(--estigo-green, #6aaa96);
   border-radius: 4px;
-  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.btn-retry:hover {
-  background-color: #e0a800;
+.exam-button-sidebar:hover {
+  background-color: var(--estigo-green, #6aaa96);
+  color: white;
+}
+.lesson-item-sidebar.active .exam-button-sidebar {
+  border-color: #11412e; /* Darker green border for active state */
+  color: #11412e;
+  background-color: #d4e9e2; /* Slightly tinted background for active exam button */
+}
+.lesson-item-sidebar.active .exam-button-sidebar:hover {
+  background-color: #11412e;
+  color: white;
 }
 
 
-@media (max-width: 768px) {
-  .course-container {
+.no-lessons-message-sidebar {
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  padding: 20px 0;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .course-view-container {
     flex-direction: column;
   }
-
-  .content-section {
-    border-left: none;
-    /* padding-left: 0; */ /* Keep padding consistent */
-    border-top: 1px solid #e0f0e8;
-    padding-top: 20px;
-    max-height: none; /* Allow it to grow */
-    overflow-y: visible; /* No separate scroll for content on mobile */
+  .lessons-sidebar {
+    max-width: 100%;
+    margin-top: 20px;
+    max-height: none;
+    overflow-y: visible;
   }
-
-  .video-section,
-  .content-section {
-    min-width: 100%; /* Take full width when stacked */
-    flex-basis: auto; /* Reset flex-basis */
+  .main-content-area {
+    flex-basis: auto;
   }
+}
 
+@media (max-width: 768px) {
+  .current-lesson-header {
+    font-size: 1.5rem;
+  }
+  .no-video-placeholder,
+  .live-stream-display-area,
   .exam-prompt-section {
-    min-height: 250px; /* Adjust for smaller screens */
-    padding: 2rem 1rem;
+    min-height: 250px;
+  }
+  .exam-prompt-section {
+    padding: 1.5rem 1rem;
+  }
+  .exam-prompt-section h3 {
+    font-size: 1.3rem;
+  }
+}
+.course-view-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px; /* Existing padding */
+  background-color: #ffffff; /* Keep this white for the content card */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Already here, good */
+
+  /* === New/Modified styles for page width === */
+  max-width: 1280px; /* Or 1366px, 1440px - adjust to your preference for "a little smaller" */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;    /* Add some space from the top of the viewport */
+  margin-bottom: 2rem; /* Add some space at the bottom */
+  border-radius: 10px; /* Optional: slightly round the corners of the whole page container */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Optional: a slightly more pronounced shadow for the page container */
+}
+
+
+.lessons-sidebar {
+  flex: 1;
+  min-width: 280px; /* Keep this */
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-self: flex-start;
+  max-height: calc(100vh - 40px - 4rem); /* Adjust if margin-top/bottom of course-view-container changes */
+  overflow-y: auto;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 1320px) { /* A bit wider than the max-width to remove side margins sooner */
+  .course-view-container {
+    margin-left: 20px; /* Or 1rem */
+    margin-right: 20px; /* Or 1rem */
+    max-width: none; /* Allow it to fill available width within these margins */
+  }
+}
+
+@media (max-width: 992px) {
+  .course-view-container {
+    flex-direction: column;
+    margin-top: 1rem; /* Adjust top/bottom margin for smaller screens */
+    margin-bottom: 1rem;
+    padding: 15px; /* Slightly reduce padding on smaller viewports */
+  }
+  .lessons-sidebar {
+    max-width: 100%;
+    margin-top: 20px;
+    max-height: none;
+    overflow-y: visible;
+  }
+  .main-content-area {
+    flex-basis: auto;
   }
 }

@@ -105,10 +105,7 @@ export class PaymentComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          // For Fawry, you might redirect to a page explaining to check for the Fawry code,
-          // or the API might return the code directly.
-          // For now, navigating to dashboard.
-          alert('Enrollment initiated! Please check for your Fawry Pay reference code to complete the payment.'); // Simple alert
+            // we can add some kind of alert here 
           this.router.navigate(['/dashboard']);
         },
       });

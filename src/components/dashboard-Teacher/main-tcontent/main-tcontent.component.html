@@ -1,5 +1,5 @@
-<div class="main-content">
-    <div class="welcome-section">
+<div class="main-contentt">
+    <div class="welcome-section main-content">
         <h1>Teacher Dashboard</h1>
         <h2 *ngIf="teacherName" class="teacher-greeting">Welcome, {{ teacherName }}!</h2>
     </div>
@@ -27,13 +27,9 @@
                     <tr *ngFor="let student of students">
                         <td>{{ student.name }}</td>
                         <td>
-                            <!--
-                                The routerLink now uses student.id for the :studentId parameter
-                                and student.categoryId for the :categoryId parameter in the route
-                                '/teacher/student-prediction/:studentId/:categoryId'
-                            -->
+     
                             <a [routerLink]="['/student-prediction', student.id, student.categoryId]" class="action-link">
-                                View Predictions
+                                View Prediction
                             </a>
                         </td>
                     </tr>

@@ -1,40 +1,58 @@
-<div class="course-details-container">
-  <div *ngIf="course" class="course-content-grid">
-    <div class="left-section">
-      <div class="course-image-section">
+<div class="course-details-page-container">
+  <div *ngIf="course" class="course-card">
+
+    <!-- Top Section: Image and Core Information -->
+    <div class="top-section">
+      <div class="course-image-container">
         <img [src]="course.logo" 
              [alt]="course.courseTitle"
-             class="course-image">
+             class="course-logo-image">
       </div>
-
-      <div class="course-content">
-        <div class="content-header" (click)="toggleContent()">
-          <h3>Course Content</h3>
-          <span class="toggle-icon">{{ isContentExpanded ? '▼' : '▶' }}</span>
-        </div>
-        <div class="lessons-list" [class.expanded]="isContentExpanded">
-          <div *ngFor="let lesson of course.lessons" class="lesson-item">
-            {{ lesson }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="course-info-section">
-      <div class="course-header">
+      <div class="core-info-container">
         <h1>{{ course.courseTitle }}</h1>
-        <p class="teacher-name">By {{ course.teacherName }}</p>
-      </div>
-
-      <div class="price-section">
-        <span class="price-value">${{ course.price | number:'1.2-2' }}</span>
-        <button class="enroll-button" [routerLink]="['/payment', course.courseId]">Enroll Now</button>
-      </div>
-
-      <div class="course-description">
-        <h2>About this course</h2>
-        <p>{{ course.description }}</p>
+        <div class="meta-details">
+          <span class="teacher-info">
+            <i class="bi bi-person meta-icon"></i> <!-- Bootstrap User Icon -->
+            {{ course.teacherName }}
+          </span>
+         
+        </div>
+        <div class="price-and-enroll">
+          <span class="price-label">Price: <span class="price-amount">${{ course.price | number:'1.2-2' }}</span></span>
+          <button class="enroll-button-main" [routerLink]="['/payment', course.courseId]">
+            <i class="bi bi-cart3 button-icon"></i> <!-- Bootstrap Cart Icon -->
+            Enroll Now
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- Description Section -->
+    <div class="description-section">
+      <h2>Description</h2>
+      <p>{{ course.description }}</p>
+    </div>
+
+    <!-- Course Content Section -->
+    <div class="course-content-module">
+      <div class="module-header" (click)="toggleContent()">
+        <h3>Course Content</h3>
+        <button class="lessons-toggle-button">
+          Lessons 
+          <i class="bi" [class.bi-chevron-down]="isContentExpanded" [class.bi-chevron-right]="!isContentExpanded"></i> <!-- Bootstrap Chevron Icons -->
+        </button>
+      </div>
+      <div class="lessons-list-container" [class.expanded]="isContentExpanded">
+        <ol class="lessons-ordered-list">
+          <li *ngFor="let lesson of course.lessons; let i = index" class="lesson-list-item">
+            {{ lesson }}
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="!course" class="loading-message">
+    Loading course details...
   </div>
 </div>

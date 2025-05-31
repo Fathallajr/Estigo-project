@@ -1,209 +1,244 @@
-.course-details-container {
-    max-width: 1200px;
+/* General container for the page, ensures consistent padding and max-width */
+.course-details-page-container {
+    max-width: 900px; /* Adjust as needed */
     margin: 2rem auto;
-    padding: 0 1rem;
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: #f4f6f8; /* Light grey background for the page */
 }
 
-.course-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+.course-card {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-}
-
-.left-section {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2rem; /* Space between major sections */
 }
 
-.course-image-section {
-    width: 80%;
-    overflow: hidden;
-    border-radius: 8px;
+/* Top Section: Image and Core Info */
+.top-section {
+    display: flex;
+    gap: 1.5rem; /* Space between image and info block */
+    align-items: flex-start; /* Align items to the top */
 }
 
-.course-image {
-    width: 100%;
-    height: 100%;
+.course-image-container {
+    flex-shrink: 0;
+}
+
+.course-logo-image {
+    width: 130px; /* Adjust size as per image */
+    height: 130px; /* Adjust size as per image */
+    border-radius: 50%; /* Circular image */
     object-fit: cover;
+    border: 3px solid #e0e0e0; /* Optional: slight border for the sphere */
 }
 
-.course-info-section {
+.core-info-container {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem; /* Space within the core info block */
 }
 
-.course-header h1 {
-    margin: 0;
-    font-size: 2rem;
+.core-info-container h1 {
+    margin: 0 0 0.25rem 0;
+    font-size: 2rem; /* Large title */
     color: #333;
-}
-
-.teacher-name {
-    color: #666;
-    margin-top: 0.5rem;
-}
-
-.price-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.price-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.enroll-button {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--estigo-green);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.3s;
 }
 
-.enroll-button:hover {
-    background-color: #066a01;
-}
-
-.course-description {
-    padding: 1rem 0;
-}
-
-.course-description h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-}
-
-.course-content {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.content-header {
+.meta-details {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
+    gap: 1.5rem; /* Space between teacher and subject */
     align-items: center;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    cursor: pointer;
-}
-
-.content-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #333;
-}
-
-.toggle-icon {
-    font-size: 1.2rem;
-    color: #666;
-}
-
-.lessons-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-}
-
-.lessons-list.expanded {
-    max-height: 500px;
-}
-
-.lesson-item {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
     color: #555;
 }
 
-.lesson-item:last-child {
-    border-bottom: none;
+.meta-details .icon {
+    margin-right: 0.3rem;
+    font-size: 1rem; /* Adjust icon size if needed */
 }
 
-@media (max-width: 768px) {
-    .course-content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .course-image-section {
-        height: 250px;
-    }
+.teacher-info, .subject-info {
+    display: flex;
+    align-items: center;
 }
 
-.course-sidebar {
-    padding: 2rem;
-    background-color: #e7f0fa;
-    border-top: 1px solid #e9ecef;
-}
-
-.sidebar-sticky-content {
-    position: sticky;
-    top: 2rem;
-}
-
-.price-card {
-    background-color: #fff;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0, 0.05);
+.price-and-enroll {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Space between price and enroll button */
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .price-label {
-    display: block;
+    font-size: 1.25rem; /* Prominent price */
+    font-weight: normal;
+    color: #333;
+}
+.price-label .price-amount {
+    font-weight: bold;
+    color: var(--estigo-green); /* Green color for the price amount */
+}
+
+.enroll-button-main {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--estigo-green); /* Green button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text in button */
+}
+
+.enroll-button-main:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.enroll-button-main .cart-icon {
+    font-size: 1.1rem;
+}
+
+/* Description Section */
+.description-section {
+    padding-top: 1rem; /* Add some space if sections are too close */
+    border-top: 1px solid #eee; /* Separator from top section */
+}
+
+.description-section h2 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.description-section p {
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Course Content Module */
+.course-content-module {
+    /* border-top: 1px solid #eee; Separator if needed */
+    /* padding-top: 1rem; */
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee; /* Separator for header */
+    cursor: pointer; /* Indicate clickable to toggle */
+}
+
+.module-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.lessons-toggle-button {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 0.9rem;
-    color: #6c757d;
-    margin-bottom: 0.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
 }
 
-@media (min-width: 992px) {
-    .course-content-grid {
-        grid-template-columns: 2fr 1fr;
-        border: none;
-    }
-
-    .course-main {
-        padding: 2.5rem 3rem;
-        border-right: 1px solid #e9ecef;
-    }
-
-     .course-sidebar {
-        padding: 2.5rem;
-        border-top: none;
-        background-color: #e7f0fa;
-     }
-
-    .course-header h1 {
-        font-size: 2.75rem;
-    }
+.lessons-toggle-button:hover {
+    background-color: #dde1e5;
 }
 
-@media (min-width: 1400px) {
-    .course-details-container {
-        max-width: 1300px;
+.lessons-toggle-button .arrow {
+    font-size: 0.8rem; /* Smaller arrow */
+}
+
+
+.lessons-list-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease-in-out;
+}
+
+.lessons-list-container.expanded {
+    max-height: 1000px; /* Adjust to fit all your lessons, or use 'none' if preferred for CSS only solution*/
+}
+
+.lessons-ordered-list {
+    list-style-type: decimal; /* Ensures numbers like 1., 2. */
+    margin: 0;
+    padding-left: 1.5rem; /* Indentation for numbers */
+}
+
+.lesson-list-item {
+    padding: 0.75rem 0.5rem; /* Padding for each lesson */
+    color: #444;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0; /* Light separator between lessons */
+}
+
+.lesson-list-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.loading-message {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #777;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .course-details-page-container {
+        margin: 1rem auto;
+        padding: 0.5rem;
     }
-     .course-main {
-        padding: 3rem 3.5rem;
+    .course-card {
+        padding: 1.5rem;
     }
-     .course-sidebar {
-        padding: 3rem;
-     }
+    .top-section {
+        flex-direction: column; /* Stack image and info on small screens */
+        align-items: center; /* Center items when stacked */
+        text-align: center; /* Center text for stacked info */
+    }
+    .core-info-container h1 {
+        font-size: 1.6rem;
+    }
+    .meta-details {
+        justify-content: center; /* Center meta details when stacked */
+        gap: 0.5rem 1rem; /* Adjust gap for smaller screens */
+    }
+    .price-and-enroll {
+        flex-direction: column; /* Stack price and button */
+        align-items: center; /* Center them */
+        gap: 1rem;
+    }
+    .module-header h3 {
+        font-size: 1.15rem;
+    }
+    .lessons-toggle-button {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.6rem;
+    }
 }
