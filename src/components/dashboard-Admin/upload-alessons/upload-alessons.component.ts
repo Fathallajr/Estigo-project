@@ -48,9 +48,9 @@ export class UploadAlessonsComponent implements OnInit {
   selectedVideoFileName: string | null = null;
 
   // --- API URLs & Constants ---
-  private readonly coursesApiUrl = 'https://localhost:5071/api/Course/AdminCourses';
-  private readonly lessonsApiUrl = 'https://localhost:5071/api/Lesson';
-  private readonly videoBaseUrl = 'https://localhost:5071/'; // Used for non-live videos
+  private readonly coursesApiUrl = 'https://estigo.tryasp.net/api/Course/AdminCourses';
+  private readonly lessonsApiUrl = 'https://estigo.tryasp.net/api/Lesson';
+  private readonly videoBaseUrl = 'https://estigo.tryasp.net/'; // Used for non-live videos
 
   ngOnInit(): void {
     this.initializeForm();

@@ -38,7 +38,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
-  private readonly apiUrl = 'https://localhost:5071/api/Course';
+  private readonly apiUrl = 'https://estigo.tryasp.net/api/Course';
   readonly baseImageUrl = 'https://estigo.tryasp.net/';
 
   courses: Course[] = [];

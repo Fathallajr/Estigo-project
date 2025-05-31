@@ -71,7 +71,7 @@ export class MainTcontentComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
     // Ensure your API base URL is correct.
-    const apiUrl = `https://localhost:5071/api/Teacher/${this.teacherId}/students`;
+    const apiUrl = `https://estigo.tryasp.net/api/Teacher/${this.teacherId}/students`;
 
     this.http.get<Student[]>(apiUrl).subscribe({ // HttpClient expects an array of the updated Student interface
       next: (data) => {

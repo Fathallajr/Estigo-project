@@ -67,7 +67,7 @@ export class MycoursePageComponent implements OnInit, OnDestroy {
     this.resetViewState();
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     const userId = userData?.id || '';
-    const apiUrl = `https://localhost:5071/api/Lesson/GetCourseDetails/${id}/${userId}`;
+    const apiUrl = `https://estigo.tryasp.net/api/Lesson/GetCourseDetails/${id}/${userId}`;
 
     this.http.get<CourseDetail[]>(apiUrl)
       .pipe(

@@ -202,8 +202,8 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
     // targetStudentId is assumed to be valid here due to checks in switchMap condition
     // isLoading is managed by the main pipeline (tap/subscribe)
 
-    const dataUrl = `https://localhost:5071/api/Prediction/model-values/${this.targetStudentId}/${this.categoryId}`;
-    const resultUrl = `https://localhost:5071/api/Prediction/model-result/${this.targetStudentId}/${this.categoryId}`;
+    const dataUrl = `https://estigo.tryasp.net/api/Prediction/model-values/${this.targetStudentId}/${this.categoryId}`;
+    const resultUrl = `https://estigo.tryasp.net/api/Prediction/model-result/${this.targetStudentId}/${this.categoryId}`;
 
     const predictionData$ = this.http.get<PredictionData>(dataUrl).pipe(
       catchError(err => {

@@ -55,9 +55,9 @@ export class UploadLessonComponent implements OnInit {
   errorMessage: string | null = null;
 
   // API Endpoints
-  readonly COURSES_API_URL = 'https://localhost:5071/api/Teacher/teacher-courses';
-  readonly LESSON_API_URL = 'https://localhost:5071/api/Lesson';
-  readonly VIDEO_BASE_URL = 'https://localhost:5071/'; // For non-live video files
+  readonly COURSES_API_URL = 'https://estigo.tryasp.net/api/Teacher/teacher-courses';
+  readonly LESSON_API_URL = 'https://estigo.tryasp.net/api/Lesson';
+  readonly VIDEO_BASE_URL = 'https://estigo.tryasp.net/'; // For non-live video files
 
   constructor(private http: HttpClient) {}
 
