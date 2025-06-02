@@ -7,16 +7,14 @@ import { catchError, finalize, throwError } from 'rxjs'; // Added for error hand
 interface UserData { id: string; }
 interface TeacherCourse { courseId: number; courseTitle: string; }
 
-// Updated NewLesson to include isLive
+// Updated NewLesson - removed lessonDescription and lessonContent
 interface NewLesson {
   lessonTitle: string;
-  lessonDescription: string;
-  lessonContent: string;
   lessonVideo: string; // This will be the video file name OR the live URL
   isLive: boolean;     // Added
 }
 
-// LessonPayload now implicitly includes isLive from NewLesson
+// LessonPayload now implicitly includes isLive from NewLesson - removed lessonDescription and lessonContent
 interface LessonPayload extends NewLesson {
   lessonId: number; // Typically set to 0 for new lessons, backend assigns actual ID
   courseId: number;
@@ -35,11 +33,9 @@ export class UploadLessonComponent implements OnInit {
   teacherCourses: TeacherCourse[] = [];
   selectedCourseId: number | null = null;
 
-  // Initialize lessonData with isLive
+  // Initialize lessonData with isLive - removed lessonDescription and lessonContent
   lessonData: NewLesson = {
     lessonTitle: '',
-    lessonDescription: '',
-    lessonContent: '',
     lessonVideo: '',     // Will hold filename or live URL
     isLive: false        // Default to not live
   };
@@ -144,8 +140,6 @@ export class UploadLessonComponent implements OnInit {
       lessonId: 0, // Backend will assign
       courseId: this.selectedCourseId,
       lessonTitle: this.lessonData.lessonTitle.trim(),
-      lessonDescription: this.lessonData.lessonDescription.trim(),
-      lessonContent: this.lessonData.lessonContent.trim(),
       lessonVideo: finalLessonVideoUrl,
       isLive: this.lessonData.isLive
     };
@@ -168,8 +162,6 @@ export class UploadLessonComponent implements OnInit {
   resetForm(): void {
     this.lessonData = {
       lessonTitle: '',
-      lessonDescription: '',
-      lessonContent: '',
       lessonVideo: '',
       isLive: false
     };
