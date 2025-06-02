@@ -6,22 +6,19 @@ import { GHeaderProfileComponent } from '../../../shared/g-header-profile/g-head
 import { SidebarComponent } from '../sidebar/sidebar.component'; // Adjust path if needed
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router, RouterLink, RouterModule } from '@angular/router'; // Router is already imported
 
-
+// Interfaces (EnrolledCourse, CourseInstructor, Quiz, PaymentInfo, StudentDashboardData, UserInfo)
+// remain the same as you provided. I'll omit them here for brevity but assume they are present.
 export interface EnrolledCourse {
   courseId:number;
   courseName: string;
-  courseImageUrl: string; // Expecting Base64 string here now
- 
+  courseImageUrl: string;
 }
-
 export interface CourseInstructor {
-  instructorImageUrl: string; // Expecting Base64 string here now
-  
+  instructorImageUrl: string;
 }
-
 export interface Quiz {
   examId: number;
   examTitle: string;
@@ -29,12 +26,10 @@ export interface Quiz {
   examDate: string;
   lessonName: string;
 }
-
 export interface PaymentInfo {
   purchaseDate: string;
   courseTitle: string;
 }
-
 export interface StudentDashboardData {
   studentId: string;
   studentName: string;
@@ -44,15 +39,13 @@ export interface StudentDashboardData {
   quizzes: Quiz[];
   paymentInfo: PaymentInfo[];
 }
-
 export interface UserInfo {
     id: string;
     name: string;
     email: string;
     role: string;
-
 }
-// --- End Interfaces ---
+
 
 @Component({
   selector: 'app-main-content',
@@ -71,8 +64,8 @@ export interface UserInfo {
 })
 export class MainContentComponent implements OnInit {
   private http = inject(HttpClient);
-  private sanitizer = inject(DomSanitizer); // Inject DomSanitizer
-  private router = inject(Router); // Inject Router
+  private sanitizer = inject(DomSanitizer);
+  private router = inject(Router);
 
   dashboardData$: Observable<StudentDashboardData | null> | undefined;
   isLoading = true;
@@ -81,6 +74,10 @@ export class MainContentComponent implements OnInit {
 
   private readonly localStorageKey = 'userData';
 
+  // Modal properties
+  showNumberModal = false;
+  selectedModalNumber = 1; // This will be used as categoryId
+
   ngOnInit(): void {
     this.loadDashboardData();
   }
@@ -88,7 +85,6 @@ export class MainContentComponent implements OnInit {
   private loadDashboardData(): void {
     this.isLoading = true;
     this.errorMessage = null;
-
     const userInfoString = localStorage.getItem(this.localStorageKey);
 
     if (!userInfoString) {
@@ -123,31 +119,23 @@ export class MainContentComponent implements OnInit {
                 return of(null);
             })
         );
-
     } catch (e) {
         this.handleError('Failed to parse user information from local storage.');
         console.error(e);
     }
   }
 
-  // Modal properties
-  showNumberModal = false;
-  selectedModalNumber = 1;
-  
-  // Method to handle predict button click
   onPredictClick(): void {
-    // Show the modal instead of using prompt
     this.showNumberModal = true;
   }
-  
-  // Method to handle number selection and close modal
+
   onSelectNumber(): void {
-    // Navigate to prediction component with the selected number
+    // Navigate to the prediction component with the selected categoryId
+    // The route 'predict/:categoryId' will be matched
     this.router.navigate(['/predict', this.selectedModalNumber]);
     this.showNumberModal = false;
   }
-  
-  // Method to close the modal without selection
+
   closeNumberModal(): void {
     this.showNumberModal = false;
   }
@@ -158,20 +146,21 @@ export class MainContentComponent implements OnInit {
       this.dashboardData$ = of(null);
   }
 
- 
   getImageSource(
       imageUrl: string | null | undefined,
       defaultImageUrl: string
     ): SafeUrl | string {
       if (imageUrl) {
           try {
+              // Assuming imageUrl is a full data URL (e.g., "data:image/png;base64,...")
+              // or a direct web URL. If it's just the Base64 string, you need to prepend "data:image/...;base64,"
+              // For now, let's assume it's a complete URL or data URL.
               return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
           } catch (e) {
               console.error("Error processing image URL:", e);
               return defaultImageUrl;
           }
       }
-      
       return defaultImageUrl;
   }
 }

@@ -1,41 +1,39 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, inject, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, ParamMap, RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Subscription, forkJoin, of, Observable, ObservableInput } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
-declare var CanvasJS: any; // Make sure CanvasJS is loaded globally or imported correctly
+declare var CanvasJS: any;
 
-// Interface for user data stored in localStorage
+// Interfaces (UserData, PredictionData, PredictionResult)
+// remain the same as you provided. I'll omit them here for brevity but assume they are present.
 interface UserData {
   id: string;
   email: string;
   name: string;
-  role: string; // "Student" or "Teacher"
+  role: string; // "Student" or "Teacher" or "Parent"
 }
-
-// Interface for the prediction data from /model-values endpoint
 interface PredictionData {
   attendance_rate: number;
   average_quiz_score: number;
   quizzes_completion_rate: number;
   final_exam_attempts: number;
   final_exam_score: number;
-  education_system_IGCSE: number; // Assuming 1 for IGCSE, 0 for EST
+  education_system_IGCSE: number;
 }
-
-// Interface for the prediction result from /model-result endpoint
 interface PredictionResult {
   predicted_grade: string;
 }
+
 
 @Component({
   selector: 'app-prediction',
   standalone: true,
   imports: [CommonModule, HttpClientModule, RouterModule],
-  templateUrl: './prediction.component.html',
-  styleUrls: ['./prediction.component.css']
+  templateUrl: './prediction.component.html', // Make sure this path is correct
+  styleUrls: ['./prediction.component.css']   // Make sure this path is correct
 })
 export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked {
 
@@ -43,10 +41,9 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   private http = inject(HttpClient);
   private cdRef = inject(ChangeDetectorRef);
 
-  // State properties
-  categoryId: number = 1;
+  categoryId: number = 1; // Default, will be overridden by route param
   targetStudentId: string | null = null;
-  targetStudentName: string | null = null;
+  targetStudentName: string | null = null; // Usually for display if fetched
 
   predictionData: PredictionData | null = null;
   predictedGrade: string | null = null;
@@ -60,95 +57,137 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   private charts: any[] = [];
   private shouldRenderCharts = false;
 
+  private readonly localStorageUserKey = 'userData'; // Consistent key for user data
+
   ngOnInit(): void {
+    console.log('[PredictionComponent] ngOnInit started.');
     this.loadLoggedInUser();
 
     if (!this.loggedInUser) {
       this.error = "User data not found. Please log in to view predictions.";
       this.isLoading = false;
+      console.warn('[PredictionComponent] LoggedInUser not found. Exiting ngOnInit early.');
       return;
     }
+    console.log('[PredictionComponent] LoggedInUser:', this.loggedInUser);
 
     const routeParamsSub = this.route.paramMap.pipe(
       tap((params: ParamMap) => {
-        this.clearPreviousState(); // Reset visual state, but not studentId/categoryId yet
-        this.isLoading = true; // Assume loading will start
-        this.error = null; // Clear previous errors
+        console.log('[PredictionComponent] Route params received:', params.keys);
+        this.clearPreviousState();
+        this.isLoading = true;
+        this.error = null;
 
+        // Get categoryId from route - THIS IS THE CRUCIAL PART FOR STUDENT'S OWN PREDICTION
         const categoryParam = params.get('categoryId');
-        this.categoryId = categoryParam ? parseInt(categoryParam, 10) : 1;
+        if (categoryParam) {
+          this.categoryId = parseInt(categoryParam, 10);
+          console.log(`[PredictionComponent] Category ID from route: ${this.categoryId}`);
+        } else {
+          // Fallback or error if categoryId is somehow missing from a route that should have it
+          // For 'predict/:categoryId', it should always be present.
+          // For 'student-prediction/:studentId/:categoryId', it should also be present.
+          console.warn('[PredictionComponent] categoryId not found in route params. Using default or previous:', this.categoryId);
+          // You might want to set an error here if categoryId is mandatory for the current context
+          // this.error = "Category ID is missing in the request.";
+          // this.isLoading = false;
+        }
 
-        if (this.loggedInUser?.role === 'Teacher' || this.loggedInUser?.role === 'Parent') {
-          const studentIdFromRoute = params.get('studentId');
-          if (studentIdFromRoute) {
-            this.targetStudentId = studentIdFromRoute;
-            this.targetStudentName = null; // Reset, would need to fetch if required
-          } else {
-            this.error = "Teachers must select a specific student. Student ID missing in URL.";
-            this.isLoading = false; // Stop loading, error occurred
-            this.targetStudentId = null;
-          }
+
+        // Determine targetStudentId
+        // Check if studentId is passed in the route (for Teacher/Parent viewing specific student)
+        const studentIdFromRoute = params.get('studentId');
+        if (studentIdFromRoute && (this.loggedInUser?.role === 'Teacher' || this.loggedInUser?.role === 'Parent')) {
+          this.targetStudentId = studentIdFromRoute;
+          console.log(`[PredictionComponent] Target Student ID (from route for Teacher/Parent): ${this.targetStudentId}`);
+          // Optionally fetch student name if needed for display for teachers
+          // this.targetStudentName = ... (requires another API call or data passed in route state)
         } else if (this.loggedInUser?.role === 'Student') {
           this.targetStudentId = this.loggedInUser.id;
           this.targetStudentName = this.loggedInUser.name;
-        } else {
-          this.error = "Unable to determine user role or student for predictions.";
-          this.isLoading = false; // Stop loading, error occurred
+          console.log(`[PredictionComponent] Target Student ID (Logged-in Student): ${this.targetStudentId}`);
+        } else if (this.loggedInUser?.role === 'Teacher' || this.loggedInUser?.role === 'Parent') {
+            // Teacher/Parent route but studentId not in params (e.g. if they navigated to /predict/:categoryId directly)
+            this.error = "Teachers/Parents must select a specific student via the correct link (e.g., /student-prediction/...).";
+            this.isLoading = false;
+            this.targetStudentId = null;
+            console.warn('[PredictionComponent] Teacher/Parent role, but no studentId in route for a student-specific view.');
+        }
+         else {
+          this.error = "Unable to determine student for predictions. User role or context unclear.";
+          this.isLoading = false;
           this.targetStudentId = null;
+          console.warn('[PredictionComponent] Could not determine targetStudentId.');
         }
       }),
       switchMap((): ObservableInput<[PredictionData | null, PredictionResult | null] | null> => {
-        if (this.targetStudentId && this.isLoading) { // Check isLoading; if false, an error occurred in tap
+        if (this.targetStudentId && this.categoryId && this.isLoading) { // Ensure isLoading is still true (no error in tap)
+          console.log(`[PredictionComponent] Proceeding to fetchPredictionDetails for studentId: ${this.targetStudentId}, categoryId: ${this.categoryId}`);
           return this.fetchPredictionDetails();
         } else {
-          // If no targetStudentId or error in tap, complete without fetching by returning of(null)
-          // isLoading would already be false if an error in tap occurred
+          console.warn('[PredictionComponent] Skipping fetchPredictionDetails. TargetStudentId:', this.targetStudentId, 'CategoryId:', this.categoryId, 'IsLoading:', this.isLoading);
+          if (!this.error && !this.targetStudentId) {
+              this.error = "Student context is missing. Cannot load predictions.";
+          } else if (!this.error && !this.categoryId) {
+              this.error = "Category is missing. Cannot load predictions.";
+          }
+          // If isLoading is false, an error was likely set in tap.
+          this.isLoading = false; // Ensure loading stops if we skip fetch
           return of(null);
         }
       })
     ).subscribe({
-      next: (apiResult) => { // apiResult is [PredictionData | null, PredictionResult | null] | null
+      next: (apiResult) => {
+        console.log('[PredictionComponent] API Result received in subscribe:', apiResult);
         if (apiResult === null) {
- 
-            if (!this.error && !this.targetStudentId) {
-                 this.error = "Cannot load predictions without a student context.";
+            if (!this.error) {
+                this.error = "Failed to retrieve prediction details.";
             }
-            if(!this.error && this.targetStudentId) { // fetchPredictionDetails might have returned null due to its own handled error
-                 this.error = "Failed to retrieve some or all prediction details.";
-            }
-            this.isLoading = false; // Ensure loading is false
+            this.isLoading = false;
+            console.warn('[PredictionComponent] apiResult is null. Current error state:', this.error);
             return;
         }
 
-        // apiResult is [data, result]
         const [data, result] = apiResult;
+        console.log('[PredictionComponent] Destructured API data (/model-values):', data);
+        console.log('[PredictionComponent] Destructured API result (/model-result):', result);
         let errorsAccumulator: string[] = [];
 
         if (data) {
           this.predictionData = data;
           this.educationSystem = data.education_system_IGCSE === 1 ? 'IGCSE' : 'EST';
           this.shouldRenderCharts = true;
+          console.log('[PredictionComponent] PredictionData processed:', this.predictionData);
         } else {
-          errorsAccumulator.push('Failed to fetch performance metrics.');
+          errorsAccumulator.push('Failed to fetch performance metrics (/model-values).');
           this.shouldRenderCharts = false;
+          console.warn('[PredictionComponent] Performance metrics (data from /model-values) is null.');
         }
 
         if (result) {
           this.predictedGrade = result.predicted_grade;
+          console.log('[PredictionComponent] PredictedGrade processed:', this.predictedGrade);
         } else {
-          errorsAccumulator.push('Failed to fetch predicted grade.');
+          errorsAccumulator.push('Failed to fetch predicted grade (/model-result).');
           this.predictedGrade = null;
+          console.warn('[PredictionComponent] Predicted grade (result from /model-result) is null.');
         }
 
         if (errorsAccumulator.length > 0) {
           this.error = errorsAccumulator.join(' ');
-          if (!data && !result) this.predictionData = null; // Ensure data is null if both API calls fail
+          if (!data && !result) this.predictionData = null;
+          console.warn('[PredictionComponent] Errors accumulated:', this.error);
         }
         this.isLoading = false;
+        console.log('[PredictionComponent] Final state before rendering: isLoading:', this.isLoading, 'error:', this.error, 'predictionData:', !!this.predictionData, 'shouldRenderCharts:', this.shouldRenderCharts);
       },
-      error: (err) => {
-        console.error("Error in prediction data pipeline:", err);
-        this.error = "An unexpected error occurred while loading prediction data.";
+      error: (err: HttpErrorResponse | Error) => {
+        console.error("[PredictionComponent] Critical error in prediction data pipeline:", err);
+        let message = (err instanceof Error) ? err.message : 'Unknown error';
+        this.error = `An unexpected error occurred: ${message}`;
+        if (err instanceof HttpErrorResponse) {
+            this.error += ` (Status: ${err.status})`;
+        }
         this.isLoading = false;
         this.predictionData = null;
         this.predictedGrade = null;
@@ -160,6 +199,7 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
 
   ngAfterViewChecked(): void {
     if (this.shouldRenderCharts && this.predictionData && !this.isLoading && typeof CanvasJS !== 'undefined' && CanvasJS.Chart) {
+      console.log('[PredictionComponent] ngAfterViewChecked: Rendering charts.');
       this.renderCharts();
       this.shouldRenderCharts = false;
       this.cdRef.detectChanges();
@@ -167,78 +207,95 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
 
   ngOnDestroy(): void {
+    console.log('[PredictionComponent] ngOnDestroy called.');
     this.subscriptions.unsubscribe();
     this.destroyCharts();
   }
 
   private clearPreviousState(): void {
-    // Clears data related to the previous fetch, not studentId/categoryId which are from route
+    console.log('[PredictionComponent] Clearing previous state.');
     this.predictionData = null;
     this.predictedGrade = null;
     this.educationSystem = '';
-    // this.error = null; // Error is cleared at the start of the tap operator
-    // this.isLoading = true; // isLoading is set at the start of the tap operator
+    // this.error = null; // Error is cleared at the start of the tap operator in ngOnInit
+    // this.isLoading = true; // isLoading is set at the start of the tap operator in ngOnInit
     this.shouldRenderCharts = false;
     this.destroyCharts();
   }
 
   private loadLoggedInUser(): void {
-    const userDataString = localStorage.getItem('userData');
+    const userDataString = localStorage.getItem(this.localStorageUserKey);
     if (userDataString) {
       try {
         this.loggedInUser = JSON.parse(userDataString) as UserData;
-        if (!this.loggedInUser?.id || !this.loggedInUser?.role) {
-          console.error('Critical user data (ID or Role) missing from localStorage:', this.loggedInUser);
-          this.loggedInUser = null;
-        }
+       
       } catch (e) {
-        console.error('Error parsing user data from localStorage:', e);
+        console.error('[PredictionComponent] Error parsing user data from localStorage:', e);
         this.loggedInUser = null;
       }
+    } else {
+        console.warn('[PredictionComponent] No user data found in localStorage.');
+        this.loggedInUser = null;
     }
   }
 
   private fetchPredictionDetails(): Observable<[PredictionData | null, PredictionResult | null]> {
-    // targetStudentId is assumed to be valid here due to checks in switchMap condition
-    // isLoading is managed by the main pipeline (tap/subscribe)
+    if (!this.targetStudentId || !this.categoryId) { // Ensure categoryId is also checked
+        console.error('[PredictionComponent] fetchPredictionDetails called with invalid studentId or categoryId.',
+                      'Student ID:', this.targetStudentId, 'Category ID:', this.categoryId);
+        return of([null, null] as [PredictionData | null, PredictionResult | null]);
+    }
 
-    const dataUrl = `https://estigo.runasp.net/api/Prediction/model-values/${this.targetStudentId}/${this.categoryId}`;
-    const resultUrl = `https://estigo.runasp.net/api/Prediction/model-result/${this.targetStudentId}/${this.categoryId}`;
+    // The API URLs for model-values and model-result
+    // IMPORTANT: Make sure these URLs match your backend API structure
+    // The example uses localhost:5071, adjust if your backend is elsewhere (e.g., estigo.runasp.net)
+    const apiBaseUrl = 'https://localhost:5071'; // OR 'https://estigo.runasp.net' - REPLACE WITH YOUR ACTUAL API URL
+    
+    const dataUrl = `${apiBaseUrl}/api/Prediction/model-values/${this.targetStudentId}/${this.categoryId}`;
+    const resultUrl = `${apiBaseUrl}/api/Prediction/model-result/${this.targetStudentId}/${this.categoryId}`;
 
+    console.log(`[PredictionComponent] Fetching model-values from: ${dataUrl}`);
     const predictionData$ = this.http.get<PredictionData>(dataUrl).pipe(
-      catchError(err => {
-        console.error('API Error fetching Prediction Data:', err);
-        return of(null); // Return null for this stream on error
+      tap(response => console.log('[PredictionComponent] Raw response from /model-values:', response)),
+      catchError((err: HttpErrorResponse) => {
+        console.error(`[PredictionComponent] API Error fetching Prediction Data from ${dataUrl}:`, err.message, 'Status:', err.status, 'Response:', err.error);
+        return of(null);
       })
     );
 
+    console.log(`[PredictionComponent] Fetching model-result from: ${resultUrl}`);
     const predictionResult$ = this.http.get<PredictionResult>(resultUrl).pipe(
-      catchError(err => {
-        console.error('API Error fetching Prediction Result:', err);
-        return of(null); // Return null for this stream on error
+      tap(response => console.log('[PredictionComponent] Raw response from /model-result:', response)),
+      catchError((err: HttpErrorResponse) => {
+        console.error(`[PredictionComponent] API Error fetching Prediction Result from ${resultUrl}:`, err.message, 'Status:', err.status, 'Response:', err.error);
+        return of(null);
       })
     );
 
     return forkJoin([predictionData$, predictionResult$]).pipe(
-      catchError(forkJoinError => {
-        console.error('Unexpected error in forkJoin for prediction details:', forkJoinError);
-        // Ensure the main pipeline's `next` handler still receives a value of the expected type.
+      catchError((forkJoinError: any) => {
+        console.error('[PredictionComponent] Unexpected error in forkJoin for prediction details:', forkJoinError);
         return of([null, null] as [PredictionData | null, PredictionResult | null]);
       })
     );
   }
 
+  // --- Chart rendering methods (createChart, createAttendanceChart, etc.) ---
+  // These remain largely the same as your previous version with logging.
+  // I'll include them for completeness.
+
   private renderCharts(): void {
     this.destroyCharts();
 
     if (this.predictionData && typeof CanvasJS !== 'undefined' && CanvasJS.Chart) {
+      console.log('[PredictionComponent] renderCharts: Creating charts with data:', this.predictionData);
       this.createAttendanceChart('chartContainer1', this.predictionData.attendance_rate);
       this.createAvgQuizScoreChart('chartContainer2', this.predictionData.average_quiz_score);
       this.createCompletionRateChart('chartContainer3', this.predictionData.quizzes_completion_rate);
     } else if (!this.predictionData) {
-        console.warn("RenderCharts called but predictionData is null.");
+        console.warn("[PredictionComponent] RenderCharts called but predictionData is null.");
     } else if (typeof CanvasJS === 'undefined' || !CanvasJS.Chart) {
-        console.error("CanvasJS or CanvasJS.Chart is not available for rendering charts.");
+        console.error("[PredictionComponent] CanvasJS or CanvasJS.Chart is not available for rendering charts.");
         const chartErrorMsg = "Chart library failed to load.";
         this.error = this.error ? `${this.error} ${chartErrorMsg}` : chartErrorMsg;
     }
@@ -247,24 +304,25 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   private createChart(containerId: string, options: any): any {
     const containerElement = document.getElementById(containerId);
     if (!containerElement) {
-      console.error(`Chart container with ID '${containerId}' not found.`);
+      console.error(`[PredictionComponent] Chart container with ID '${containerId}' not found.`);
       const chartErrorMsg = `Chart container '${containerId}' missing.`;
       this.error = this.error ? `${this.error} ${chartErrorMsg}` : chartErrorMsg;
       return null;
     }
     if (typeof CanvasJS === 'undefined' || !CanvasJS.Chart) {
-        console.error("CanvasJS or CanvasJS.Chart is not available for chart creation.");
+        console.error("[PredictionComponent] CanvasJS or CanvasJS.Chart is not available for chart creation.");
         containerElement.innerHTML = '<p style="color: red;">Chart library not loaded.</p>';
         return null;
     }
 
     try {
+      console.log(`[PredictionComponent] Creating chart for container ${containerId}`); // Removed options from log for brevity
       const chart = new CanvasJS.Chart(containerId, options);
       chart.render();
       this.charts.push(chart);
       return chart;
     } catch (e) {
-      console.error(`Error rendering chart in container '${containerId}':`, e);
+      console.error(`[PredictionComponent] Error rendering chart in container '${containerId}':`, e);
       const chartErrorMsg = `Failed to render chart: ${options?.title?.text || containerId}.`;
       this.error = this.error ? `${this.error} ${chartErrorMsg}` : chartErrorMsg;
       if (containerElement) containerElement.innerHTML = '<p style="color: red;">Chart failed to load.</p>';
@@ -273,7 +331,7 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
 
   private createAttendanceChart(containerId: string, rate: number): void {
-    if (rate === undefined || rate === null) { console.warn(`Attendance rate data missing for chart ${containerId}`); return; }
+    if (rate === undefined || rate === null) { console.warn(`[PredictionComponent] Attendance rate data missing for chart ${containerId}`); return; }
     this.createChart(containerId, {
       theme: "light2", exportEnabled: false, animationEnabled: true,
       title: { text: `Attendance Rate` },
@@ -286,7 +344,7 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
 
   private createAvgQuizScoreChart(containerId: string, score: number): void {
-    if (score === undefined || score === null) { console.warn(`Average quiz score data missing for chart ${containerId}`); return; }
+    if (score === undefined || score === null) { console.warn(`[PredictionComponent] Average quiz score data missing for chart ${containerId}`); return; }
     this.createChart(containerId, {
       theme: "light2", exportEnabled: false, animationEnabled: true,
       title: { text: `Average Quiz Score` },
@@ -299,7 +357,7 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
 
   private createCompletionRateChart(containerId: string, rate: number): void {
-    if (rate === undefined || rate === null) { console.warn(`Quiz completion rate data missing for chart ${containerId}`); return; }
+    if (rate === undefined || rate === null) { console.warn(`[PredictionComponent] Quiz completion rate data missing for chart ${containerId}`); return; }
     this.createChart(containerId, {
       theme: "light2", exportEnabled: false, animationEnabled: true,
       title: { text: `Quizzes Completion Rate` },
@@ -312,12 +370,13 @@ export class PredictionComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
 
   private destroyCharts(): void {
+    if (this.charts.length > 0) console.log('[PredictionComponent] Destroying charts.');
     this.charts.forEach(chart => {
       if (chart && typeof chart.destroy === 'function') {
         try {
           chart.destroy();
         } catch (e) {
-          console.warn("Error destroying chart:", e);
+          console.warn("[PredictionComponent] Error destroying chart:", e);
           if (chart.container && chart.container.id) {
             const el = document.getElementById(chart.container.id);
             if (el) el.innerHTML = '';

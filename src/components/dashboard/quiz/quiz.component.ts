@@ -1,31 +1,48 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'; // Added HttpErrorResponse
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Import Router
-import { Subscription, Subject, map, tap, takeUntil } from 'rxjs';
+import { Subscription, Subject, map, tap, takeUntil, catchError, finalize, throwError } from 'rxjs'; // Added missing imports
 
-// Interface matching the NEW API response structure
+// Interface matching the NEW API response structure for GETTING questions
 interface ApiQuestion {
   questionText: string;
   optionA: string;
   optionB: string;
   optionC: string;
   optionD: string;
-  correctAnswer: string; // Added correct answer field
+  correctAnswer: string;
+  // If the API returns a questionId for each question, add it here:
+  // questionId?: number;
 }
 
 // Modified internal interface to include correct answer
 interface QuizQuestion {
-  id: number; // Generated based on index
+  id: number; // Generated based on index, or from ApiQuestion.questionId if available
   text: string;
   options: { letter: string; text: string }[];
   correctAnswer: string; // Store the correct answer letter (A, B, C, D)
 }
 
+// Interface for the QuestionAnswer part of the submission payload
+interface QuestionAnswerPayload {
+  questionId: number;
+  selectedOption: string;
+  isCorrect: boolean;
+}
+
+// Interface for the entire submission payload
+interface QuizSubmissionPayload {
+  studentId: string;
+  examId: number;
+  score: number; // Overall percentage score
+  questionAnswers: QuestionAnswerPayload[];
+}
+
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule,RouterLink], // HttpClient provided globally, CommonModule for directives
+  imports: [CommonModule, RouterLink],
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
@@ -33,11 +50,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   // --- Injected Services ---
   private http = inject(HttpClient);
   private cdRef = inject(ChangeDetectorRef);
-  private route = inject(ActivatedRoute); // Inject ActivatedRoute
-  private router = inject(Router); // Inject Router for navigation
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   // --- Configuration ---
-  readonly quizTitle = 'Quiz'; // Title can be dynamic later if needed
+  readonly quizTitle = 'Quiz';
   private baseApiUrl = 'https://estigo.runasp.net/api/Exam/GetQuestionsByExam/';
   private submitScoreApiUrl = 'https://estigo.runasp.net/api/Exam/SubmitQuizScore';
 
@@ -45,44 +62,40 @@ export class QuizComponent implements OnInit, OnDestroy {
   questions: QuizQuestion[] = [];
   totalQuestions: number = 0;
   currentQuestionIndex: number = 0;
-  userAnswers: { [key: number]: string } = {};
+  userAnswers: { [key: number]: string } = {}; // key is QuizQuestion.id
   quizSubmitted: boolean = false;
   isReviewing: boolean = false;
-  score: number = 0;
+  score: number = 0; // Raw score (number of correct answers)
   resultMessage: string = '';
+  isLoading: boolean = false; // Added for loading state
 
   // --- Private Properties ---
   private questionSubscription: Subscription | null = null;
-  private destroy$ = new Subject<void>(); // For unsubscribing from route params
-  public examId: string | null = null; // To store the ID from the route
-  private courseId: string | null = null; // To store the course ID for navigation back
+  private destroy$ = new Subject<void>();
+  public examId: string | null = null;
+  private courseId: string | null = null;
 
-  constructor() {
-    // Constructor logic can go here if needed
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    // Subscribe to route parameters to get the exam ID
     this.route.paramMap
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        const id = params.get('id'); // Assuming the route param is named 'id'
+        const id = params.get('id');
         if (id) {
-          // Reset state if the ID changes while the component is active
           if (this.examId && this.examId !== id) {
-             this.resetQuizStateBeforeLoad();
+            this.resetQuizStateBeforeLoad();
           }
           this.examId = id;
-          this.loadQuestions(this.examId); // Load questions with the retrieved ID
+          this.loadQuestions(this.examId);
         } else {
-          // Handle missing ID case - perhaps navigate away or show a message
-          // For now, it just won't load questions.
-          this.resetQuizStateBeforeLoad(); // Ensure clean state
+          this.errorMessage = "Exam ID not found in route."; // Set error message
+          this.isLoading = false;
+          this.resetQuizStateBeforeLoad();
           this.cdRef.detectChanges();
         }
       });
 
-    // Get the courseId from query parameters if available
     this.route.queryParamMap
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
@@ -92,177 +105,194 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.questionSubscription?.unsubscribe();
-    this.destroy$.next(); // Trigger unsubscription from route params
+    this.destroy$.next();
     this.destroy$.complete();
   }
 
-  // Helper to reset state variables before loading new data
+  errorMessage: string | null = null; // For displaying errors to user
+
   private resetQuizStateBeforeLoad(): void {
-      this.questions = [];
-      this.totalQuestions = 0;
-      this.currentQuestionIndex = 0;
-      this.userAnswers = {};
-      this.quizSubmitted = false;
-      this.isReviewing = false;
-      this.score = 0;
-      this.resultMessage = '';
-      this.cdRef.detectChanges(); // Ensure UI reflects reset state immediately
+    this.questions = [];
+    this.totalQuestions = 0;
+    this.currentQuestionIndex = 0;
+    this.userAnswers = {};
+    this.quizSubmitted = false;
+    this.isReviewing = false;
+    this.score = 0;
+    this.resultMessage = '';
+    this.errorMessage = null; // Clear any previous error messages
+    this.cdRef.detectChanges();
   }
 
   loadQuestions(examId: string): void {
-    const questionsApiUrl = `${this.baseApiUrl}${examId}`; // Construct API URL dynamically
-
-    // Ensure state is reset *before* the API call
+    const questionsApiUrl = `${this.baseApiUrl}${examId}`;
     this.resetQuizStateBeforeLoad();
+    this.isLoading = true;
+    this.errorMessage = null;
 
-    this.questionSubscription?.unsubscribe(); // Unsubscribe from previous fetch if any
+    this.questionSubscription?.unsubscribe();
 
     this.questionSubscription = this.http.get<ApiQuestion[]>(questionsApiUrl)
       .pipe(
         map(apiQuestions => {
           if (!Array.isArray(apiQuestions)) {
-             return [];
+            console.warn(`API response for exam ${examId} is not an array.`);
+            return [];
           }
           return this.transformApiData(apiQuestions);
         }),
         tap(transformedQuestions => {
           this.questions = transformedQuestions;
           this.totalQuestions = this.questions.length;
-
           if (this.totalQuestions > 0) {
-            this.startQuiz(); // Start only if questions were loaded
+            this.startQuiz();
           } else {
-            // No questions loaded, UI handled by *ngIf in template
+            this.errorMessage = "No questions found for this exam.";
           }
-          this.cdRef.detectChanges(); // Update UI after loading/transforming
-        })
-        // Removed catchError and finalize
-      )
-      .subscribe({
-        // 'next' logic handled in 'tap'
-        error: (err) => {
-          // Basic error logging if needed, but UI won't show specific message
+        }),
+        catchError((err: HttpErrorResponse) => {
           console.error(`Failed to load questions for exam ${examId}:`, err);
+          this.errorMessage = `Failed to load questions. Server responded with: ${err.status} ${err.statusText}. Please try again later.`;
+          if (err.error && typeof err.error === 'string') {
+            this.errorMessage += ` Details: ${err.error}`;
+          }
           this.resetQuizStateBeforeLoad(); // Clear state on error
-        }
-        // 'complete' logic can be added if needed
-      });
+          return throwError(() => err); // Re-throw the error
+        }),
+        finalize(() => {
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+        })
+      )
+      .subscribe(); // Error handling is now done in catchError
   }
 
   private transformApiData(apiQuestions: ApiQuestion[]): QuizQuestion[] {
     if (!Array.isArray(apiQuestions)) { return []; }
 
     return apiQuestions.map((apiQ, index) => {
-        // Basic validation
-        if (typeof apiQ?.questionText !== 'string' || !apiQ.questionText.trim() ||
-            typeof apiQ?.optionA !== 'string' ||
-            typeof apiQ?.optionB !== 'string' ||
-            typeof apiQ?.optionC !== 'string' ||
-            typeof apiQ?.optionD !== 'string' ||
-            typeof apiQ?.correctAnswer !== 'string' ||
-            !['A', 'B', 'C', 'D'].includes(apiQ.correctAnswer.toUpperCase())) {
-            return null; // Skip invalid items silently
-        }
-        return {
-            id: index + 1,
-            text: apiQ.questionText,
-            options: [
-                { letter: 'A', text: apiQ.optionA },
-                { letter: 'B', text: apiQ.optionB },
-                { letter: 'C', text: apiQ.optionC },
-                { letter: 'D', text: apiQ.optionD },
-            ],
-            correctAnswer: apiQ.correctAnswer.toUpperCase(),
-        };
+      // If ApiQuestion includes its own `questionId`, use it. Otherwise, use index.
+      // const questionId = apiQ.questionId !== undefined ? apiQ.questionId : index + 1;
+      const questionId = index + 1; // Assuming API doesn't send questionId yet
+
+      if (typeof apiQ?.questionText !== 'string' || !apiQ.questionText.trim() ||
+          typeof apiQ?.optionA !== 'string' ||
+          typeof apiQ?.optionB !== 'string' ||
+          typeof apiQ?.optionC !== 'string' ||
+          typeof apiQ?.optionD !== 'string' ||
+          typeof apiQ?.correctAnswer !== 'string' ||
+          !['A', 'B', 'C', 'D'].includes(apiQ.correctAnswer.toUpperCase())) {
+        console.warn('Skipping invalid question data:', apiQ);
+        return null;
+      }
+      return {
+        id: questionId,
+        text: apiQ.questionText,
+        options: [
+          { letter: 'A', text: apiQ.optionA },
+          { letter: 'B', text: apiQ.optionB },
+          { letter: 'C', text: apiQ.optionC },
+          { letter: 'D', text: apiQ.optionD },
+        ],
+        correctAnswer: apiQ.correctAnswer.toUpperCase(),
+      };
     }).filter(q => q !== null) as QuizQuestion[];
   }
 
   startQuiz(): void {
-    if (this.totalQuestions === 0) {
-        return; // Should not happen if called after load check, but safe guard
-    }
-    // Reset relevant state (already done in resetQuizStateBeforeLoad, but ensure correct index)
+    if (this.totalQuestions === 0) return;
     this.currentQuestionIndex = 0;
     this.quizSubmitted = false;
     this.isReviewing = false;
-    this.cdRef.detectChanges(); // Ensure UI reflects started state
+    this.cdRef.detectChanges();
   }
-
 
   selectOption(questionId: number, optionLetter: string): void {
     if (!this.quizSubmitted && !this.isReviewing) {
       this.userAnswers[questionId] = optionLetter;
-      // Change detection usually handled by template binding event
     }
   }
 
   navigate(direction: 'prev' | 'next'): void {
-    // Allow navigation if actively taking the quiz OR if reviewing answers
-    if (this.quizSubmitted && !this.isReviewing) {
-        return; // Only block navigation on the final results screen, not during review
-    }
+    if (this.quizSubmitted && !this.isReviewing) return;
 
-    // ... rest of the function remains the same
     if (direction === 'prev' && !this.isFirstQuestion) {
       this.currentQuestionIndex--;
     } else if (direction === 'next' && !this.isLastQuestion) {
       this.currentQuestionIndex++;
     }
-    // Ensure the view updates after changing the index
     this.cdRef.markForCheck();
   }
 
   submitQuiz(): void {
-    if (this.quizSubmitted) {
-        return;
-    }
+    if (this.quizSubmitted) return;
 
     this.quizSubmitted = true;
     this.isReviewing = false;
-    this.calculateScore(); // Calculate score first
+    this.calculateScore(); // Sets this.score (raw) and this.resultMessage
 
-    // Get student ID from localStorage
     const userDataStr = localStorage.getItem('userData');
     if (userDataStr && this.examId) {
       try {
         const userData = JSON.parse(userDataStr);
         const studentId = userData.id;
-        
+
         if (!studentId) {
           console.error('Student ID not found in user data');
+          this.errorMessage = "Could not submit score: Student ID missing.";
           return;
         }
 
-        // Calculate score percentage
         const scorePercentage = this.totalQuestions > 0 ? Math.round((this.score / this.totalQuestions) * 100) : 0;
-        
-        // Create submission payload
-        const submission = {
+
+        const questionAnswers: QuestionAnswerPayload[] = this.questions.map(q => {
+          const selectedOpt = this.userAnswers[q.id] || ''; // Default to empty string if not answered
+          return {
+            questionId: q.id, // Using our client-generated ID (index + 1)
+            selectedOption: selectedOpt,
+            isCorrect: selectedOpt === q.correctAnswer
+          };
+        });
+
+        const submissionPayload: QuizSubmissionPayload = {
           studentId: studentId,
-          examId: parseInt(this.examId),
-          score: scorePercentage
+          examId: parseInt(this.examId, 10), // Ensure examId is a number
+          score: scorePercentage,
+          questionAnswers: questionAnswers
         };
 
-        // Submit score to API
-        this.http.post<{message: string, score: number}>(this.submitScoreApiUrl, submission)
+        this.http.post<{ message: string, score: number }>(this.submitScoreApiUrl, submissionPayload)
+          .pipe(
+            catchError((err: HttpErrorResponse) => {
+                console.error('Failed to submit quiz score:', err);
+                this.errorMessage = `Failed to submit score. Server responded with: ${err.status}. Please try again or contact support.`;
+                if (err.error && typeof err.error === 'string') {
+                    this.errorMessage += ` Details: ${err.error}`;
+                } else if (err.error && err.error.message) {
+                    this.errorMessage += ` Details: ${err.error.message}`;
+                }
+                // Even if submission fails, the user sees their local score calculation.
+                return throwError(() => err);
+            })
+          )
           .subscribe({
             next: (response) => {
               console.log('Quiz score submitted successfully:', response);
-              // The score and result message are already set by calculateScore()
-            },
-            error: (err) => {
-              console.error('Failed to submit quiz score:', err);
-              // Score calculation already done locally, so UI will still show results
+              // this.resultMessage is already set by calculateScore()
+              // Optionally update resultMessage with server confirmation if needed:
+              // this.resultMessage += ` (Server confirmed: ${response.message})`;
             }
+            // Error handled by catchError
           });
       } catch (error) {
-        console.error('Error parsing user data:', error);
+        console.error('Error processing user data or building submission:', error);
+        this.errorMessage = "An internal error occurred while preparing your score submission.";
       }
     } else {
       console.warn('Missing user data or exam ID for score submission');
+      this.errorMessage = "Could not submit score: User data or Exam ID missing.";
     }
-
-    this.cdRef.detectChanges(); // Ensure results view is shown
+    this.cdRef.detectChanges();
   }
 
   calculateScore(): void {
@@ -272,41 +302,35 @@ export class QuizComponent implements OnInit, OnDestroy {
         correctCount++;
       }
     });
-    this.score = correctCount;
-    // Provide more engaging result messages based on score percentage
-    const percentage = this.totalQuestions > 0 ? (this.score / this.totalQuestions) * 100 : 0;
+    this.score = correctCount; // Raw score
+    const percentage = this.totalQuestions > 0 ? Math.round((this.score / this.totalQuestions) * 100) : 0;
+
     if (percentage === 100) {
-      this.resultMessage = `Perfect score! You got ${this.score}/${this.totalQuestions} correct! 🎉`;
+      this.resultMessage = `Perfect score! You got ${this.score}/${this.totalQuestions} correct (${percentage}%)! 🎉`;
     } else if (percentage >= 75) {
-      this.resultMessage = `Great job! You scored ${this.score} out of ${this.totalQuestions}.`;
+      this.resultMessage = `Great job! You scored ${this.score} out of ${this.totalQuestions} (${percentage}%).`;
     } else if (percentage >= 50) {
-      this.resultMessage = `Good effort. You scored ${this.score} out of ${this.totalQuestions}.`;
+      this.resultMessage = `Good effort. You scored ${this.score} out of ${this.totalQuestions} (${percentage}%).`;
     } else {
-      this.resultMessage = `You scored ${this.score} out of ${this.totalQuestions}. Keep practicing!`;
+      this.resultMessage = `You scored ${this.score} out of ${this.totalQuestions} (${percentage}%). Keep practicing!`;
     }
   }
 
   reviewAnswers(): void {
-    if (!this.quizSubmitted || this.totalQuestions === 0) {
-        return;
-    }
+    if (!this.quizSubmitted || this.totalQuestions === 0) return;
     this.isReviewing = true;
-    this.currentQuestionIndex = 0; // Start review from the first question
+    this.currentQuestionIndex = 0;
     this.cdRef.detectChanges();
   }
 
-  // Modified to navigate back to the course page with the specific video
   finishQuizOrReview(): void {
     if (this.courseId) {
-      // Navigate back to the course page with the course ID
       this.router.navigate(['/myCourse', this.courseId]);
     } else {
-      // Fallback: Navigate to dashboard if no course ID is available
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']); // Fallback
     }
   }
 
-  // --- Helper Getters for Template ---
   get currentQuestionData(): QuizQuestion | null {
     return (this.questions.length > 0 && this.currentQuestionIndex >= 0 && this.currentQuestionIndex < this.totalQuestions)
       ? this.questions[this.currentQuestionIndex]
@@ -325,9 +349,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     return this.totalQuestions > 0 && this.currentQuestionIndex === this.totalQuestions - 1;
   }
 
-  // Method for template class binding
   isSelected(questionId: number, optionLetter: string): boolean {
     return this.userAnswers[questionId] === optionLetter;
   }
-
 }

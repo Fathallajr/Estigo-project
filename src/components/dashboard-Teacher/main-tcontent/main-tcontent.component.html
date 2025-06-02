@@ -26,11 +26,13 @@
                 <tbody>
                     <tr *ngFor="let student of students">
                         <td>{{ student.name }}</td>
-                        <td>
-     
+                        <td class="actions-cell">
                             <a [routerLink]="['/student-prediction', student.id, student.categoryId]" class="action-link">
                                 View Prediction
                             </a>
+                            <button (click)="openGradesModal(student)" class="action-link view-grades-btn">
+                                View Grades
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -38,6 +40,86 @@
             <ng-template #noStudents>
                 <p *ngIf="teacherId" class="status-message no-students-message">No students found for you at the moment.</p>
             </ng-template>
+        </div>
+    </div>
+</div>
+
+<!-- Grades Modal -->
+<div *ngIf="isGradesModalVisible" class="modal-overlay" (click)="closeGradesModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close-btn" (click)="closeGradesModal()">×</button>
+        <h4 class="modal-title">View Grades for {{ selectedStudentForGrades?.name }}</h4>
+
+        <!-- Section to select an exam -->
+        <div class="exam-selection-section">
+            <div *ngIf="isLoadingStudentExams" class="status-message loading-message modal-loading">
+                <p>Loading student's exams...</p>
+            </div>
+            <div *ngIf="studentExamsErrorMessage && !isLoadingStudentExams" class="status-message error-message modal-error">
+                <p>{{ studentExamsErrorMessage }}</p>
+            </div>
+
+            <div *ngIf="!isLoadingStudentExams && studentTakenExams.length > 0" class="form-group-modal">
+                <label for="examSelect">Select Exam:</label>
+                <select id="examSelect" name="selectedExamIdForGrades"
+                        [(ngModel)]="selectedExamIdForGrades"
+                        (ngModelChange)="onExamSelectionChange()" class="form-control-modal">
+                    <option [ngValue]="null" disabled>-- Choose an Exam --</option>
+                    <option *ngFor="let exam of studentTakenExams" [ngValue]="exam.examId">
+                        {{ exam.examTitle }} (Score: {{ exam.score }}%, Taken: {{exam.examDate | date:'shortDate'}})
+                    </option>
+                </select>
+            </div>
+
+            <button *ngIf="!isLoadingStudentExams && studentTakenExams.length > 0"
+                    (click)="fetchDetailedGrades()"
+                    class="btn-submit-grades"
+                    [disabled]="isLoadingGrades || selectedExamIdForGrades === null">
+                <span *ngIf="isLoadingGrades" class="spinner-grades"></span>
+                {{ isLoadingGrades ? 'Fetching Details...' : 'Fetch Exam Details' }}
+            </button>
+        </div>
+        <hr *ngIf="studentTakenExams.length > 0 || studentGradesData"> <!-- Separator -->
+
+
+        <!-- Display detailed grades -->
+        <div *ngIf="gradesErrorMessage && !isLoadingGrades" class="status-message error-message modal-error">
+            <p>{{ gradesErrorMessage }}</p>
+        </div>
+
+        <div *ngIf="studentGradesData && !isLoadingGrades" class="grades-results-container">
+            <h5>Results for: {{ studentGradesData.examTitle || 'Selected Exam' }}</h5>
+            <p><strong>Student:</strong> {{ studentGradesData.studentName }}</p>
+            <p><strong>Exam Date:</strong> {{ studentGradesData.examDate | date:'medium' }}</p>
+            <p><strong>Overall Score:</strong> {{ studentGradesData.score }}%</p>
+
+            <h6>Answer Details:</h6>
+            <div class="table-responsive">
+                <table class="grades-detail-table">
+                    <thead>
+                        <tr>
+                            <th>Q#</th>
+                            <th>Selected</th>
+                            <th>Correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let answer of studentGradesData.answers"
+                            [class.correct-answer-row]="answer.isCorrect"
+                            [class.incorrect-answer-row]="!answer.isCorrect">
+                            <td>{{ answer.questionId }}</td>
+                            <td>{{ answer.selectedOption }}</td>
+                            <td>{{ answer.isCorrect ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+         <div *ngIf="!studentGradesData && !isLoadingGrades && !gradesErrorMessage && !isLoadingStudentExams && studentTakenExams.length > 0 && !selectedExamIdForGrades" class="modal-prompt">
+            <p>Select an exam from the list above and click "Fetch Exam Details".</p>
+        </div>
+        <div *ngIf="!isLoadingStudentExams && !studentExamsErrorMessage && studentTakenExams.length === 0 && selectedStudentForGrades" class="modal-prompt">
+             <p>No exam records found for this student.</p>
         </div>
     </div>
 </div>
