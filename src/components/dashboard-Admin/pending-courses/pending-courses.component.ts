@@ -12,6 +12,7 @@ interface PendingCourse {
   logo: string; 
   price: number;
   teacherId: string;
+  name:string;
 }
 
 
