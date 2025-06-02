@@ -197,6 +197,7 @@ hr {
 .notes li {
     margin-bottom: 8px;
     line-height: 1.5;
+    font-size: 1.3rem;
 }
 
 .notes li::before {
