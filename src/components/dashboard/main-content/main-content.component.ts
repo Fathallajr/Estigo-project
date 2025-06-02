@@ -106,7 +106,7 @@ export class MainContentComponent implements OnInit {
         }
 
         this.studentName = userInfo?.name || 'User';
-        const apiUrl = `https://estigo.tryasp.net/api/Dashboard/student/${studentId}`;
+        const apiUrl = `https://estigo.runasp.net/api/Dashboard/student/${studentId}`;
 
         this.dashboardData$ = this.http.get<StudentDashboardData>(apiUrl).pipe(
             tap(data => {

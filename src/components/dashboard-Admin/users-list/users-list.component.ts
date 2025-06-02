@@ -50,7 +50,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
-  readonly API_BASE_URL = 'https://estigo.tryasp.net/api/';
+  readonly API_BASE_URL = 'https://estigo.runasp.net/api/';
   readonly API_URLS = {
     Student: `${this.API_BASE_URL}Admin/AllStudent`,
     Teacher: `${this.API_BASE_URL}Admin/AllTeacher`,

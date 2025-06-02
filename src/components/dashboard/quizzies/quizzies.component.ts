@@ -42,7 +42,7 @@ export class QuizziesComponent implements OnInit {
   studentId: string | null = null; // To store the student ID
 
   // Base URL for the API (consider moving to environment variables)
-  private apiUrl = 'https://estigo.tryasp.net/api/Exam/GetExamsByStudentId';
+  private apiUrl = 'https://estigo.runasp.net/api/Exam/GetExamsByStudentId';
 
   constructor(private datePipe: DatePipe) {} // Inject DatePipe if needed for formatting
 

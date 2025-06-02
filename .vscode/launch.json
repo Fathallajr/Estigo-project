@@ -14,7 +14,7 @@
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: test",
-      "url": "http://https://estigo.tryasp.net:9876/debug.html"
+      "url": "http://https://estigo.runasp.net:9876/debug.html"
     }
   ]
 }

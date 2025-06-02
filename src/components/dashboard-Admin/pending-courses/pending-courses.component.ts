@@ -32,8 +32,8 @@ interface ApproveResponse {
 export class PendingCoursesComponent implements OnInit, OnDestroy { 
 
   // API Endpoints
-  readonly API_ADMIN_BASE_URL = 'https://estigo.tryasp.net/api/Admin/admin/';
-  readonly API_COURSE_BASE_URL = 'https://estigo.tryasp.net/api/Course'; 
+  readonly API_ADMIN_BASE_URL = 'https://estigo.runasp.net/api/Admin/admin/';
+  readonly API_COURSE_BASE_URL = 'https://estigo.runasp.net/api/Course'; 
   readonly API_URL_PENDING = `${this.API_ADMIN_BASE_URL}pending-courses`;
   readonly API_URL_APPROVE = `${this.API_ADMIN_BASE_URL}approve/`; 
 

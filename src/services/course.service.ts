@@ -18,7 +18,7 @@ export interface Course {
 })
 export class CourseService {
 
-  private apiUrl = 'https://estigo.tryasp.net/api/Course';
+  private apiUrl = 'https://estigo.runasp.net/api/Course';
 
   constructor(private http: HttpClient) {}
 

@@ -34,7 +34,7 @@ export class UploadTeacherComponent implements OnInit {
   isError = false;
   teacherId: string | null = null;
 
-  readonly API_URL = 'https://estigo.tryasp.net/api/Teacher/add-course';
+  readonly API_URL = 'https://estigo.runasp.net/api/Teacher/add-course';
 
   constructor(private http: HttpClient) {}
 
@@ -63,7 +63,7 @@ export class UploadTeacherComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-      this.logoFileName = 'https://estigo.tryasp.net/' + this.selectedFile.name;
+      this.logoFileName = 'https://estigo.runasp.net/' + this.selectedFile.name;
       this.feedbackMessage = null; // Clear feedback on new file selection
       this.isError = false;
     } else {

@@ -60,9 +60,9 @@ export class UploadAcoursesComponent implements OnInit {
   selectedFileName: string | null = null; // To display the chosen filename
 
   // --- API URLs & Constants ---
-  private readonly teachersApiUrl = 'https://estigo.tryasp.net/api/Admin/AllTeacher'; 
-  private readonly coursesApiUrl = 'https://estigo.tryasp.net/api/Course'; 
-  private readonly imageBaseUrl = 'https://estigo.tryasp.net/'; 
+  private readonly teachersApiUrl = 'https://estigo.runasp.net/api/Admin/AllTeacher'; 
+  private readonly coursesApiUrl = 'https://estigo.runasp.net/api/Course'; 
+  private readonly imageBaseUrl = 'https://estigo.runasp.net/'; 
 
   ngOnInit(): void {
     this.initializeForm();

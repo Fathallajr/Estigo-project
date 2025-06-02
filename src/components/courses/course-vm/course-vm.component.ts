@@ -34,7 +34,7 @@ export class CourseVmComponent implements OnInit {
 
   async fetchCourseDetails(catID: number): Promise<void> {
     try {
-      const response = await fetch(`https://estigo.tryasp.net/api/Course/category/${catID}`);
+      const response = await fetch(`https://estigo.runasp.net/api/Course/category/${catID}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

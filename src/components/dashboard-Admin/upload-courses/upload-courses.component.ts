@@ -38,7 +38,7 @@ interface CourseFormData {
 })
 export class UploadCoursesComponent implements OnInit {
 
-  readonly API_URL = 'https://estigo.tryasp.net/api/Course';
+  readonly API_URL = 'https://estigo.runasp.net/api/Course';
 
   // --- Properties for Form Data ---
   courseData: CourseFormData = {

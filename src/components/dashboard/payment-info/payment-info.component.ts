@@ -40,7 +40,7 @@ export class PaymentInfoComponent implements OnInit {
   }
 
   fetchPayments() {
-    this.http.get<Payment[]>(`https://estigo.tryasp.net/api/Student/${this.studentId}/mypayment`)
+    this.http.get<Payment[]>(`https://estigo.runasp.net/api/Student/${this.studentId}/mypayment`)
       .subscribe({
         next: (data) => {
           this.payments = data;

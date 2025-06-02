@@ -19,7 +19,7 @@
           <option [ngValue]="null" disabled>-- Select Course --</option>
           <option *ngFor="let course of teacherCourses"
                   [ngValue]="course.courseId">
-            {{ course.courseTitle }} (ID: {{ course.courseId }})
+            {{ course.courseTitle }} 
           </option>
         </select>
         <div *ngIf="teacherCourses.length === 0 && !isFetchingCourses" class="form-text text-warning">

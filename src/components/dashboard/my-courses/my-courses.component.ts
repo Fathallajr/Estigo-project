@@ -37,7 +37,7 @@ export class MyCoursesComponent implements OnInit {
   }
 
   fetchCourses(studentId: string) {
-    this.http.get<Course[]>(`https://estigo.tryasp.net/api/Student/${studentId}/mycourses`)
+    this.http.get<Course[]>(`https://estigo.runasp.net/api/Student/${studentId}/mycourses`)
       .subscribe({
         next: (data) => {
           this.courses = data;

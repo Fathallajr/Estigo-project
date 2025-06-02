@@ -52,7 +52,7 @@ export class MainPcontentComponent {
     this.errorMessage = '';
     this.clearStudentData(); // Clear previous data including category selection
 
-    const url = `https://estigo.tryasp.net/api/Parent/student/${studentCode}/quizzes`;
+    const url = `https://estigo.runasp.net/api/Parent/student/${studentCode}/quizzes`;
 
     this.http.get<StudentQuizData>(url).subscribe({
       next: (data) => {

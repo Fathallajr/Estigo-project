@@ -49,8 +49,8 @@ export class PaymentComponent implements OnInit {
   private studentId: string | null = null;
 
   // --- API Endpoints ---
-  private courseApiUrl = 'https://estigo.tryasp.net/api/Course';
-  private enrollmentApiBaseUrl = 'https://estigo.tryasp.net/api/Student';
+  private courseApiUrl = 'https://estigo.runasp.net/api/Course';
+  private enrollmentApiBaseUrl = 'https://estigo.runasp.net/api/Student';
 
   // Fawry logo path (adjust as needed)
   fawryLogoUrl: string = 'fawry.jpeg'; // Example path

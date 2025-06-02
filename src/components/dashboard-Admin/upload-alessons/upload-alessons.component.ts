@@ -8,15 +8,14 @@ import { catchError, finalize, throwError } from 'rxjs';
 export interface AdminCourse {
   courseId: number;
   courseTitle: string;
-  description?: string | null;
+  description?: string | null; // Kept this as it's for AdminCourse, not the lesson itself
 }
 
+// Updated LessonPayload - removed lessonDescription and lessonContent
 export interface LessonPayload {
   lessonTitle: string;
-  lessonDescription: string;
-  lessonContent: string;
   lessonVideo: string;
-  isLive: boolean; // Added
+  isLive: boolean;
   courseId: number;
 }
 
@@ -48,9 +47,9 @@ export class UploadAlessonsComponent implements OnInit {
   selectedVideoFileName: string | null = null;
 
   // --- API URLs & Constants ---
-  private readonly coursesApiUrl = 'https://estigo.tryasp.net/api/Course/AdminCourses';
-  private readonly lessonsApiUrl = 'https://estigo.tryasp.net/api/Lesson';
-  private readonly videoBaseUrl = 'https://estigo.tryasp.net/'; // Used for non-live videos
+  private readonly coursesApiUrl = 'https://estigo.runasp.net/api/Course/AdminCourses';
+  private readonly lessonsApiUrl = 'https://estigo.runasp.net/api/Lesson';
+  private readonly videoBaseUrl = 'https://estigo.runasp.net/'; // Used for non-live videos
 
   ngOnInit(): void {
     this.initializeForm();
@@ -85,8 +84,8 @@ export class UploadAlessonsComponent implements OnInit {
     this.lessonForm = this.fb.group({
       courseId: [null, Validators.required],
       lessonTitle: ['', [Validators.required, Validators.minLength(3)]],
-      lessonDescription: ['', Validators.required],
-      lessonContent: ['', Validators.required],
+      // lessonDescription: ['', Validators.required], // Removed
+      // lessonContent: ['', Validators.required],    // Removed
       isLive: [false], // Default to not live
       videoFile: [null, Validators.required], // For file input (name/validation), required by default
       liveVideoUrl: [''] // For live URL, validators set dynamically
@@ -165,8 +164,8 @@ export class UploadAlessonsComponent implements OnInit {
 
     const payload: LessonPayload = {
       lessonTitle: formValue.lessonTitle,
-      lessonDescription: formValue.lessonDescription,
-      lessonContent: formValue.lessonContent,
+      // lessonDescription: formValue.lessonDescription, // Removed
+      // lessonContent: formValue.lessonContent,       // Removed
       lessonVideo: lessonVideoValue,
       isLive: formValue.isLive,
       courseId: Number(formValue.courseId),
@@ -186,8 +185,8 @@ export class UploadAlessonsComponent implements OnInit {
           this.lessonForm.reset({
             courseId: null,
             lessonTitle: '',
-            lessonDescription: '',
-            lessonContent: '',
+            // lessonDescription: '', // Removed
+            // lessonContent: '',    // Removed
             isLive: false, // Reset to default
             videoFile: null,
             liveVideoUrl: ''

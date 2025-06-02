@@ -55,9 +55,9 @@ export class UploadAQuizzesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   // --- API URLs & Constants ---
-  private readonly adminCoursesApiUrl = 'https://estigo.tryasp.net/api/Course/AdminCourses';
-  private readonly lessonsApiBaseUrl = 'https://estigo.tryasp.net/api/Course';
-  private readonly addExamApiUrl = 'https://estigo.tryasp.net/api/Teacher/add-exam';
+  private readonly adminCoursesApiUrl = 'https://estigo.runasp.net/api/Course/AdminCourses';
+  private readonly lessonsApiBaseUrl = 'https://estigo.runasp.net/api/Course';
+  private readonly addExamApiUrl = 'https://estigo.runasp.net/api/Teacher/add-exam';
 
   // Default values 
   private readonly defaultExamDescription = "";

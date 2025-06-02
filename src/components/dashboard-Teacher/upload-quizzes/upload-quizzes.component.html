@@ -25,7 +25,7 @@
             [class.is-invalid]="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)">
             <option [ngValue]="null" disabled>-- Select Lesson --</option>
             <option *ngFor="let lesson of teacherLessons" [ngValue]="lesson.lessonId">
-              {{ lesson.lessonTitle }} (ID: {{ lesson.lessonId }})
+              {{ lesson.lessonTitle }}
             </option>
           </select>
           <div *ngIf="lessonModel.invalid && (lessonModel.dirty || lessonModel.touched)" class="invalid-feedback">

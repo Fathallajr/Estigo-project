@@ -65,8 +65,8 @@ export class UploadQuizzesComponent implements OnInit {
   teacherId: string | null = null; // To store the logged-in teacher's ID
 
   // API Endpoints
-  readonly LESSONS_API_URL = 'https://estigo.tryasp.net/api/Teacher/teacher-lessons';
-  readonly ADD_EXAM_API_URL = 'https://estigo.tryasp.net/api/Teacher/add-exam';
+  readonly LESSONS_API_URL = 'https://estigo.runasp.net/api/Teacher/teacher-lessons';
+  readonly ADD_EXAM_API_URL = 'https://estigo.runasp.net/api/Teacher/add-exam';
 
   constructor(private http: HttpClient) {}
 

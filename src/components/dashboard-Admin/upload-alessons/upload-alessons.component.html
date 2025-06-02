@@ -52,25 +52,7 @@
       </div>
     </div>
 
-    <!-- Lesson Description -->
-    <div class="form-group">
-      <label for="lessonDescription" class="form-label">Lesson Description <span class="text-danger">*</span></label>
-      <textarea id="lessonDescription" class="form-control" formControlName="lessonDescription" rows="3"
-                [ngClass]="{ 'is-invalid': f['lessonDescription'].touched && f['lessonDescription'].invalid }"></textarea>
-      <div *ngIf="f['lessonDescription'].touched && f['lessonDescription'].invalid" class="validation-error">
-        <div *ngIf="f['lessonDescription'].errors?.['required']">Description is required.</div>
-      </div>
-    </div>
 
-    <!-- Lesson Content -->
-    <div class="form-group">
-      <label for="lessonContent" class="form-label">Lesson Content <span class="text-danger">*</span></label>
-      <textarea id="lessonContent" class="form-control" formControlName="lessonContent" rows="5"
-                [ngClass]="{ 'is-invalid': f['lessonContent'].touched && f['lessonContent'].invalid }"></textarea>
-      <div *ngIf="f['lessonContent'].touched && f['lessonContent'].invalid" class="validation-error">
-        <div *ngIf="f['lessonContent'].errors?.['required']">Lesson content is required.</div>
-      </div>
-    </div>
 
     <!-- Is Live Checkbox -->
     <div class="form-group">
