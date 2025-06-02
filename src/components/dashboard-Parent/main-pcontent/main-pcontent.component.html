@@ -49,7 +49,7 @@
           <div *ngIf="examHistory.length > 0; else noExams">
             <div *ngFor="let exam of examHistory" class="exam-card">
               <h4>{{ exam.examTitle }}</h4>
-              <p><strong>Score:</strong> {{ exam.score }}</p>
+              <p><strong>Score:</strong> {{ exam.score }} %</p>
               <p><strong>Date:</strong> {{ exam.examDate | date:'mediumDate' }}</p>
               <p><strong>Lesson:</strong> {{ exam.lessonName }}</p>
             </div>

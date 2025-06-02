@@ -23,27 +23,27 @@ export class RoadmapComponent {
   estSteps: RoadmapStep[] = [
     {
       title: 'EST Subject Selection',
-      desc: 'Select required EST subjects (EST I, EST II) based on your target university and faculty requirements in Egypt.'
+      desc: 'Choose which EST modules you need (e.g., EST I, EST II) based on the faculty requirements of your target university.'
     },
     {
-      title: 'Register for EST',
-      desc: 'Register for EST exams through the official EST platform during the designated registration periods.'
+      title: 'Create a Study Plan',
+      desc: 'Develop a schedule covering core topics like Math and English, and include any specific EST II subjects if required. Plan daily or weekly study sessions.'
     },
     {
-      title: 'EST Study Plan',
-      desc: 'Create a comprehensive study plan focusing on Math, English, and subject tests for EST II if applicable.'
+      title: 'Register for the EST Exam',
+      desc: 'Sign up on the official EST platform during registration period. Make sure to pay fees on time and save your confirmation.'
     },
     {
-      title: 'Take Official Practice Tests',
-      desc: 'Utilize official EST practice tests to familiarize yourself with the exam format and question types.'
+      title: 'Practice with Official Mock Tests',
+      desc: 'Take real EST practice exams under timed conditions to get familiar with question types and exam format.'
     },
     {
-      title: 'Review and Targeted Practice',
-      desc: 'Identify weak areas from practice tests and focus your revision on those topics. Practice consistently.'
+      title: 'Review Weak Areas & Practice',
+      desc: 'After each mock test, identify your weak topics and focus revision on them. Use extra resources (books, videos) to strengthen these points.'
     },
     {
-      title: 'Sit for EST Exams',
-      desc: 'Take your EST exams on the scheduled dates. Ensure you are familiar with test center regulations.'
+      title: 'Sit for the EST Exam & Follow Up',
+      desc: 'Take the actual EST on the scheduled date. After results are out, check your score and decide if you need to retake any module or proceed with university application.'
     }
   ];
 

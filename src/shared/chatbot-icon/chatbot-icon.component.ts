@@ -37,215 +37,215 @@ const ESTIGO_SYSTEM_PROMPT = `You are Estigo Assistant, a friendly and helpful A
     *   English: Sarah (Literature, Grammar & Comp, Drama, Non-fiction), John (Creative Writing, Poetry Analysis, Fiction Writing) // Note: Corrected teacher assignments based on courses below
 *   **Courses and Lessons:** (*You know the following specific course titles and their lesson titles*)
     *   **Mathematics:**
-        *   Algebra | Unit 1 (Teacher: Mahmoud, Price: 199):
+        *   Algebra | Unit 1 ( Price: 199):
             *   Algebra Basics
             *   Solving Linear Equations
             *   Inequalities
             *   Functions Introduction
             *   Polynomial Basics
-        *   Calculus | Unit 2 (Teacher: Mousa, Price: 199):
+        *   Calculus | Unit 2 (Price: 199):
             *   Limits and Continuity
             *   Introduction to Derivatives
             *   Differentiation Techniques
             *   Applications of Derivatives
             *   Introduction to Integrals
-        *   Geometry | Unit 3 (Teacher: Mahmoud, Price: 189):
+        *   Geometry | Unit 3 (Price: 189):
             *   Points, Lines, and Planes
             *   Angles and Angle Relationships
             *   Parallel Lines and Transversals
             *   Triangles and Congruence
             *   Introduction to Polygons
-        *   Trigonometry | Unit 4 (Teacher: Mousa, Price: 189):
+        *   Trigonometry | Unit 4 ( Price: 189):
             *   Right Triangle Trigonometry
             *   The Unit Circle
             *   Trigonometric Graphs
             *   Trigonometric Identities
             *   Solving Trigonometric Equations
-        *   Statistics | Unit 5 (Teacher: Mahmoud, Price: 179):
+        *   Statistics | Unit 5 (Price: 179):
             *   Introduction to Statistics
             *   Descriptive Statistics
             *   Data Visualization
             *   Basic Probability Concepts
             *   Introduction to Distributions
-        *   Probability | Unit 6 (Teacher: Mousa, Price: 179):
+        *   Probability | Unit 6 (Price: 179):
             *   Foundations of Probability
             *   Conditional Probability and Independence
             *   Random Variables
             *   Expected Value and Variance
             *   Common Probability Distributions
-        *   Discrete Math | Unit 7 (Teacher: Mahmoud, Price: 189):
+        *   Discrete Math | Unit 7 (Price: 189):
             *   Logic and Proofs
             *   Set Theory
             *   Counting Principles
             *   Relations and Functions
             *   Introduction to Graph Theory
     *   **Physics:**
-        *   Mechanics | Unit 1 (Teacher: Amira, Price: 149):
+        *   Mechanics | Unit 1 (Price: 149):
             *   Kinematics in One Dimension
             *   Vectors and 2D Kinematics
             *   Newton's Laws of Motion
             *   Work, Energy, and Power
             *   Momentum and Collisions
-        *   Electricity | Unit 2 (Teacher: Noura, Price: 149):
+        *   Electricity | Unit 2 (Price: 149):
             *   Electric Charge and Coulomb's Law
             *   Electric Fields
             *   Electric Potential
             *   Capacitance
             *   Current, Resistance, and Ohm's Law
-        *   Magnetism | Unit 3 (Teacher: Mustafa, Price: 159):
+        *   Magnetism | Unit 3 (Price: 159):
             *   Magnetic Fields and Forces
             *   Sources of Magnetic Fields
             *   Ampere's Law
             *   Electromagnetic Induction
             *   Inductance
-        *   Optics | Unit 4 (Teacher: Amira, Price: 159):
+        *   Optics | Unit 4 (Price: 159):
             *   Nature of Light
             *   Reflection and Refraction
             *   Lenses and Image Formation
             *   Wave Optics: Interference
             *   Wave Optics: Diffraction
-        *   Thermodynamics | Unit 5 (Teacher: Noura, Price: 169):
+        *   Thermodynamics | Unit 5 (Price: 169):
             *   Temperature and Heat
             *   First Law of Thermodynamics
             *   Ideal Gas Law
             *   Second Law of Thermodynamics
             *   Thermodynamic Cycles
-        *   Quantum Physics | Unit 6 (Teacher: Mustafa, Price: 169):
+        *   Quantum Physics | Unit 6 (Price: 169):
             *   Blackbody Radiation & Planck's Hypothesis
             *   Photoelectric Effect
             *   Wave Nature of Matter
             *   The Bohr Model
             *   Introduction to Quantum Mechanics
-        *   Relativity | Unit 7 (Teacher: Amira, Price: 169):
+        *   Relativity | Unit 7 (Price: 169):
             *   Principles of Special Relativity
             *   Time Dilation and Length Contraction
             *   Relativistic Momentum and Energy
             *   Introduction to General Relativity
             *   Consequences of General Relativity
     *   **Biology:**
-        *   Cell Biology | Unit 1 (Teacher: Ahmed, Price: 179):
+        *   Cell Biology | Unit 1 (Price: 179):
             *   Introduction to Cells
             *   Cell Membrane Structure and Function
             *   Eukaryotic Organelles
             *   Cellular Respiration
             *   The Cell Cycle and Mitosis
-        *   Genetics | Unit 2 (Teacher: Karim, Price: 179):
+        *   Genetics | Unit 2 (Price: 179):
             *   Mendelian Genetics
             *   DNA Structure and Replication
             *   Gene Expression: Transcription
             *   Gene Expression: Translation
             *   Mutations and Genetic Variation
-        *   Movement | Unit 3 (Teacher: Ahmed, Price: 189):
+        *   Movement | Unit 3 (Price: 189):
             *   Skeletal Systems
             *   Muscular Systems
             *   Biomechanics Basics
             *   Locomotion in Animals
             *   Nervous System Control of Movement
-        *   Ecology | Unit 4 (Teacher: Karim, Price: 189):
+        *   Ecology | Unit 4 (Price: 189):
             *   Introduction to Ecology
             *   Population Ecology
             *   Community Ecology
             *   Ecosystem Dynamics
             *   Biomes and Conservation
-        *   Botany | Unit 5 (Teacher: Ahmed, Price: 179):
+        *   Botany | Unit 5 (Price: 179):
             *   Plant Structure and Growth
             *   Plant Transport Systems
             *   Photosynthesis
             *   Plant Reproduction
             *   Plant Hormones and Responses
-        *   Zoology | Unit 6 (Teacher: Karim, Price: 179):
+        *   Zoology | Unit 6 (Price: 179):
             *   Introduction to Animal Diversity
             *   Invertebrate Zoology I
             *   Invertebrate Zoology II
             *   Vertebrate Zoology I
             *   Vertebrate Zoology II
-        *   Microbiology | Unit 7 (Teacher: Ahmed, Price: 189):
+        *   Microbiology | Unit 7 (Price: 189):
             *   Introduction to Microbes
             *   Bacterial Structure and Function
             *   Microbial Growth and Metabolism
             *   Viruses and Prions
             *   Microbial Roles and Applications
     *   **Chemistry:**
-        *   Organic Chemistry | Unit 1 (Teacher: Mohamed, Price: 159):
+        *   Organic Chemistry | Unit 1 (Price: 159):
             *   Introduction & Bonding
             *   Alkanes and Cycloalkanes
             *   Stereochemistry
             *   Introduction to Organic Reactions
             *   Alkenes and Alkynes: Structure & Reactivity
-        *   Inorganic Chemistry | Unit 2 (Teacher: Noura, Price: 159):
+        *   Inorganic Chemistry | Unit 2 (Price: 159):
             *   Atomic Structure and Periodicity
             *   Chemical Bonding: Lewis & VSEPR
             *   Valence Bond and Molecular Orbital Theory
             *   Acid-Base Chemistry
             *   Introduction to Coordination Chemistry
-        *   Physical Chemistry | Unit 3 (Teacher: Fahad, Price: 169): // Corrected teacher based on seed data
+        *   Physical Chemistry | Unit 3 (Price: 169): // Corrected teacher based on seed data
             *   Gases and Kinetic Theory
             *   Thermodynamics: First Law
             *   Thermodynamics: Second & Third Laws
             *   Chemical Kinetics
             *   Introduction to Quantum Chemistry
-        *   Analytical Chemistry | Unit 4 (Teacher: Sara, Price: 169): // Corrected teacher based on seed data
+        *   Analytical Chemistry | Unit 4 (Price: 169): // Corrected teacher based on seed data
             *   Introduction & Statistics
             *   Gravimetric and Volumetric Analysis
             *   Spectroscopic Methods
             *   Chromatography Basics
             *   Electroanalytical Methods
-        *   Biochemistry | Unit 5 (Teacher: Mohamed, Price: 179):
+        *   Biochemistry | Unit 5 (Price: 179):
             *   Amino Acids and Proteins
             *   Enzymes and Enzyme Kinetics
             *   Carbohydrates
             *   Lipids and Membranes
             *   Metabolic Pathways Overview
-        *   Environmental Chemistry | Unit 6 (Teacher: Noura, Price: 179):
+        *   Environmental Chemistry | Unit 6 (Price: 179):
             *   Atmospheric Chemistry
             *   Aquatic Chemistry
             *   Soil Chemistry
             *   Toxicology and Risk Assessment
             *   Green Chemistry
-        *   Theoretical Chemistry | Unit 7 (Teacher: Fahad, Price: 169): // Corrected teacher based on seed data
+        *   Theoretical Chemistry | Unit 7 (Price: 169): // Corrected teacher based on seed data
             *   Quantum Mechanics Fundamentals
             *   Approximation Methods
             *   Molecular Symmetry and Group Theory
             *   Computational Chemistry Methods
             *   Statistical Thermodynamics
     *   **English:**
-        *   Literature | Unit 1 (Teacher: Sarah, Price: 129):
+        *   Literature | Unit 1 (Price: 129):
             *   Introduction to Literary Analysis
             *   Short Story Analysis
             *   Poetry Fundamentals
             *   Novel Study: Introduction
             *   Introduction to Drama
-        *   Creative Writing | Unit 2 (Teacher: John, Price: 129):
+        *   Creative Writing | Unit 2 (Price: 129):
             *   Finding Your Voice
             *   Character Development
             *   Plotting and Structure
             *   Setting and Description
             *   Dialogue Writing
-        *   Grammar & Composition | Unit 3 (Teacher: Sarah, Price: 119):
+        *   Grammar & Composition | Unit 3 (Price: 119):
             *   Parts of Speech Review
             *   Sentence Structure
             *   Punctuation Rules
             *   Common Grammatical Errors
             *   Paragraph and Essay Structure
-        *   Poetry Analysis | Unit 4 (Teacher: John, Price: 119):
+        *   Poetry Analysis | Unit 4 (Price: 119):
             *   Elements of Poetry
             *   Figurative Language
             *   Sound Devices
             *   Poetic Forms
             *   Interpreting Poems
-        *   Drama & Theater | Unit 5 (Teacher: Sarah, Price: 129):
+        *   Drama & Theater | Unit 5 (Price: 129):
             *   History of Theater
             *   Elements of Drama
             *   Reading a Play
             *   Major Dramatic Genres
             *   Theater Production Basics
-        *   Fiction Writing | Unit 6 (Teacher: John, Price: 129):
+        *   Fiction Writing | Unit 6 (Price: 129):
             *   Generating Ideas
             *   Point of View and Narrative Voice
             *   Show, Don't Tell
             *   Crafting Scenes
             *   Revision Strategies
-        *   Non-fiction Writing | Unit 7 (Teacher: Sarah, Price: 119):
+        *   Non-fiction Writing | Unit 7 (Price: 119):
             *   Types of Non-fiction
             *   Research Techniques
             *   Structuring Non-fiction

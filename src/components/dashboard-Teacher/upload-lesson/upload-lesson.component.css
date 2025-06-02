@@ -7,10 +7,10 @@
     justify-content: center;
     padding: 2rem;
     background-color: var(--estigo-off-white);
-  }
-  
-  /* 2. card style */
-  .form-card {
+}
+
+/* 2. card style */
+.form-card {
     width: 100%;
     max-width: 900px;
     background: #fff;
@@ -18,60 +18,84 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     padding: 2rem 3rem;
     animation: fadeInUp 0.6s ease-out both;
-  }
-  
-  /* 3. title */
-  .form-card h2 {
+}
+
+/* 3. title */
+.form-card h2 {
     text-align: center;
     margin-bottom: 1.5rem;
     color: var(--estigo-green);
     font-size: 1.75rem;
     animation: slideIn 0.5s ease-out both;
     font-weight: 700;
-  }
-  
-  /* 4. form layout */
-  .course-form {
+}
+
+/* 4. form layout */
+.course-form {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-  }
-  
-  /* 5. form-group */
-  .form-group label {
+}
+
+/* 5. form-group */
+.form-group label {
     font-weight: 600;
     margin-bottom: 0.4rem;
     animation: slideIn 0.5s ease-out both;
-  }
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 1rem;
     transition: box-shadow 0.3s ease;
-  }
-  .form-group input:hover,
-  .form-group textarea:hover,
-  .form-group select:hover {
+}
+
+.form-group .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.form-group .form-check-input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.form-group .form-check-label {
+    font-size: 1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
     box-shadow: 0 0 8px rgba(47,62,70,0.1);
-  }
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     animation: shakeBorder 0.8s ease-in-out both;
     box-shadow: 0 0 6px rgba(47,62,70,0.2);
-  }
-  
-  /* 6. submit button */
-  .form-actions {
+}
+
+/* 6. submit button */
+.form-actions {
     text-align: right;
     margin-top: 1.5rem;
-  }
-  .form-actions button {
+}
+
+.form-actions button {
     padding: 0.75rem 2rem;
     background: var(--estigo-green);
     color: #fff;
@@ -81,26 +105,29 @@
     cursor: pointer;
     animation: pulse 2s ease-in-out infinite 1s;
     transition: transform 0.2s ease;
-  }
-  .form-actions button:hover {
+}
+
+.form-actions button:hover {
     transform: translateY(-4px) scale(1.02);
-  }
-  
-  /* 7. animations */
-  @keyframes fadeInUp {
+}
+
+/* 7. animations */
+@keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes pulse {
+}
+
+@keyframes pulse {
     0%,100% { transform: scale(1); }
     50%     { transform: scale(1.03); }
-  }
-  @keyframes shakeBorder {
+}
+
+@keyframes shakeBorder {
     0%,100% { border-color: #ccc; }
     50%     { border-color: var(--estigo-green); }
-  }
-  @keyframes slideIn {
+}
+
+@keyframes slideIn {
     from { opacity: 0; transform: translateX(-10px); }
     to   { opacity: 1; transform: translateX(0); }
-  }
-  
+}
